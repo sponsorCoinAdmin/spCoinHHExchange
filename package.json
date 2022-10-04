@@ -1,0 +1,19 @@
+{
+  "name": "tutorials-hardhat-singlehop",
+  "version": "1.0.0",
+  "description": "Single Hop Token Transfer",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sponsorCoinAdmin/Tutorials-HardHat-SingleHop.git"
+  },
+  "author": "Robin Melanson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sponsorCoinAdmin/Tutorials-HardHat-SingleHop/issues"
+  },
+  "homepage": "https://github.com/sponsorCoinAdmin/Tutorials-HardHat-SingleHop#readme"
+}
