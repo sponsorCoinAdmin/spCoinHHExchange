@@ -13,8 +13,9 @@ describe("SwapExamples:", function () {
   let dai
   let usdc
   const indent = "  ";
-  const indent2 = indent+indent;
-  const indent3 = indent2+indent;
+  const indent2 = indent + indent;
+  const indent3 = indent2 + indent;
+  let testNum = 0;
 
   console.log("SwapExamples:");
 
@@ -33,95 +34,50 @@ describe("SwapExamples:", function () {
     usdc = await ethers.getContractAt("IERC20", USDC);
   })
 
-  // // Test # 1 - swapExactInputSingleHop
-  // it("swapExactInputSingle", async function () {
-  //   console.log(indent2+"Test 1 ~ swapExactInputSingle...");
+  // Test # 1 - swapExactInputSingle
+  it("swapExactInputSingle", async function () {
+    let testId = ++testNum;
+    console.log(indent2 + "Test " + testId + " ~ swapExactInputSingle...");
 
-  //   const amountIn = 10n ** 18n;
+    const amountIn = 10n ** 18n;
 
-  //   // Deposit WETH
-  //   await weth.connect(accounts[0]).deposit({ value: amountIn });
-  //   await weth.connect(accounts[0]).approve(swapExamples.address, amountIn);
+    // Deposit WETH
+    await weth.connect(accounts[0]).deposit({ value: amountIn });
+    await weth.connect(accounts[0]).approve(swapExamples.address, amountIn);
 
-  //   // Swap
-  //   await swapExamples.swapExactInputSingle(amountIn);
+    // Swap
+    await swapExamples.swapExactInputSingle(amountIn);
 
-  //   console.log(indent3+"Resp  1 ~ DAI balance", await dai.balanceOf(accounts[0].address));
-  // });
+    console.log(indent3 + "Resp " + testNum + " ~ DAI balance", await dai.balanceOf(accounts[0].address));
+  });
 
-  // // Test # 2 - swapExactOutputSingleHop
-  // it("swapExactOutputSingle", async function () {
-  //   console.log(indent2+"Test 2 ~ swapExactOutputMulti...");
+  // Test # 2 - swapExactOutputSingle
+  it("swapExactOutputSingle", async function () {
+    let testId = ++testNum;
+    console.log(indent2 + "Test " + testId + " ~ swapExactOutputMulti...");
 
-  //   const wethAmountInMax = 10n ** 18n;
-  //   const diaAmountOut = 100n * 10n ** 18n;
-  //   let diaBeforeBalance = await dai.balanceOf(accounts[0].address);
+    const wethAmountInMax = 10n ** 18n;
+    const diaAmountOut = 100n * 10n ** 18n;
+    let diaBeforeBalance = await dai.balanceOf(accounts[0].address);
 
-  //   // Deposit WETH
-  //   await weth.connect(accounts[0]).deposit({ value: wethAmountInMax });
-  //   await weth.connect(accounts[0]).approve(swapExamples.address, wethAmountInMax);
+    // Deposit WETH
+    await weth.connect(accounts[0]).deposit({ value: wethAmountInMax });
+    await weth.connect(accounts[0]).approve(swapExamples.address, wethAmountInMax);
 
-  //   // Swap
-  //   await swapExamples.swapExactOutputSingle(diaAmountOut, wethAmountInMax);
+    // Swap
+    await swapExamples.swapExactOutputSingle(diaAmountOut, wethAmountInMax);
 
-  //   const diaAfterBalance = await dai.balanceOf(accounts[0].address);
+    const diaAfterBalance = await dai.balanceOf(accounts[0].address);
 
-  //   console.log(indent3+"Resp  2 ~ DAI Before  balance", diaBeforeBalance);
-  //   console.log(indent3+"Resp  2 ~ DAI After   balance", diaAfterBalance);
-  //   console.log(indent3+"Resp  2 ~ DAI Current balance", diaAfterBalance - diaBeforeBalance);
-  // });
+    console.log(indent3 + "Resp 2 ~ DAI Before  balance", diaBeforeBalance);
+    console.log(indent3 + "Resp 2 ~ DAI After   balance", diaAfterBalance);
+    console.log(indent3 + "Resp 2 ~ DAI Current balance", diaAfterBalance - diaBeforeBalance);
+  });
 
-  // // Test # 3 - swapExactInputMultiHop
-  // it("swapExactInputMultihop", async function () {
-  //   console.log(indent2+"Test 3 ~ swapExactInputMultiHop...");
-
-  //   const amountIn = 10n ** 18n;
-
-  //   // Deposit WETH
-  //   await weth.connect(accounts[0]).deposit({ value: amountIn });
-  //   await weth.connect(accounts[0]).approve(swapExamples.address, amountIn);
-
-  //   // Swap
-  //   await swapExamples.swapExactInputMultihop(amountIn);
-
-  //   console.log(indent3+"Resp  3 ~ DAI balance", await dai.balanceOf(accounts[0].address));
-  // });
-
-  // // Test # 4 - swapExactInputMultiHop
-  // it("swapExactInputMultihop4", async function () {
-  //   console.log(indent2+"Test 4 ~ swapExactInputMultiHop...");
-
-  //   const amountIn = 10n ** 18n;
-
-  //   // Deposit WETH
-  //   await weth.connect(accounts[0]).deposit({ value: amountIn });
-  //   await weth.connect(accounts[0]).approve(swapExamples.address, amountIn);
-
-  //   // Swap
-  //   await swapExamples.swapExactInputMultihop(amountIn);
-
-  //   console.log(indent3+"Resp  4 ~ DAI balance", await dai.balanceOf(accounts[0].address));
-  // });
-
-  // // Test # 5 - swapExactInputMultiHop
-  // it("swapExactInputMultihop5", async function () {
-  //   console.log(indent2+"Test 5 ~ swapExactInputMultiHop...");
-
-  //   const amountIn = 10n ** 18n;
-
-  //   // Deposit WETH
-  //   await weth.connect(accounts[0]).deposit({ value: amountIn });
-  //   await weth.connect(accounts[0]).approve(swapExamples.address, amountIn);
-
-  //   // Swap
-  //   await swapExamples.swapExactInputMultihop(amountIn);
-
-  //   console.log(indent3+"Resp  5 ~ DAI balance", await dai.balanceOf(accounts[0].address));
-  // });
-
-  // Test # 6 - swapExactInputMultiHop
-  it("swapExactInputMultihop6", async function () {
-    console.log(indent2+"Test 6 ~ swapExactInputMultiHop...");
+  // Test # 3 - swapExactInputMultiHop
+  it("swapExactInputMultihop", async function () {
+    let testId = ++testNum;
+    console.log(indent2 + "Test " + testId + " ~ swapExactInputMultiHop...");
 
     const amountIn = 10n ** 18n;
 
@@ -132,38 +88,55 @@ describe("SwapExamples:", function () {
     // Swap
     await swapExamples.swapExactInputMultihop(amountIn);
 
-    console.log(indent3+"Resp  6 ~ DAI balance", await dai.balanceOf(accounts[0].address));
+    console.log(indent3 + "Resp " + testNum + " ~ DAI balance", await dai.balanceOf(accounts[0].address));
   });
 
-  // Test # 7 - swapExactInputMultiHop
-  it("swapExactInputMultihop7", async () => {
-    console.log(indent2+"Test 7 ~ swapExactInputMultiHop...");
-    const amountIn = 10n ** 18n
+  // Test # 4 - swapExactOutputMultihop
+  it("swapExactOutputMultihop", async function () {
+    let testId = ++testNum;
+    console.log(indent2 + "Test " + testId + " ~ swapExactOutputMultihop...");
+
+    const wethAmountInMax = 10n ** 18n;
+    const diaAmountOut = 100n * 10n ** 18n;
+    let diaBeforeBalance = await dai.balanceOf(accounts[0].address);
 
     // Deposit WETH
-    await weth.deposit({ value: amountIn })
-    await weth.approve(swapExamples.address, amountIn)
+    await weth.connect(accounts[0]).deposit({ value: wethAmountInMax });
+    await weth.connect(accounts[0]).approve(swapExamples.address, wethAmountInMax);
 
     // Swap
-    await swapExamples.swapExactInputMultihop(amountIn)
+    await swapExamples.swapExactOutputMultihop(diaAmountOut, wethAmountInMax);
 
-    console.log(indent3+"Resp  7 ~ DAI balance", await dai.balanceOf(accounts[0].address))
-  })
+    const diaAfterBalance = await dai.balanceOf(accounts[0].address);
 
-  // Test # 8 - swapExactInputMultiHop
-  it("swapExactOutputMultihop", async () => {
-    console.log(indent2+"Test 8 ~ swapExactOutputMultihop...");
-    const wethAmountInMax = 10n ** 18n
-    const daiAmountOut = 100n * 10n ** 18n
+    console.log(indent3 + "Resp " + testNum + " ~ DAI Before  balance", diaBeforeBalance);
+    console.log(indent3 + "Resp " + testNum + " ~ DAI After   balance", diaAfterBalance);
+    console.log(indent3 + "Resp " + testNum + " ~ DAI Current balance", diaAfterBalance - diaBeforeBalance);
+  });
 
-    // Deposit WETH
-    await weth.deposit({ value: wethAmountInMax })
-    await weth.approve(swapExamples.address, wethAmountInMax)
+  //  // Test # 5 - delayMins
 
-    // Swap
-    await swapExamples.swapExactOutputMultihop(daiAmountOut, wethAmountInMax)
+  it("delayMins", async function () {
+    console.log(indent3 + "Enter delayMins (Waits for completion of other async tests)");
 
-    console.log(indent3+"Resp  8 ~ DAI balance", await dai.balanceOf(accounts[0].address))
-  })
+    let delayCount = 1000;
+    const milisecond = 1;
+    const second = milisecond * 1000;
+    const minute = second * 60;
+    let delay = second * 10;
 
+    // minuteDelay loop i seconds increments
+
+    for (let i = 1; i <= delayCount; i++) {
+      console.log("delay = " + i * delay/second + " Seconds");
+      let msg = indent2 + "Test 7 ~ delayMins " + i;
+      await sleep(delay);
+    }
+
+    console.log(indent3 + "delayMins " + delayCount + " Complete");
+  });
+
+  function sleep(milliseconds) {
+    return new Promise(resolvePromise => setTimeout(resolvePromise, milliseconds));
+  }
 });
