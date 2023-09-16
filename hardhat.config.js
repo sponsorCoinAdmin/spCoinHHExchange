@@ -21,7 +21,19 @@ module.exports = {
         // url: process.env.MAINNET_INFURA_TEST_URL
         url: process.env.GOERLI_INFURA_TEST_URL
         // url: process.env.SEPOLIA_INFURA_TEST_URL
-      }
+      },
+      mainnet: {
+        url: process.env.MAINNET_ALCHEMY_TEST_URL,
+        accounts: [process.env.WALLET_SECRET]
+      },
+      goerli: {
+        url: process.env.GOERLI_ALCHEMY_TEST_URL,
+        accounts: [process.env.WALLET_SECRET]
+      },
+      sepolia: {
+        url: process.env.SEPOLIA_ALCHEMY_TEST_URL,
+        accounts: [process.env.WALLET_SECRET]
+      }  
     }
   },
   etherscan: {
@@ -35,3 +47,4 @@ module.exports = {
     only: ["SPCoin"],
   }
 };
+
