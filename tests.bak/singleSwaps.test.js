@@ -1,10 +1,9 @@
 const { expect } = require("chai")
 const { ethers } = require("hardhat")
-const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
 
-const DAI = process.env.GOERLI_DAI;
-const WETH = process.env.GOERLI_WETH;
-const USDC = process.env.GOERLI_USDC;
+const DAI = "0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60";
+const WETH9 = "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6";
+const USDC = "0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C";
 
 describe("SwapExamples:", function () {
 
@@ -23,17 +22,14 @@ describe("SwapExamples:", function () {
   // Before Initialization
   before(async () => {
     console.log(indent + "before Initializing");
+
     accounts = await ethers.getSigners(1);
+
     await deployContract("SwapExamples");
 
-    weth = await ethers.getContractAt(WETH_ABI, WETH);
-    /* ALTERNATE METHOD for weth contract assignment
-    weth = await ethers.getContractAt("IWETH", WETH);
-    */
+    weth = await ethers.getContractAt("IWETH", WETH9);
     dai = await ethers.getContractAt("IERC20", DAI);
     usdc = await ethers.getContractAt("IERC20", USDC);
-    console.log(indent2 + "BEFORE   ~ DAI balance", await dai.balanceOf(accounts[0].address));
-
   })
 
   async function deployContract(contract) {

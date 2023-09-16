@@ -21,8 +21,7 @@ module.exports = {
         // url: process.env.MAINNET_INFURA_TEST_URL
         url: process.env.GOERLI_INFURA_TEST_URL
         // url: process.env.SEPOLIA_INFURA_TEST_URL
-      },
-      chainId: 1
+      }
     }
   },
   etherscan: {

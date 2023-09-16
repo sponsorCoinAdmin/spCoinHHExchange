@@ -14,5 +14,9 @@ alias hhdeploysepolia="cdspc; npx hardhat run setupEnv/deploy.js --network sepol
 alias hhcompile="clear;npx hardhat compile"
 alias hhnode="clear; npx hardhat node  2>&1 > $SPONSOR_COIN_LOGS/hhnode.out &"
 alias hhsize="npx hardhat size-contracts"
-alias hhtest="reset;clear; npx hardhat test 2>&1 | tee ./test.out/hhtest.out"
 alias remixd="nohup node $SPONSOR_COIN_HOME/node_modules/@remix-project/remixd/src/bin/remixd.js 2>&1 > $SPONSOR_COIN_LOGS/remixd.out &"
+
+alias hhtest='reset;clear; npx hardhat test 2>&1 | tee ./test.out/hhtest.out'
+alias hhtesta="reset;clear; npx hardhat test --grep test/allSwaps.test.js 2>&1 | tee ./test.out/hhtesta.out"
+alias hhtestm="reset;clear; npx hardhat test --grep test/multiSwaps.test.js 2>&1 | tee ./test.out/hhtestm.out"
+alias hhtests="reset;clear; npx hardhat test --grep test/singleSwaps.test.js 2>&1 | tee ./test.out/hhtests.out"
