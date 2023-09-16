@@ -6,11 +6,6 @@ const DAI = process.env.GOERLI_DAI;
 const WETH = process.env.GOERLI_WETH;
 const USDC = process.env.GOERLI_USDC;
 
-const bigIntToDecMilliSecs = ( _value ) => { return bigIntToDecString(_value) + "000"; };
-const bigIntToDecString = ( _value ) => { return bigIntToString(_value, 10); };
-const bigIntToHexString = ( _value ) => { return bigIntToString(_value, 16); };
-const bigIntToString = ( _value, _base ) => { return BigInt(_value).toString(_base); };
-
 describe("SwapExamples:", function () {
 
   let swapExamples
@@ -38,9 +33,7 @@ describe("SwapExamples:", function () {
     dai = await ethers.getContractAt("IERC20", DAI);
     usdc = await ethers.getContractAt("IERC20", USDC);
     let balanceOf = await dai.balanceOf(accounts[0].address);
-    console.log(indent2 + "BEFORE   ~ DAI balance", balanceOf);
-    console.log(indent2 + "BEFORE   ~ DAI balance", bigIntToDecString(balanceOf));
-
+    console.log(indent2 + "BEFORE ~ DAI balance", balanceOf);
   })
 
   async function deployContract(contract) {
@@ -48,12 +41,6 @@ describe("SwapExamples:", function () {
     swapExamples = await SwapExamples.deploy();
     await swapExamples.deployed();
   }
-
-  bigIntToDateTimeString = () => { return bigIntToDateTimeString(); }
-  dateInMilliseconds     = () => { return dateInMilliseconds(); }
-  dateInSeconds          = () => { return dateInSeconds(); }
-  formatTimeSeconds      = (_timeInSeconds) => { return formatTimeSeconds(_timeInSeconds); }
-  parseTimeSeconds       = (_timeInSeconds) => { return parseTimeSeconds(_timeInSeconds); }
 
   // Test - swapExactInputMultiHop
   it("swapExactInputMultihop", async () => {
@@ -71,6 +58,7 @@ describe("SwapExamples:", function () {
     console.log(indent3 + "2 Resp " + testNum + " ~ DAI balance", await dai.balanceOf(accounts[0].address));
   }).timeout(1000000);
 
+ 
   // Test - swapExactInputSingle
   it("swapExactInputSingle", async function () {
     let testId = ++testNum;
