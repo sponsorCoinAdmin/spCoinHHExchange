@@ -1,5 +1,6 @@
 require("dotenv").config();
 const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
+const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
 
 const DAI = process.env.GOERLI_DAI;
 const WETH = process.env.GOERLI_WETH;
@@ -26,17 +27,17 @@ describe("AllSwaps:", function () {
   // Before Initialization
   before(async () => {
     console.log(indent + "before Initializing");
-
     accounts = await ethers.getSigners(1);
-
     await deployContract("SwapExamples");
 
-    weth = await ethers.getContractAt(WETH_ABI, WETH);
     /* ALTERNATE METHOD for weth contract assignment
       weth = await ethers.getContractAt("IWETH", WETH9);
+      dai = await ethers.getContractAt("IERC20", DAI);
+      usdc = await ethers.getContractAt("IERC20", USDC);
     */
-    dai = await ethers.getContractAt("IERC20", DAI);
-    usdc = await ethers.getContractAt("IERC20", USDC);
+    weth = await ethers.getContractAt(WETH_ABI, WETH);
+    dai = await ethers.getContractAt(ERC20, DAI);
+    usdc = await ethers.getContractAt(ERC20, USDC);
   })
 
   async function deployContract(contract) {

@@ -17,29 +17,36 @@ contract SwapExamples {
     // For this example, we will set the pool fee to 0.3%.
     uint24 public constant poolFee = 3000;
 
-     /// @notice Swaps a fixed amount of WETH for a maximum possible amount of DAI
-    function swapExactInputSingle(uint256 amountIn) external returns (uint256 amountOut) {
+     /// @notice Swaps a fixed amount of _tokenIn for a maximum possible amount of _tokenOut
+    function swapExactInputSingle(address _tokenIn,
+                                  address _tokenOut,
+                                  uint256 _amountIn,
+                                  uint24  _poolFee,
+                                  uint256 _amountOutMinimum,
+                                  uint160 _sqrtPriceLimitX96) external returns (uint256 amountOut) {
         // msg.sender must approve this contract
 
-        // Transfer the specified amount of DAI to this contract.
-        TransferHelper.safeTransferFrom(WETH9, msg.sender, address(this), 
-            amountIn
+        // Transfer the specified amount of _tokenOut to this contract.
+        TransferHelper.safeTransferFrom(_tokenIn, msg.sender, address(this), 
+            _amountIn
         );
 
-        // Approve the router to spend DAI.
-        TransferHelper.safeApprove(WETH9, address(swapRouter), amountIn);
+        // Approve the router to spend _tokenIn.
+        TransferHelper.safeApprove(_tokenIn, address(swapRouter), _amountIn);
 
         // Naively set amountOutMinimum to 0. In production, use an oracle or other data source to choose a safer value for amountOutMinimum.
         // We also set the sqrtPriceLimitx96 to be 0 to ensure we swap our exact input amount.
         ISwapRouter.ExactInputSingleParams memory params =
-            ISwapRouter.ExactInputSingleParams({tokenIn: WETH9, tokenOut: DAI,
-                fee: poolFee,
+            ISwapRouter.ExactInputSingleParams({
+                tokenIn: _tokenIn,
+                tokenOut: _tokenOut,
+                fee: _poolFee,
                 recipient: msg.sender,
                 deadline: block.timestamp,
-                amountIn: amountIn,
-                amountOutMinimum: 0,
-                sqrtPriceLimitX96: 0});
-
+                amountIn: _amountIn,
+                amountOutMinimum: _amountOutMinimum,
+                sqrtPriceLimitX96: _sqrtPriceLimitX96
+            });
         // The call to `exactInputSingle` executes the swap.
         amountOut = swapRouter.exactInputSingle(params);
     }
