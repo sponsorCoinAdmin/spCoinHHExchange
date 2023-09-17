@@ -52,18 +52,18 @@ contract SwapExamples {
     }
 
     /// @notice swaps a minimum possible amount of WETH for a fixed amount of DAI.
-     function swapExactOutputSingle(uint256 amountOut, uint256 amountInMaximum) external returns (uint256 amountIn) {
+     function swapExactOutputSingle(uint256 _amountOut, uint256 _amountInMaximum) external returns (uint256 amountIn) {
         // Transfer the specified amount of DAI to this contract.
         TransferHelper.safeTransferFrom(
-            WETH9, 
-            msg.sender, 
-            address(this), 
-            amountInMaximum
+            WETH9,
+            msg.sender,
+            address(this),
+            _amountInMaximum
         );
 
         // Approve the router to spend the specifed `amountInMaximum` of DAI.
         // In production, you should choose the maximum amount to spend based on oracles or other data sources to acheive a better swap.
-        TransferHelper.safeApprove(WETH9, address(swapRouter), amountInMaximum);
+        TransferHelper.safeApprove(WETH9, address(swapRouter), _amountInMaximum);
 
         ISwapRouter.ExactOutputSingleParams memory params =
             ISwapRouter.ExactOutputSingleParams({
@@ -72,8 +72,8 @@ contract SwapExamples {
                 fee: poolFee,
                 recipient: msg.sender,
                 deadline: block.timestamp,
-                amountOut: amountOut,
-                amountInMaximum: amountInMaximum,
+                amountOut: _amountOut,
+                amountInMaximum: _amountInMaximum,
                 sqrtPriceLimitX96: 0
             });
 
@@ -82,12 +82,12 @@ contract SwapExamples {
 
         // For exact output swaps, the amountInMaximum may not have all been spent.
         // If the actual amount spent (amountIn) is less than the specified maximum amount, we must refund the msg.sender and approve the swapRouter to spend 0.
-        if (amountIn < amountInMaximum) {
+        if (amountIn < _amountInMaximum) {
             TransferHelper.safeApprove(WETH9, address(swapRouter), 0);
             TransferHelper.safeTransfer(
                 WETH9,
                 msg.sender,
-                amountInMaximum - amountIn
+                _amountInMaximum - amountIn
             );
         }
     }

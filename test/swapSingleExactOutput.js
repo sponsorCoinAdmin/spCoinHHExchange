@@ -12,11 +12,9 @@ describe("SwapExactOutputSingle:", function () {
   let accounts
   let weth
   let dai
-  let usdc
   const indent = "  ";
   const indent2 = indent + indent;
   const indent3 = indent2 + indent;
-  let testNum = 0;
 
   console.log("SwapExactOutputSingle:");
 
@@ -30,11 +28,9 @@ describe("SwapExactOutputSingle:", function () {
     /* ALTERNATE METHOD for weth contract assignment
       weth = await ethers.getContractAt("IWETH", WETH9);
       dai = await ethers.getContractAt("IERC20", DAI);
-      usdc = await ethers.getContractAt("IERC20", USDC);
     */
     weth = await ethers.getContractAt(WETH_ABI, WETH);
     dai = await ethers.getContractAt(ERC20, DAI);
-    usdc = await ethers.getContractAt(ERC20, USDC);
   })
 
   async function deployContract(contract) {
@@ -45,8 +41,6 @@ describe("SwapExactOutputSingle:", function () {
 
   // Test - swapExactOutputSingle
   it("swapExactOutputSingle", async function () {
-    let testId = ++testNum;
-    console.log(indent2 + "Test " + testId + " ~ swapExactOutputSingle...");
 
     const wethAmountInMax = 10n ** 18n;
     const diaAmountOut = 100n * 10n ** 18n;
