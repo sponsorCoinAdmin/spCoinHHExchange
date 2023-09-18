@@ -52,7 +52,12 @@ contract SwapExamples {
     }
 
     /// @notice swaps a minimum possible amount of WETH for a fixed amount of DAI.
-     function swapExactOutputSingle(uint256 _amountOut, uint256 _amountInMaximum) external returns (uint256 amountIn) {
+     function swapExactOutputSingle(
+                                address _tokenIn,
+                                address _tokenOut,
+                                uint24  _poolFee,
+                                uint256 _amountOut,
+                                uint256 _amountInMaximum) external returns (uint256 amountIn) {
         // Transfer the specified amount of DAI to this contract.
         TransferHelper.safeTransferFrom(
             WETH9,
@@ -67,9 +72,9 @@ contract SwapExamples {
 
         ISwapRouter.ExactOutputSingleParams memory params =
             ISwapRouter.ExactOutputSingleParams({
-                tokenIn: WETH9,
-                tokenOut: DAI,
-                fee: poolFee,
+                tokenIn: _tokenIn,
+                tokenOut: _tokenOut,
+                fee: _poolFee,
                 recipient: msg.sender,
                 deadline: block.timestamp,
                 amountOut: _amountOut,
