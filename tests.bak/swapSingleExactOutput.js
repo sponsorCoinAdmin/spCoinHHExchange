@@ -6,8 +6,6 @@ describe("SwapExactOutputSingle:", function () {
 
   let swapExamples
   let accounts
-  let weth
-  let dai
   const indent = "  ";
   const indent2 = indent + indent;
   const indent3 = indent2 + indent;
@@ -79,54 +77,57 @@ describe("SwapExactOutputSingle:", function () {
       tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
     */
 
-    const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
       
-    const DAI = process.env.GOERLI_DAI;
-    const WETH = process.env.GOERLI_WETH;
-      
-    weth = await ethers.getContractAt(WETH_ABI, WETH);
-    dai = await ethers.getContractAt(ERC20, DAI); 
-  
     const TOKEN_IN_NAME = "WETH";
     const TOKEN_OUT_NAME = "DAI";
-    const AMOUNT_IN = 10n ** 18n;
+    const AMOUNT_IN_MAX = 10n ** 18n;
     const TOKEN_IN = process.env.GOERLI_WETH;
     const TOKEN_OUT = process.env.GOERLI_DAI;
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-    const AMOUNT_IN_MAX = 10n ** 18n;
+    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT);
+
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
-    let diaBeforeBalance = await dai.balanceOf(accounts[0].address);
+    let diaBeforeBalance = await tokenOutContract.balanceOf(accounts[0].address);
 
-    // Deposit WETH
-    await weth.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
-    await weth.connect(accounts[0]).approve(swapExamples.address, AMOUNT_IN_MAX);
-
-    // Swap
     await swapExamples.swapExactOutputSingle(
-      TOKEN_IN,
-      TOKEN_OUT,
-      POOL_FEE,
-      TOKEN_AMOUNT_OUT,
-      AMOUNT_IN_MAX,
-      SQRT_ROOT_PRICE_LIMIT_X96);
-
-    /*
-    await logSwapExactOutputSingle(
-      TOKEN_IN_NAME,
-      TOKEN_OUT_NAME,
-      TOKEN_IN,
-      TOKEN_OUT,
-      POOL_FEE,
+      TOKEN_IN, 
+      TOKEN_OUT, 
+      POOL_FEE, 
       TOKEN_AMOUNT_OUT, 
       AMOUNT_IN_MAX, 
       SQRT_ROOT_PRICE_LIMIT_X96);
-    */
 
-    const diaAfterBalance = await dai.balanceOf(accounts[0].address);
+    // Deposit WETH
+    await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
+    await tokenInContract.connect(accounts[0]).approve(swapExamples.address, AMOUNT_IN_MAX);
 
+    // Swap
+
+    await swapExamples.swapExactOutputSingle(
+      TOKEN_IN, 
+      TOKEN_OUT, 
+      POOL_FEE, 
+      TOKEN_AMOUNT_OUT, 
+      AMOUNT_IN_MAX, 
+      SQRT_ROOT_PRICE_LIMIT_X96);
+/*
+      await logSwapExactOutputSingle(
+        TOKEN_IN_NAME,
+        TOKEN_OUT_NAME,
+        TOKEN_IN,
+        TOKEN_OUT,
+        POOL_FEE,
+        TOKEN_AMOUNT_OUT, 
+        AMOUNT_IN_MAX, 
+        SQRT_ROOT_PRICE_LIMIT_X96);
+*/  
+    const diaAfterBalance = await tokenOutContract.balanceOf(accounts[0].address);
+    
     console.log(indent3 + "Resp 2 ~ DAI Before  balance", diaBeforeBalance);
     console.log(indent3 + "Resp 2 ~ DAI After   balance", diaAfterBalance);
     console.log(indent3 + "Resp 2 ~ DAI Current balance", diaAfterBalance - diaBeforeBalance);
