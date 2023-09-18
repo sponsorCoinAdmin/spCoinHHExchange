@@ -5,8 +5,6 @@ describe("SwapExactOutputMultihop:", function () {
   let swapExamples
   let accounts
   let weth
-  let dai
-  let usdc
   const indent = "  ";
   const indent1 = indent + indent;
   const indent2 = indent1 + indent;
@@ -47,9 +45,9 @@ describe("SwapExactOutputMultihop:", function () {
     const TOKEN_INTERMEDIARY = process.env.GOERLI_USDC;
     const TOKEN_OUT          = process.env.GOERLI_DAI;
         
-    tokenInContract           = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenIntermediaryContract = await ethers.getContractAt(ERC20, TOKEN_INTERMEDIARY);
-    tokenOutContract          = await ethers.getContractAt(ERC20, TOKEN_OUT);
+    const tokenInContract           = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    const tokenIntermediaryContract = await ethers.getContractAt(ERC20, TOKEN_INTERMEDIARY);
+    const tokenOutContract          = await ethers.getContractAt(ERC20, TOKEN_OUT);
   
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,19 +55,14 @@ describe("SwapExactOutputMultihop:", function () {
 
     const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
 
-    const DAI = process.env.GOERLI_DAI;
-    const USDC = process.env.GOERLI_USDC;
     const WETH = process.env.GOERLI_WETH;
     weth = await ethers.getContractAt(WETH_ABI, WETH);
-    dai = await ethers.getContractAt(ERC20, DAI);
-    usdc = await ethers.getContractAt(ERC20, USDC);
 
     let testId = ++testNum;
     console.log(indent1 + "Test " + testId + " ~ swapExactOutputMultihop...");
 
     const wethAmountInMax = 10n ** 18n;
     const diaAmountOut = 100n * 10n ** 18n;
-    let diaBeforeBalance = await dai.balanceOf(accounts[0].address);
 
     // Deposit WETH
     await weth.connect(accounts[0]).deposit({ value: wethAmountInMax });
