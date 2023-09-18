@@ -2,16 +2,17 @@ require("dotenv").config();
 
 console.log("SwapExactOutputSingle:");
 
-describe("SwapExactOutputSingle:", function () {
+describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of DAI.\n"+
+"    In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap."
+, function () {
 
   let swapExamples
   let accounts
+  let tokenInContract
+  let tokenOutContract
   const indent = "  ";
-  const indent2 = indent + indent;
-  const indent3 = indent2 + indent;
 
-  // Before Initialization
-  // Before Initialization
+  // Before Initialization for each test
   before(async () => {
     accounts = await ethers.getSigners(1);
     await deployContract("SwapExamples");
@@ -27,10 +28,16 @@ describe("SwapExactOutputSingle:", function () {
     _tokenIn,
     _tokenOut,
     _poolFee,
-    _amountIn,
+    _amountInMax,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await swapExamples.swapExactOutputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMin, _sqrtPriceLimitX96);
+      await swapExamples.swapExactOutputSingle(
+        _tokenIn,
+        _tokenOut,
+        _poolFee,
+        _amountInMax,
+        _amountOutMin,
+        _sqrtPriceLimitX96);
   }
 
   async function logSwapExactOutputSingle(
@@ -51,7 +58,7 @@ describe("SwapExactOutputSingle:", function () {
         
       // Swap Exact Input Single
       // await swapExactOutputSingle(_tokenIn, _tokenOut, _poolFee, _amountInMax, _amountOutMin, _sqrtPriceLimitX96);
-      await swapExamples.swapExactOutputSingle(
+      await swapExactOutputSingle(
         _tokenIn,
         _tokenOut,
         _poolFee,
@@ -88,49 +95,26 @@ describe("SwapExactOutputSingle:", function () {
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT);
-
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
-    let diaBeforeBalance = await tokenOutContract.balanceOf(accounts[0].address);
-
-    await swapExamples.swapExactOutputSingle(
-      TOKEN_IN, 
-      TOKEN_OUT, 
-      POOL_FEE, 
-      TOKEN_AMOUNT_OUT, 
-      AMOUNT_IN_MAX, 
-      SQRT_ROOT_PRICE_LIMIT_X96);
-
+   
+    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
+  
     // Deposit WETH
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
     await tokenInContract.connect(accounts[0]).approve(swapExamples.address, AMOUNT_IN_MAX);
 
     // Swap
-
-    await swapExamples.swapExactOutputSingle(
-      TOKEN_IN, 
-      TOKEN_OUT, 
-      POOL_FEE, 
+    await logSwapExactOutputSingle(
+      TOKEN_IN_NAME,
+      TOKEN_OUT_NAME,
+      TOKEN_IN,
+      TOKEN_OUT,
+      POOL_FEE,
       TOKEN_AMOUNT_OUT, 
       AMOUNT_IN_MAX, 
       SQRT_ROOT_PRICE_LIMIT_X96);
-/*
-      await logSwapExactOutputSingle(
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
-        TOKEN_IN,
-        TOKEN_OUT,
-        POOL_FEE,
-        TOKEN_AMOUNT_OUT, 
-        AMOUNT_IN_MAX, 
-        SQRT_ROOT_PRICE_LIMIT_X96);
-*/  
-    const diaAfterBalance = await tokenOutContract.balanceOf(accounts[0].address);
-    
-    console.log(indent3 + "Resp 2 ~ DAI Before  balance", diaBeforeBalance);
-    console.log(indent3 + "Resp 2 ~ DAI After   balance", diaAfterBalance);
-    console.log(indent3 + "Resp 2 ~ DAI Current balance", diaAfterBalance - diaBeforeBalance);
+
   }).timeout(100000);
 
 });
