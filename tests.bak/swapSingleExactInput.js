@@ -113,6 +113,5 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       AMOUNT_IN,
       AMOUNT_OUT_MINIMUM,
       SQRT_ROOT_PRICE_LIMIT_X96);
-
   }).timeout(100000);
 });

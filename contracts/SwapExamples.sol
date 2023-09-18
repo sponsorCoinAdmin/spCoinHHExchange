@@ -51,7 +51,7 @@ contract SwapExamples {
         amountOut = swapRouter.exactInputSingle(params);
     }
 
-    /// @notice swaps a minimum possible amount of WETH for a fixed amount of DAI.
+    /// @notice swaps a minimum possible amount of WETH for a fixed amount of _tokenIn.
      function swapExactOutputSingle(
                                 address _tokenIn,
                                 address _tokenOut,
@@ -59,7 +59,7 @@ contract SwapExamples {
                                 uint256 _amountOut,
                                 uint256 _amountInMaximum,
                                 uint160 _sqrtPriceLimitX96) external returns (uint256 amountIn) {
-        // Transfer the specified amount of DAI to this contract.
+        // Transfer the specified amount of _tokenIn to this contract.
         TransferHelper.safeTransferFrom(
             WETH9,
             msg.sender,
@@ -67,7 +67,7 @@ contract SwapExamples {
             _amountInMaximum
         );
 
-        // Approve the router to spend the specified `amountInMaximum` of DAI.
+        // Approve the router to spend the specified `amountInMaximum` of _tokenIn.
         // In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap.
         TransferHelper.safeApprove(WETH9, address(swapRouter), _amountInMaximum);
 
@@ -98,7 +98,7 @@ contract SwapExamples {
         }
     }
 
-    /// @notice swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of DAI
+    /// @notice swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of _tokenIn
     /// swap _tokenIn --> _tokenIntermediary --> _tokenOut
    function swapExactInputMultihop(
                                 address _tokenIn,
@@ -107,15 +107,15 @@ contract SwapExamples {
                                 uint24  _poolFee,
                                 uint256 _amountIn,
                                 uint256 _amountOutMinimum) external returns (uint256 amountOut) {
-        // Transfer `amountIn` of DAI to this contract.
+        // Transfer `amountIn` of _tokenIn to this contract.
         TransferHelper.safeTransferFrom(_tokenIn, msg.sender, address(this), _amountIn);
 
-        // Approve the router to spend DAI.
+        // Approve the router to spend _tokenIn.
         TransferHelper.safeApprove(_tokenIn, address(swapRouter), _amountIn);
 
         // Multiple pool swaps are encoded through bytes called a `path`. A path is a sequence of token addresses and poolFees that define the pools used in the swaps.
         // The format for pool encoding is (tokenIn, fee, tokenOut/tokenIn, fee, tokenOut) where tokenIn/tokenOut parameter is the shared token across the pools.
-        // Since we are swapping DAI to _tokenIntermediary and then _tokenIntermediary to WETH9 the path encoding is (DAI, 0.3%, USDC, 0.3%, WETH9).
+        // Since we are swapping _tokenIn to _tokenIntermediary and then _tokenIntermediary to WETH9 the path encoding is (_tokenIn, 0.3%, USDC, 0.3%, WETH9).
         ISwapRouter.ExactInputParams memory params =
             ISwapRouter.ExactInputParams({
                 path: abi.encodePacked(_tokenIn, uint24(_poolFee), _tokenIntermediary, uint24(100), _tokenOut),
@@ -130,7 +130,7 @@ contract SwapExamples {
     }
 
     /// @notice swapExactOutputMultihop swaps a minimum possible amount of WETH for a fixed amount of USDC
-    /// swap WETH --> USDC --> DAI
+    /// swap WETH --> USDC --> _tokenIn
     function swapExactOutputMultihop(uint256 amountOut, uint256 amountInMaximum)
         external
         returns (uint256 amountIn)
