@@ -36,6 +36,7 @@ describe("SwapExactOutputMultihop:", function () {
     
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
+    const POOL_FEE = 3000;
     const AMOUNT_IN_MAX = 10n ** 18n
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
 
@@ -58,7 +59,13 @@ describe("SwapExactOutputMultihop:", function () {
     console.log(indent1 + "BEFORE TOKEN_IN           ~", TOKEN_IN_NAME, "balance:", beforeTokenInBalanceOf);
     console.log(indent1 + "BEFORE TOKEN_INTERMEDIARY ~", TOKEN_INTERMEDIARY_NAME, "balance:", beforeTokenIntermediaryBalanceOf);
     console.log(indent1 + "BEFORE TOKEN_OUT          ~", TOKEN_OUT_NAME, " balance:", beforeTokenOutBalanceOf);
-    await swapExamples.swapExactOutputMultihop(TOKEN_AMOUNT_OUT, wethAmountInMax);
+    await swapExamples.swapExactOutputMultihop(
+      TOKEN_IN,
+      TOKEN_INTERMEDIARY,
+      TOKEN_OUT,
+      POOL_FEE,
+      TOKEN_AMOUNT_OUT, 
+      AMOUNT_IN_MAX);
     let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
     let afterTokenIntermediaryBalanceOf = await tokenIntermediaryContract.balanceOf(accounts[0].address);
     let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
