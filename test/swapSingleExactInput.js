@@ -23,12 +23,22 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
   }
 
   async function swapExactInputSingle(
+    _tokenIn,
+    _tokenOut,
+    _poolFee,
+    _amountIn,
+    _amountOutMinimum,
+    _sqrtPriceLimitX96) {
+      await swapExamples.swapExactInputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMinimum, _sqrtPriceLimitX96);
+    }
+
+    async function logSwapExactInputSingle(
     _tokenInName,
     _tokenOutName,
     _tokenIn,
     _tokenOut,
-    _amountIn,
     _poolFee,
+    _amountIn,
     _amountOutMinimum,
     _sqrtPriceLimitX96) {
 
@@ -39,7 +49,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
         
       // Swap Exact Input Single
-      await swapExamples.swapExactInputSingle(_tokenIn, _tokenOut, _amountIn, _poolFee, _amountOutMinimum, _sqrtPriceLimitX96);
+      await swapExactInputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMinimum, _sqrtPriceLimitX96);
       
       let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
       let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
@@ -49,7 +59,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
       console.log(indent + "DIFFERENCE       ~", _tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
       console.log(indent + "DIFFERENCE       ~", _tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
-
   }
 
   // Test - swapExactInputSingleTest
@@ -79,7 +88,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
     await tokenInContract.connect(accounts[0]).approve(swapExamples.address, AMOUNT_IN);
 
-    await swapExactInputSingle(TOKEN_IN_NAME, TOKEN_OUT_NAME, TOKEN_IN, TOKEN_OUT, AMOUNT_IN, POOL_FEE, AMOUNT_OUT_MINIMUM, SQRT_ROOT_PRICE_LIMIT_X96);
+    await logSwapExactInputSingle(TOKEN_IN_NAME, TOKEN_OUT_NAME, TOKEN_IN, TOKEN_OUT, POOL_FEE, AMOUNT_IN, AMOUNT_OUT_MINIMUM, SQRT_ROOT_PRICE_LIMIT_X96);
 
   }).timeout(100000);
 });

@@ -20,8 +20,8 @@ contract SwapExamples {
      /// @notice Swaps a fixed amount of _tokenIn for a maximum possible amount of _tokenOut
     function swapExactInputSingle(address _tokenIn,
                                   address _tokenOut,
-                                  uint256 _amountIn,
                                   uint24  _poolFee,
+                                  uint256 _amountIn,
                                   uint256 _amountOutMinimum,
                                   uint160 _sqrtPriceLimitX96) external returns (uint256 amountOut) {
         // msg.sender must approve this contract

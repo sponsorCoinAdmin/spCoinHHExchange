@@ -39,6 +39,45 @@ describe("SwapExactOutputSingle:", function () {
     await swapExamples.deployed();
   }
 
+  async function swapExactOutputSingle(
+    _tokenIn,
+    _tokenOut,
+    _amountIn,
+    _poolFee,
+    _amountOutMinimum,
+    _sqrtPriceLimitX96) {
+      await swapExamples.swapExactOutputSingle(_tokenIn, _tokenOut, _amountIn, _poolFee, _amountOutMinimum, _sqrtPriceLimitX96);
+    }
+      
+    async function logSwapExactOutputSingle(
+    _tokenInName,
+    _tokenOutName,
+    _tokenIn,
+    _tokenOut,
+    _amountIn,
+    _poolFee,
+    _amountOutMinimum,
+    _sqrtPriceLimitX96) {
+
+      let beforeTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
+      let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+
+      console.log(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
+      console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
+        
+      // Swap Exact Input Single
+      await swapExactOutputSingle(_tokenIn, _tokenOut, _amountIn, _poolFee, _amountOutMinimum, _sqrtPriceLimitX96);
+      
+      let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
+      let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+
+      console.log(indent + "AFTER TOKEN_IN   ~", _tokenInName, "balance:", afterTokenInBalanceOf);
+      console.log(indent + "AFTER TOKEN_OUT  ~", _tokenOutName, " balance:", afterTokenOutBalanceOf);
+
+      console.log(indent + "DIFFERENCE       ~", _tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
+      console.log(indent + "DIFFERENCE       ~", _tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
+  }
+
   // Test - swapExactOutputSingle
   it("swapExactOutputSingle", async function () {
 
