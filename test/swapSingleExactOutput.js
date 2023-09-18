@@ -11,11 +11,8 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   let tokenInContract
   let tokenOutContract
   const indent = "  ";
-  const indent2 = indent + indent;
-  const indent3 = indent2 + indent;
 
-  // Before Initialization
-  // Before Initialization
+  // Before Initialization for each test
   before(async () => {
     accounts = await ethers.getSigners(1);
     await deployContract("SwapExamples");
@@ -87,42 +84,27 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
     */
 
-    const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
       
-    const DAI = process.env.GOERLI_DAI;
-    const WETH = process.env.GOERLI_WETH;
-      
-    tokenInContract = await ethers.getContractAt(WETH_ABI, WETH);
-    tokenOutContract = await ethers.getContractAt(ERC20, DAI); 
-  
     const TOKEN_IN_NAME = "WETH";
     const TOKEN_OUT_NAME = "DAI";
-    const AMOUNT_IN = 10n ** 18n;
+    const AMOUNT_IN_MAX = 10n ** 18n;
     const TOKEN_IN = process.env.GOERLI_WETH;
     const TOKEN_OUT = process.env.GOERLI_DAI;
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-    const AMOUNT_IN_MAX = 10n ** 18n;
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
-    let diaBeforeBalance = await tokenOutContract.balanceOf(accounts[0].address);
-
+   
+    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
+  
     // Deposit WETH
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
     await tokenInContract.connect(accounts[0]).approve(swapExamples.address, AMOUNT_IN_MAX);
 
     // Swap
-    /*
-    await swapExamples.swapExactOutputSingle(
-      TOKEN_IN,
-      TOKEN_OUT,
-      POOL_FEE,
-      TOKEN_AMOUNT_OUT,
-      AMOUNT_IN_MAX,
-      SQRT_ROOT_PRICE_LIMIT_X96);
-    */
-
     await logSwapExactOutputSingle(
       TOKEN_IN_NAME,
       TOKEN_OUT_NAME,
@@ -133,7 +115,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       AMOUNT_IN_MAX, 
       SQRT_ROOT_PRICE_LIMIT_X96);
 
-    const diaAfterBalance = await tokenOutContract.balanceOf(accounts[0].address);
   }).timeout(100000);
 
 });

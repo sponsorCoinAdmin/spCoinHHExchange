@@ -2,7 +2,9 @@ require("dotenv").config();
 
 console.log("SwapExactInputSingleTest:");
 
-describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut", function () {
+describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut"
+, function () {
+
 
   let swapExamples
   let accounts
@@ -27,9 +29,9 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     _tokenOut,
     _poolFee,
     _amountIn,
-    _amountOutMinimum,
+    _amountOutMin,
     _sqrtPriceLimitX96) {
-      await swapExamples.swapExactInputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMinimum, _sqrtPriceLimitX96);
+      await swapExamples.swapExactInputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMin, _sqrtPriceLimitX96);
   }
 
   async function logSwapExactInputSingle(
@@ -39,7 +41,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     _tokenOut,
     _poolFee,
     _amountIn,
-    _amountOutMinimum,
+    _amountOutMin,
     _sqrtPriceLimitX96) {
 
       let beforeTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
@@ -49,7 +51,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
         
       // Swap Exact Input Single
-      await swapExactInputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMinimum, _sqrtPriceLimitX96);
+      await swapExactInputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMin, _sqrtPriceLimitX96);
       
       let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
       let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
