@@ -99,24 +99,30 @@ contract SwapExamples {
     }
 
     /// @notice swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of DAI
-    /// swap WETH --> USDC --> DAI
-   function swapExactInputMultihop(uint256 amountIn) external returns (uint256 amountOut) {
+    /// swap _tokenIn --> _tokenIntermediary --> _tokenOut
+   function swapExactInputMultihop(
+                                address _tokenIn,
+                                address _tokenIntermediary,
+                                address _tokenOut,
+                                uint24  _poolFee,
+                                uint256 _amountIn,
+                                uint256 _amountOutMinimum) external returns (uint256 amountOut) {
         // Transfer `amountIn` of DAI to this contract.
-        TransferHelper.safeTransferFrom(WETH9, msg.sender, address(this), amountIn);
+        TransferHelper.safeTransferFrom(_tokenIn, msg.sender, address(this), _amountIn);
 
         // Approve the router to spend DAI.
-        TransferHelper.safeApprove(WETH9, address(swapRouter), amountIn);
+        TransferHelper.safeApprove(_tokenIn, address(swapRouter), _amountIn);
 
         // Multiple pool swaps are encoded through bytes called a `path`. A path is a sequence of token addresses and poolFees that define the pools used in the swaps.
         // The format for pool encoding is (tokenIn, fee, tokenOut/tokenIn, fee, tokenOut) where tokenIn/tokenOut parameter is the shared token across the pools.
-        // Since we are swapping DAI to USDC and then USDC to WETH9 the path encoding is (DAI, 0.3%, USDC, 0.3%, WETH9).
+        // Since we are swapping DAI to _tokenIntermediary and then _tokenIntermediary to WETH9 the path encoding is (DAI, 0.3%, USDC, 0.3%, WETH9).
         ISwapRouter.ExactInputParams memory params =
             ISwapRouter.ExactInputParams({
-                path: abi.encodePacked(WETH9, uint24(3000), USDC, uint24(100), DAI),
+                path: abi.encodePacked(_tokenIn, uint24(_poolFee), _tokenIntermediary, uint24(100), _tokenOut),
                 recipient: msg.sender,
                 deadline: block.timestamp,
-                amountIn: amountIn,
-                amountOutMinimum: 0
+                amountIn: _amountIn,
+                amountOutMinimum: _amountOutMinimum
             });
 
         // Executes the swap.

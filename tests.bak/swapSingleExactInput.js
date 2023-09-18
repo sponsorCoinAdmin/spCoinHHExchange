@@ -31,7 +31,14 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await swapExamples.swapExactInputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMin, _sqrtPriceLimitX96);
+      await swapExamples.swapExactInputSingle(
+        _tokenIn, 
+        _tokenOut, 
+        _poolFee, 
+        _amountIn, 
+        _amountOutMin, 
+        _sqrtPriceLimitX96
+      );
   }
 
   async function logSwapExactInputSingle(
@@ -51,7 +58,14 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
         
       // Swap Exact Input Single
-      await swapExactInputSingle(_tokenIn, _tokenOut, _poolFee, _amountIn, _amountOutMin, _sqrtPriceLimitX96);
+      await swapExactInputSingle(
+        _tokenIn, 
+        _tokenOut,
+        _poolFee,
+        _amountIn,
+        _amountOutMin,
+        _sqrtPriceLimitX96
+      );
       
       let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
       let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
@@ -90,7 +104,15 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
     await tokenInContract.connect(accounts[0]).approve(swapExamples.address, AMOUNT_IN);
 
-    await logSwapExactInputSingle(TOKEN_IN_NAME, TOKEN_OUT_NAME, TOKEN_IN, TOKEN_OUT, POOL_FEE, AMOUNT_IN, AMOUNT_OUT_MINIMUM, SQRT_ROOT_PRICE_LIMIT_X96);
+    await logSwapExactInputSingle(
+      TOKEN_IN_NAME,
+      TOKEN_OUT_NAME,
+      TOKEN_IN,
+      TOKEN_OUT,
+      POOL_FEE,
+      AMOUNT_IN,
+      AMOUNT_OUT_MINIMUM,
+      SQRT_ROOT_PRICE_LIMIT_X96);
 
   }).timeout(100000);
 });

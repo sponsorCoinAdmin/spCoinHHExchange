@@ -1,16 +1,17 @@
 require("dotenv").config();
 
-describe("SwapExactOutputMultihop:", function () {
+console.log("swapExactInputMultihop:");
+
+describe("SwapExactInputMultihop: swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of DAI"
+, function () {
 
   let swapExamples
   let accounts
-  let weth
-  const indent = "  ";
+  let tokenInContract
+  let tokenOutContract
+  let tokenIntermediaryContract
+  const indent  = "  ";
   const indent1 = indent + indent;
-  const indent2 = indent1 + indent;
-  let testNum = 0;
-
-  console.log("SwapExactOutputMultihop:");
 
   // Before Initialization
   before(async () => {
@@ -24,49 +25,38 @@ describe("SwapExactOutputMultihop:", function () {
     await swapExamples.deployed();
   }
 
-  it("swapExactOutputMultihop2", async () => {
+  // Test - swapExactInputMultiHop
+  it("swapExactInputMultihop", async () => {
     
-    /* ALTERNATE METHOD for weth contract assignment
-      weth = await ethers.getContractAt("IWETH", WETH9);
-      dai = await ethers.getContractAt("IERC20", DAI);
-      usdc = await ethers.getContractAt("IERC20", USDC);
+    /* ALTERNATE METHOD for tokenInContract contract assignment
+      tokenInContract = await ethers.getContractAt("IWETH", WETH9);
+      tokenOutContract = await ethers.getContractAt("IERC20", DAI);
+      tokenIntermediaryContract = await ethers.getContractAt("IERC20", USDC);
     */
+
     console.log(indent + "swapExactInputSingleTest => WETH --> USDC --> DAI");
 
     const TOKEN_IN_NAME           = "WETH";
     const TOKEN_INTERMEDIARY_NAME = "USDC";
     const TOKEN_OUT_NAME          = "DAI";
-    
+  
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
     const AMOUNT_IN = 10n ** 18n
-  
+    const AMOUNT_OUT_MINIMUM = 0;
+
     const TOKEN_IN           = process.env.GOERLI_WETH;
     const TOKEN_INTERMEDIARY = process.env.GOERLI_USDC;
     const TOKEN_OUT          = process.env.GOERLI_DAI;
-        
-    const tokenInContract           = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    const tokenIntermediaryContract = await ethers.getContractAt(ERC20, TOKEN_INTERMEDIARY);
-    const tokenOutContract          = await ethers.getContractAt(ERC20, TOKEN_OUT);
+    const POOL_FEE = 3000;
+
+    tokenInContract           = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    tokenIntermediaryContract = await ethers.getContractAt(ERC20, TOKEN_INTERMEDIARY);
+    tokenOutContract          = await ethers.getContractAt(ERC20, TOKEN_OUT);
   
-
-//////////////////////////////////////////////////////////////////////////
-
-
-    const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
-
-    const WETH = process.env.GOERLI_WETH;
-    weth = await ethers.getContractAt(WETH_ABI, WETH);
-
-    let testId = ++testNum;
-    console.log(indent1 + "Test " + testId + " ~ swapExactOutputMultihop...");
-
-    const wethAmountInMax = 10n ** 18n;
-    const diaAmountOut = 100n * 10n ** 18n;
-
     // Deposit WETH
-    await weth.connect(accounts[0]).deposit({ value: wethAmountInMax });
-    await weth.connect(accounts[0]).approve(swapExamples.address, wethAmountInMax);
+    await tokenInContract.deposit({ value: AMOUNT_IN })
+    await tokenInContract.approve(swapExamples.address, AMOUNT_IN)
 
     // Swap
     let beforeTokenInBalanceOf           = await tokenInContract.balanceOf(accounts[0].address);
@@ -75,7 +65,14 @@ describe("SwapExactOutputMultihop:", function () {
     console.log(indent1 + "BEFORE TOKEN_IN           ~", TOKEN_IN_NAME, "balance:", beforeTokenInBalanceOf);
     console.log(indent1 + "BEFORE TOKEN_INTERMEDIARY ~", TOKEN_INTERMEDIARY_NAME, "balance:", beforeTokenIntermediaryBalanceOf);
     console.log(indent1 + "BEFORE TOKEN_OUT          ~", TOKEN_OUT_NAME, " balance:", beforeTokenOutBalanceOf);
-    await swapExamples.swapExactOutputMultihop(diaAmountOut, wethAmountInMax);
+    await swapExamples.swapExactInputMultihop(
+      TOKEN_IN,
+      TOKEN_INTERMEDIARY,
+      TOKEN_OUT,
+      POOL_FEE,
+      AMOUNT_IN,
+      AMOUNT_OUT_MINIMUM
+    )
     let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
     let afterTokenIntermediaryBalanceOf = await tokenIntermediaryContract.balanceOf(accounts[0].address);
     let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
@@ -85,6 +82,6 @@ describe("SwapExactOutputMultihop:", function () {
     console.log(indent1 + "DIFFERENCE                ~", TOKEN_IN_NAME, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
     console.log(indent1 + "DIFFERENCE                ~", TOKEN_INTERMEDIARY_NAME, BigInt(afterTokenIntermediaryBalanceOf)  - BigInt(beforeTokenIntermediaryBalanceOf));
     console.log(indent1 + "DIFFERENCE                ~", TOKEN_OUT_NAME, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
-  }).timeout(100000);
 
+  }).timeout(1000000);
 });
