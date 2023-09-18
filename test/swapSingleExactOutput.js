@@ -2,7 +2,9 @@ require("dotenv").config();
 
 console.log("SwapExactOutputSingle:");
 
-describe("SwapExactOutputSingle:", function () {
+describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of DAI.\n"+
+"    In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap."
+, function () {
 
   let swapExamples
   let accounts
