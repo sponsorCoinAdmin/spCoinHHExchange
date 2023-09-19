@@ -18,8 +18,8 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
   })
 
   async function deployContract(contract) {
-    const SwapExamples = await ethers.getContractFactory(contract);
-    spCoinExchange = await SwapExamples.deploy();
+    const SpCoinExchange = await ethers.getContractFactory(contract);
+    spCoinExchange = await SpCoinExchange.deploy();
     await spCoinExchange.deployed();
   }
 
@@ -78,11 +78,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
   // Test - swapExactInputSingleTest
   it("swapExactInputSingleTest: WETH -> DAI", async function () {
-  
-    /* ALTERNATE METHOD for tokenInContract contract assignment
-      tokenInContract = await ethers.getContractAt("IWETH", WETH9);
-      tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
-    */
 
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
@@ -117,11 +112,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     // Test - swapExactInputSingleTest
   it("swapExactInputSingleTest: WETH -> SPCOIN", async function () {
 
-    /* ALTERNATE METHOD for tokenInContract contract assignment
-      tokenInContract = await ethers.getContractAt("IWETH", WETH9);
-      tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
-    */
-
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
     
@@ -154,12 +144,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
   // Test - swapExactInputSingleTest
   it("swapExactInputSingleTest: SPCOIN -> WETH", async function () {
-
-    /* ALTERNATE METHOD for tokenInContract contract assignment
-      tokenInContract = await ethers.getContractAt("IWETH", WETH9);
-      tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
-    */
-
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
     
@@ -175,7 +159,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
     tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT);
 
-      await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN);
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN);
 
     await logSwapExactInputSingle(
       TOKEN_IN_NAME,
