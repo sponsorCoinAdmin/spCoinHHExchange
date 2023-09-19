@@ -1,7 +1,6 @@
 require("dotenv").config();
 
-
-describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of DAI.\n"+
+describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of WETH.\n"+
 "    In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap."
 , function () {
   console.log("SwapExactOutputSingle:");
@@ -77,7 +76,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   }
 
   // Test - swapExactOutputSingle
-  it("swapExactOutputSingle", async function () {
+  it("swapExactOutputSingle  WETH -> DAI", async function () {
 
     /* ALTERNATE METHOD for tokenInContract contract assignment
       tokenInContract = await ethers.getContractAt("IWETH", WETH9);
@@ -115,6 +114,86 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       AMOUNT_IN_MAX, 
       SQRT_ROOT_PRICE_LIMIT_X96);
 
+  }).timeout(100000);
+
+    // Test - swapExactOutputSingle
+  it("swapExactOutputSingle WETH -> SPCOIN", async function () {
+
+    /* ALTERNATE METHOD for tokenInContract contract assignment
+      tokenInContract = await ethers.getContractAt("IWETH", WETH9);
+      tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
+    */
+
+    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
+      
+    const TOKEN_IN_NAME = "WETH";
+    const TOKEN_OUT_NAME = "SPCOIN";
+    const AMOUNT_IN_MAX = 10n ** 18n;
+    const TOKEN_IN = process.env.GOERLI_WETH;
+    const TOKEN_OUT = process.env.GOERLI_SPCOIN;
+    const POOL_FEE = 3000;
+    const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
+
+    const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
+    
+    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
+  
+    // Deposit WETH
+    await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
+
+    // Swap
+    await logSwapExactOutputSingle(
+      TOKEN_IN_NAME,
+      TOKEN_OUT_NAME,
+      TOKEN_IN,
+      TOKEN_OUT,
+      POOL_FEE,
+      TOKEN_AMOUNT_OUT, 
+      AMOUNT_IN_MAX, 
+      SQRT_ROOT_PRICE_LIMIT_X96);
+  }).timeout(100000);
+
+  it("swapExactOutputSingle SPCOIN -> WETH", async function () {
+
+    /* ALTERNATE METHOD for tokenInContract contract assignment
+      tokenInContract = await ethers.getContractAt("IWETH", WETH9);
+      tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
+    */
+
+    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
+      
+    const TOKEN_IN_NAME = "SPCOIN";
+    const TOKEN_OUT_NAME = "WETH";
+    const AMOUNT_IN_MAX = 10n ** 18n;
+    const TOKEN_IN = process.env.GOERLI_SPCOIN;
+    const TOKEN_OUT = process.env.GOERLI_WETH;
+    const POOL_FEE = 3000;
+    const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
+
+    // const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
+    const TOKEN_AMOUNT_OUT = 1n * 10n ** 12n;
+    
+    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
+  
+    // Deposit WETH
+    // await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
+
+    // Swap
+    await logSwapExactOutputSingle(
+      TOKEN_IN_NAME,
+      TOKEN_OUT_NAME,
+      TOKEN_IN,
+      TOKEN_OUT,
+      POOL_FEE,
+      TOKEN_AMOUNT_OUT, 
+      AMOUNT_IN_MAX, 
+      SQRT_ROOT_PRICE_LIMIT_X96);
   }).timeout(100000);
 
 });
