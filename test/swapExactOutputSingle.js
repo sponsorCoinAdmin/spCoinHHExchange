@@ -168,7 +168,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       
     const TOKEN_IN_NAME = "SPCOIN";
     const TOKEN_OUT_NAME = "WETH";
-    const AMOUNT_IN_MAX = 10n ** 18n;
+    const AMOUNT_IN_MAX = 10n * 10n ** 18n;
     const TOKEN_IN = process.env.GOERLI_SPCOIN;
     const TOKEN_OUT = process.env.GOERLI_WETH;
     const POOL_FEE = 3000;
