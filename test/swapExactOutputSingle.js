@@ -6,7 +6,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 , function () {
   console.log("SwapExactOutputSingle:");
 
-  let swapExamples
+  let spCoinExchange
   let accounts
   let tokenInContract
   let tokenOutContract
@@ -15,13 +15,13 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   // Before Initialization for each test
   before(async () => {
     accounts = await ethers.getSigners(1);
-    await deployContract("SwapExamples");
+    await deployContract("SpCoinExchange");
    })
 
   async function deployContract(contract) {
     const SwapExamples = await ethers.getContractFactory(contract);
-    swapExamples = await SwapExamples.deploy();
-    await swapExamples.deployed();
+    spCoinExchange = await SwapExamples.deploy();
+    await spCoinExchange.deployed();
   }
 
   async function swapExactOutputSingle(
@@ -31,7 +31,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     _amountInMax,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await swapExamples.swapExactOutputSingle(
+      await spCoinExchange.swapExactOutputSingle(
         _tokenIn,
         _tokenOut,
         _poolFee,
@@ -102,7 +102,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   
     // Deposit WETH
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(accounts[0]).approve(swapExamples.address, AMOUNT_IN_MAX);
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
 
     // Swap
     await logSwapExactOutputSingle(
