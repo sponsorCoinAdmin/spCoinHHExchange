@@ -1,13 +1,12 @@
 require("dotenv").config();
 
 describe("SwapExactOutputMultihop:", function () {
+  console.log("SwapExactOutputMultihop:");
 
   let swapExamples
   let accounts
   const indent = "  ";
   const indent1 = indent + indent;
-
-  console.log("SwapExactOutputMultihop:");
 
   // Before Initialization
   before(async () => {

@@ -1,9 +1,9 @@
 require("dotenv").config();
 
-console.log("swapExactInputMultihop:");
 
 describe("SwapExactInputMultihop: swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of DAI"
 , function () {
+  console.log("swapExactInputMultihop:");
 
   let swapExamples
   let accounts

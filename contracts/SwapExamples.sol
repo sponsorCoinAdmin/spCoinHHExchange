@@ -6,18 +6,18 @@ import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 
 contract SwapExamples {
+
+    address internal constant swapRouterDefaultAddress = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
  
-    ISwapRouter public constant swapRouter = 
-                ISwapRouter(0xE592427A0AEce92De3Edee1F18E0157C05861564);
+    ISwapRouter internal swapRouter = 
+                setSwapRouterAddress(swapRouterDefaultAddress); 
 
-    address public constant DAI = 0xdc31Ee1784292379Fbb2964b3B9C4124D8F89C60;
-    address public constant WETH9 = 0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6;
-    address public constant USDC = 0xD87Ba7A50B2E7E660f678A895E4B72E7CB4CCd9C;
+    function setSwapRouterAddress(address swapRouterAddress) public pure returns (ISwapRouter newRouter) {
+        newRouter = ISwapRouter(swapRouterAddress);
+        return newRouter;
+    }
 
-    // For this example, we will set the pool fee to 0.3%.
-    uint24 public constant poolFee = 3000;
-
-     /// @notice Swaps a fixed amount of _tokenIn for a maximum possible amount of _tokenOut
+    /// @notice Swaps a fixed amount of _tokenIn for a maximum possible amount of _tokenOut
     function swapExactInputSingle(address _tokenIn,
                                   address _tokenOut,
                                   uint24  _poolFee,
@@ -61,7 +61,7 @@ contract SwapExamples {
                                 uint160 _sqrtPriceLimitX96) external returns (uint256 amountIn) {
         // Transfer the specified amount of _tokenIn to this contract.
         TransferHelper.safeTransferFrom(
-            WETH9,
+            _tokenIn,
             msg.sender,
             address(this),
             _amountInMaximum
@@ -69,7 +69,7 @@ contract SwapExamples {
 
         // Approve the router to spend the specified `amountInMaximum` of _tokenIn.
         // In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap.
-        TransferHelper.safeApprove(WETH9, address(swapRouter), _amountInMaximum);
+        TransferHelper.safeApprove(_tokenIn, address(swapRouter), _amountInMaximum);
 
         ISwapRouter.ExactOutputSingleParams memory params =
             ISwapRouter.ExactOutputSingleParams({
@@ -89,9 +89,9 @@ contract SwapExamples {
         // For exact output swaps, the amountInMaximum may not have all been spent.
         // If the actual amount spent (amountIn) is less than the specified maximum amount, we must refund the msg.sender and approve the swapRouter to spend 0.
         if (amountIn < _amountInMaximum) {
-            TransferHelper.safeApprove(WETH9, address(swapRouter), 0);
+            TransferHelper.safeApprove(_tokenIn, address(swapRouter), 0);
             TransferHelper.safeTransfer(
-                WETH9,
+                _tokenIn,
                 msg.sender,
                 _amountInMaximum - amountIn
             );
@@ -115,7 +115,7 @@ contract SwapExamples {
 
         // Multiple pool swaps are encoded through bytes called a `path`. A path is a sequence of token addresses and poolFees that define the pools used in the swaps.
         // The format for pool encoding is (tokenIn, fee, tokenOut/tokenIn, fee, tokenOut) where tokenIn/tokenOut parameter is the shared token across the pools.
-        // Since we are swapping _tokenIn to _tokenIntermediary and then _tokenIntermediary to WETH9 the path encoding is (_tokenIn, 0.3%, _tokenIntermediary, 0.3%, WETH9).
+        // Since we are swapping _tokenIn to _tokenIntermediary and then _tokenIntermediary to _tokenIn the path encoding is (_tokenIn, 0.3%, _tokenIntermediary, 0.3%, _tokenIn).
         ISwapRouter.ExactInputParams memory params =
             ISwapRouter.ExactInputParams({
                 path: abi.encodePacked(_tokenIn, uint24(_poolFee), _tokenIntermediary, uint24(100), _tokenOut),
