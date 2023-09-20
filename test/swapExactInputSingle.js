@@ -6,9 +6,9 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
   console.log("SwapExactInputSingleTest:");
 
   let spCoinContract
+  let spCoinExchange
   let accounts
   let tokenInContract
-  let tokenOutContract
   const indent = "    ";
 
   // Before Initialization
@@ -21,24 +21,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     const contractFactory = await ethers.getContractFactory(contract);
     spCoinContract = await contractFactory.deploy();
     await spCoinContract.deployed();
-    spCoinExchange = new SpCoinExchange(spCoinContract, accounts);
-  }
-
-  async function swapExactInputSingle(
-    _tokenIn,
-    _tokenOut,
-    _poolFee,
-    _amountIn,
-    _amountOutMin,
-    _sqrtPriceLimitX96) {
-      await spCoinContract.swapExactInputSingle(
-        _tokenIn, 
-        _tokenOut, 
-        _poolFee, 
-        _amountIn, 
-        _amountOutMin, 
-        _sqrtPriceLimitX96
-      );
+    spCoinExchange = new SpCoinExchange(ethers,spCoinContract, accounts);
   }
 
   async function logSwapExactInputSingle(
@@ -62,7 +45,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
         
       // Swap Exact Input Single
-      await swapExactInputSingle(
+      await spCoinExchange.swapExactInputSingle(
         _tokenIn, 
         _tokenOut,
         _poolFee,

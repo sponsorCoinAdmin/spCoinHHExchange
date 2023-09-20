@@ -1,10 +1,11 @@
 class SpCoinExchange {
-    constructor(spCoinExchangeContract, accounts) {
-        this.spCoinExchangeContract = spCoinExchangeContract;
-        this.accounts = accounts;
-        this.tokenInContract;
-        this.tokenOutContract;
-        this.indent = "    ";
+    constructor(ethers, spCoinExchangeContract, accounts) {
+      this.ethers = ethers,
+      this.spCoinExchangeContract = spCoinExchangeContract;
+      this.accounts = accounts;
+      this.tokenInContract;
+      this.tokenOutContract;
+      this.indent = "    ";
     }
 
     async swapExactInputSingle(
