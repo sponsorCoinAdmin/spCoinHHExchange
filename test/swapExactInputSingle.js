@@ -5,17 +5,13 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 , function () {
     console.log("SwapExactInputSingleTest:");
 
-    let spCoinContract;
     let spCoinExchange;
-    let accounts;
-    const indent = "    ";;
 
     // Before Initialization
     before(async () => {
       let contractName = "SpCoinExchange";
       spCoinExchange = new SpCoinExchange(ethers);
-      spCoinContract = await spCoinExchange.deployContract(contractName);
-      accounts = await ethers.getSigners(0);
+      await spCoinExchange.deploy();
     })
 
       // Test - swapExactInputSingleTest
@@ -36,8 +32,8 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
 
-      await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
-      spCoinExchange.approve(tokenInContract, AMOUNT_IN);
+      await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN);
+      await spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
       await spCoinExchange.logSwapExactInputSingle(
         TOKEN_IN_NAME,
@@ -70,8 +66,8 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-      await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
-      spCoinExchange.approve(tokenInContract, AMOUNT_IN);
+      await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN);
+      await spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
       await spCoinExchange.logSwapExactInputSingle(
         TOKEN_IN_NAME,
@@ -102,7 +98,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-      spCoinExchange.approve(tokenInContract, AMOUNT_IN);
+      await spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
       await spCoinExchange.logSwapExactInputSingle(
         TOKEN_IN_NAME,

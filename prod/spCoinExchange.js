@@ -1,11 +1,9 @@
 class SpCoinExchange {
   constructor(ethers) {
     this.ethers = ethers,
-    this.contractName;
+    this.contractName = "SpCoinExchange";
     this.accounts;
     this.spCoinContract;
-    this.tokenInContract;
-    this.tokenOutContract;
     this.indent = "    ";
   }
 
@@ -26,8 +24,8 @@ class SpCoinExchange {
       );
   }
 
-  async deployContract(contractName) {
-    this.contractName = contractName;
+  async deploy() {
+    let contractName = this.contractName;
     let ethers = this.ethers;
     this.accounts = await ethers.getSigners(1);
     const contractFactory = await ethers.getContractFactory(contractName);
@@ -38,10 +36,19 @@ class SpCoinExchange {
 
   // Approve a specified account to spend a specified amount of a specific token. As follows:
   // Approve msg.sender (account[0]) to allow spCoinContract to spend _amount in _token(s).
-  async approve(_token, _amount) {
+  async approve(_tokenContract, _amount) {
     let account = this.accounts[0];
     let spenderAddress = this.spCoinContract.address;
-    return await _token.connect(account).approve(spenderAddress, _amount);
+    return await _tokenContract.connect(account).approve(spenderAddress, _amount);
+  }
+
+  // Approve a specified account to spend a specified amount of a specific token. As follows:
+  // Approve msg.sender (account[0]) to allow spCoinContract to spend _amount in _token(s).
+  async depositEthToWeth(tokenInContract, _ethAmount) {
+    let account = this.accounts[0];
+    await tokenInContract.connect(this.accounts[0]).deposit({ value: _ethAmount });
+
+    // return await _wethContract.connect(account).deposit({ value: _ethAmount });
   }
 
   async logSwapExactInputSingle (
