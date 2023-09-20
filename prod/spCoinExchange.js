@@ -1,6 +1,7 @@
 class SpCoinExchange {
-  constructor(ethers, spCoinExchangeContract, accounts) {
+  constructor(ethers, contractName, spCoinExchangeContract, accounts) {
     this.ethers = ethers,
+    this.contractName = contractName;
     this.spCoinExchangeContract = spCoinExchangeContract;
     this.accounts = accounts;
     this.spCoinContract;
