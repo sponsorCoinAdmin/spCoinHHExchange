@@ -6,7 +6,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
   console.log("SwapExactInputSingleTest:");
 
   let spCoinContract
-  let spCoinExchange
   let accounts
   let tokenInContract
   let tokenOutContract
@@ -54,6 +53,8 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     _amountOutMin,
     _sqrtPriceLimitX96) {
 
+      let tokenOutContract = await ethers.getContractAt(_tokenOutABI, _tokenOut);
+
       let beforeTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
       let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
 
@@ -96,7 +97,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT);
 
     // Deposit TOKEN_IN
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
@@ -131,7 +131,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT);
 
     // Deposit TOKEN_IN
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
@@ -165,7 +164,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT);
 
     await tokenInContract.connect(accounts[0]).approve(spCoinContract.address, AMOUNT_IN);
 
