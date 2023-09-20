@@ -5,30 +5,20 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 , function () {
     console.log("SwapExactInputSingleTest:");
 
-    let spCoinContract
-    let spCoinExchange
-    let accounts
-    const indent = "    ";
+    let spCoinContract;
+    let spCoinExchange;
+    let accounts;
+    const indent = "    ";;
 
     // Before Initialization
     before(async () => {
       let contractName = "SpCoinExchange";
       spCoinExchange = new SpCoinExchange(ethers);
-      spCoinContract = await deployContract(contractName);
-      spCoinExchange.setFields(spCoinContract, accounts)
-      // spCoinContract = await deployContract(contractName);
-      // spCoinContract = await spCoinExchange.deployContract(contractName);
+      spCoinContract = await spCoinExchange.deployContract(contractName);
+      accounts = await ethers.getSigners(0);
     })
 
-    async function deployContract(contract) {
-      accounts = await ethers.getSigners(1);
-      const contractFactory = await ethers.getContractFactory(contract);
-      spCoinContract = await contractFactory.deploy();
-      await spCoinContract.deployed();
-      return spCoinContract;
-    }
-
-    // Test - swapExactInputSingleTest
+      // Test - swapExactInputSingleTest
     it("swapExactInputSingleTest: WETH -> DAI", async function () {
 
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
@@ -43,11 +33,11 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const AMOUNT_OUT_MINIMUM = 0;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
+      // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
 
-      // Deposit TOKEN_IN
       await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
-      await tokenInContract.connect(accounts[0]).approve(spCoinContract.address, AMOUNT_IN);
+      spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
       await spCoinExchange.logSwapExactInputSingle(
         TOKEN_IN_NAME,
@@ -81,7 +71,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
       await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
-      await tokenInContract.connect(accounts[0]).approve(spCoinContract.address, AMOUNT_IN);
+      spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
       await spCoinExchange.logSwapExactInputSingle(
         TOKEN_IN_NAME,
@@ -112,7 +102,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-      await tokenInContract.connect(accounts[0]).approve(spCoinContract.address, AMOUNT_IN);
+      spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
       await spCoinExchange.logSwapExactInputSingle(
         TOKEN_IN_NAME,

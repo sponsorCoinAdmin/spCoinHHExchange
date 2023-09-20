@@ -26,11 +26,6 @@ class SpCoinExchange {
       );
   }
 
-  setFields(spCoinContract, accounts) {
-    this.spCoinContract = spCoinContract;
-    this.accounts = accounts;
-  }
-
   async deployContract(contractName) {
     this.contractName = contractName;
     let ethers = this.ethers;
@@ -39,6 +34,14 @@ class SpCoinExchange {
     this.spCoinContract = await contractFactory.deploy();
     await this.spCoinContract.deployed();
     return this.spCoinContract;
+  }
+
+  // Approve a specified account to spend a specified amount of a specific token. As follows:
+  // Approve msg.sender (account[0]) to allow spCoinContract to spend _amount in _token(s).
+  async approve(_token, _amount) {
+    let account = this.accounts[0];
+    let spenderAddress = this.spCoinContract.address;
+    return await _token.connect(account).approve(spenderAddress, _amount);
   }
 
   async logSwapExactInputSingle (
