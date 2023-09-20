@@ -13,14 +13,14 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     // Before Initialization
     before(async () => {
       let contractName = "SpCoinExchange";
-      spCoinContract = await deployContract(ethers, contractName);
-      spCoinExchange = new SpCoinExchange(ethers, contractName, accounts);
-      spCoinExchange.setSpCoinContract(spCoinContract)
-      // spCoinContract = await deployContract(ethers, contractName);
+      spCoinExchange = new SpCoinExchange(ethers);
+      spCoinContract = await deployContract(contractName);
+      spCoinExchange.setFields(spCoinContract, accounts)
+      // spCoinContract = await deployContract(contractName);
       // spCoinContract = await spCoinExchange.deployContract(contractName);
     })
 
-    async function deployContract(ethers, contract) {
+    async function deployContract(contract) {
       accounts = await ethers.getSigners(1);
       const contractFactory = await ethers.getContractFactory(contract);
       spCoinContract = await contractFactory.deploy();
