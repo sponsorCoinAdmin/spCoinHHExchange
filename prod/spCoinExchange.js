@@ -1,8 +1,7 @@
 class SpCoinExchange {
-  constructor(ethers, contractName, spCoinExchangeContract, accounts) {
+  constructor(ethers, contractName, accounts) {
     this.ethers = ethers,
     this.contractName = contractName;
-    this.spCoinExchangeContract = spCoinExchangeContract;
     this.accounts = accounts;
     this.spCoinContract;
     this.tokenInContract;
@@ -17,7 +16,7 @@ class SpCoinExchange {
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await this.spCoinExchangeContract.swapExactInputSingle(
+      await this.spCoinContract.swapExactInputSingle(
         _tokenIn, 
         _tokenOut, 
         _poolFee, 
@@ -27,11 +26,16 @@ class SpCoinExchange {
       );
   }
 
+  setSpCoinContract(spCoinContract) {
+    this.spCoinContract = spCoinContract;
+  }
+
   async deployContract(contract) {
-    this.accounts = await ethers.getSigners(1);
+    this.accounts = await this.ethers.getSigners(1);
     const contractFactory = await ethers.getContractFactory(contract);
     this.spCoinContract = await contractFactory.deploy();
-    await spCoinContract.deployed();
+    await this.spCoinContract.deployed();
+    return this.spCoinContract;
   }
 
   async logSwapExactInputSingle (
