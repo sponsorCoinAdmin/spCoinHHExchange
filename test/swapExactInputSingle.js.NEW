@@ -1,11 +1,10 @@
 require("dotenv").config();
-const { SpCoinExchange } = require("../prod/spCoinExchange");
+
 
 describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut"
 , function () {
   console.log("SwapExactInputSingleTest:");
 
-  let spCoinContract
   let spCoinExchange
   let accounts
   let tokenInContract
@@ -19,10 +18,9 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
   })
 
   async function deployContract(contract) {
-    const contractFactory = await ethers.getContractFactory(contract);
-    spCoinContract = await contractFactory.deploy();
-    await spCoinContract.deployed();
-    spCoinExchange = new SpCoinExchange(spCoinContract, accounts);
+    const SpCoinExchange = await ethers.getContractFactory(contract);
+    spCoinExchange = await SpCoinExchange.deploy();
+    await spCoinExchange.deployed();
   }
 
   async function swapExactInputSingle(
@@ -32,7 +30,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await spCoinContract.swapExactInputSingle(
+      await spCoinExchange.swapExactInputSingle(
         _tokenIn, 
         _tokenOut, 
         _poolFee, 
@@ -98,17 +96,31 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
     // Deposit TOKEN_IN
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
-    await tokenInContract.connect(accounts[0]).approve(spCoinContract.address, AMOUNT_IN);
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN);
 
-    await logSwapExactInputSingle(
-      TOKEN_IN_NAME,
-      TOKEN_OUT_NAME,
+    let beforeTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
+    let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+
+    console.log(indent + "BEFORE TOKEN_IN  ~", TOKEN_IN_NAME, "balance:", beforeTokenInBalanceOf);
+    console.log(indent + "BEFORE TOKEN_OUT ~", TOKEN_OUT_NAME, " balance:", beforeTokenOutBalanceOf);
+
+    await swapExactInputSingle(
       TOKEN_IN,
       TOKEN_OUT,
       POOL_FEE,
       AMOUNT_IN,
       AMOUNT_OUT_MINIMUM,
-      SQRT_ROOT_PRICE_LIMIT_X96);
+      SQRT_ROOT_PRICE_LIMIT_X96
+    );
+
+    let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
+    let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+
+    console.log(indent + "AFTER TOKEN_IN   ~", TOKEN_IN_NAME, "balance:", afterTokenInBalanceOf);
+    console.log(indent + "AFTER TOKEN_OUT  ~", TOKEN_OUT_NAME, " balance:", afterTokenOutBalanceOf);
+
+    console.log(indent + "DIFFERENCE       ~", TOKEN_IN_NAME, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
+    console.log(indent + "DIFFERENCE       ~", TOKEN_OUT_NAME, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
   }).timeout(100000);
 
     // Test - swapExactInputSingleTest
@@ -131,17 +143,31 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
     // Deposit TOKEN_IN
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN });
-    await tokenInContract.connect(accounts[0]).approve(spCoinContract.address, AMOUNT_IN);
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN);
 
-    await logSwapExactInputSingle(
-      TOKEN_IN_NAME,
-      TOKEN_OUT_NAME,
+    let beforeTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
+    let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+    console.log(indent + "BEFORE TOKEN_IN  ~", TOKEN_IN_NAME, "balance:", beforeTokenInBalanceOf);
+    console.log(indent + "BEFORE TOKEN_OUT ~", TOKEN_OUT_NAME, " balance:", beforeTokenOutBalanceOf);
+
+    await swapExactInputSingle(
       TOKEN_IN,
       TOKEN_OUT,
       POOL_FEE,
       AMOUNT_IN,
       AMOUNT_OUT_MINIMUM,
-      SQRT_ROOT_PRICE_LIMIT_X96);
+      SQRT_ROOT_PRICE_LIMIT_X96
+    );
+
+    let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
+    let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+
+    console.log(indent + "AFTER TOKEN_IN   ~", TOKEN_IN_NAME, "balance:", afterTokenInBalanceOf);
+    console.log(indent + "AFTER TOKEN_OUT  ~", TOKEN_OUT_NAME, " balance:", afterTokenOutBalanceOf);
+
+    console.log(indent + "DIFFERENCE       ~", TOKEN_IN_NAME, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
+    console.log(indent + "DIFFERENCE       ~", TOKEN_OUT_NAME, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
+
   }).timeout(100000);
 
   // Test - swapExactInputSingleTest
@@ -161,16 +187,34 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
     tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT);
 
-    await tokenInContract.connect(accounts[0]).approve(spCoinContract.address, AMOUNT_IN);
 
-    await logSwapExactInputSingle(
-      TOKEN_IN_NAME,
-      TOKEN_OUT_NAME,
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN);
+
+
+    let beforeTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
+    let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+    console.log(indent + "BEFORE TOKEN_IN  ~", TOKEN_IN_NAME, "balance:", beforeTokenInBalanceOf);
+    console.log(indent + "BEFORE TOKEN_OUT ~", TOKEN_OUT_NAME, " balance:", beforeTokenOutBalanceOf);
+
+    await swapExactInputSingle(
       TOKEN_IN,
       TOKEN_OUT,
       POOL_FEE,
       AMOUNT_IN,
       AMOUNT_OUT_MINIMUM,
       SQRT_ROOT_PRICE_LIMIT_X96);
-  }).timeout(100000);  
+
+      let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
+      let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+  
+      console.log(indent + "AFTER TOKEN_IN   ~", TOKEN_IN_NAME, "balance:", afterTokenInBalanceOf);
+      console.log(indent + "AFTER TOKEN_OUT  ~", TOKEN_OUT_NAME, " balance:", afterTokenOutBalanceOf);
+  
+      console.log(indent + "DIFFERENCE       ~", TOKEN_IN_NAME, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
+      console.log(indent + "DIFFERENCE       ~", TOKEN_OUT_NAME, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
+  
+  
+  }).timeout(100000);
+
+
 });
