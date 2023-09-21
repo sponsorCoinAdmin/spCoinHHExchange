@@ -3,7 +3,7 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
 class SpCoinExchange {
   constructor(ethers) {
-    this.swapExactInputSingle = new SwapExactInputSingle(ethers);
+    this.swapEIS = new SwapExactInputSingle(ethers);
     this.ethers = ethers,
     this.contractName = "SpCoinExchange";
     this.accounts;
@@ -18,13 +18,13 @@ class SpCoinExchange {
     this.spCoinContract = await contractFactory.deploy();
     await this.spCoinContract.deployed();
 
-    this.swapExactInputSingle.init(this.spCoinContract, this.accounts);
+    this.swapEIS.init(this.spCoinContract, this.accounts);
     return this.spCoinContract;
   }
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
-      await this.swapExactInputSingle.depositEthToWeth(tokenInContract, _ethAmount);
+      await this.swapEIS.depositEthToWeth(tokenInContract, _ethAmount);
   }
 
  // Approve a specified account to spend a specified amount of a specific token. As follows:
@@ -36,7 +36,7 @@ class SpCoinExchange {
     return await _tokenContract.connect(account).approve(spenderAddress, _amount);
   }
 
-  async logSwapExactInputSingle (
+  async swapExactInputSingle (
     _tokenInName,
     _tokenOutName,
     _tokenIn,
@@ -47,7 +47,7 @@ class SpCoinExchange {
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await this.swapExactInputSingle.swapExactInputSingle (
+      await this.swapEIS.swapExactInputSingle (
         _tokenInName,
         _tokenOutName,
         _tokenIn,

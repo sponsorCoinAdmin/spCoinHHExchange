@@ -36,7 +36,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN);
       await spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
-      await spCoinExchange.logSwapExactInputSingle(
+      await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_NAME,
         TOKEN_OUT_NAME,
         TOKEN_IN,
@@ -71,7 +71,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN);
       await spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
-      await spCoinExchange.logSwapExactInputSingle(
+      await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_NAME,
         TOKEN_OUT_NAME,
         TOKEN_IN,
@@ -104,7 +104,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
       await spCoinExchange.approve(tokenInContract, AMOUNT_IN);
 
-      await spCoinExchange.logSwapExactInputSingle(
+      await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_NAME,
         TOKEN_OUT_NAME,
         TOKEN_IN,
