@@ -9,7 +9,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
     // Before Initialization
     before(async () => {
-      let contractName = "SpCoinExchange";
       spCoinExchange = new SpCoinExchange(ethers);
       await spCoinExchange.deploy();
       spCoinExchange.setConsoleLoggingOn();

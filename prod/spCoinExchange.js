@@ -17,6 +17,7 @@ consoleLogLineChar = (length, lineChar) => {
   consoleLog(line);
 } 
 
+
 class SpCoinExchange {
   constructor(ethers) {
     this.ethers = ethers,
@@ -34,23 +35,6 @@ class SpCoinExchange {
     this.spCoinContract = await contractFactory.deploy();
     await this.spCoinContract.deployed();
     return this.spCoinContract;
-  }
-
-  async swapExactInputSingle(
-    _tokenIn,
-    _tokenOut,
-    _poolFee,
-    _amountIn,
-    _amountOutMin,
-    _sqrtPriceLimitX96 ) {
-      await this.spCoinContract.swapExactInputSingle(
-        _tokenIn, 
-        _tokenOut, 
-        _poolFee, 
-        _amountIn, 
-        _amountOutMin, 
-        _sqrtPriceLimitX96
-      );
   }
 
   // Deposit a specified account of ETH to WETH
@@ -83,6 +67,23 @@ class SpCoinExchange {
   logHeader(headerStr) {
     consoleLogLine(100);
     consoleLog(headerStr);
+  }
+
+  async swapExactInputSingle(
+    _tokenIn,
+    _tokenOut,
+    _poolFee,
+    _amountIn,
+    _amountOutMin,
+    _sqrtPriceLimitX96 ) {
+      await this.spCoinContract.swapExactInputSingle(
+        _tokenIn, 
+        _tokenOut, 
+        _poolFee, 
+        _amountIn, 
+        _amountOutMin, 
+        _sqrtPriceLimitX96
+      );
   }
 
   async logSwapExactInputSingle (
