@@ -28,23 +28,6 @@ class SwapExactInputSingle {
     // return await _wethContract.connect(account).deposit({ value: _ethAmount });
   }
 
-   async swapExactInputSingle(
-    _tokenIn,
-    _tokenOut,
-    _poolFee,
-    _amountIn,
-    _amountOutMin,
-    _sqrtPriceLimitX96 ) {
-      await this.spCoinContract.swapExactInputSingle(
-        _tokenIn, 
-        _tokenOut, 
-        _poolFee, 
-        _amountIn, 
-        _amountOutMin, 
-        _sqrtPriceLimitX96
-      );
-  }
-
   async logSwapExactInputSingle (
     _tokenInName,
     _tokenOutName,
@@ -72,7 +55,7 @@ class SwapExactInputSingle {
       consoleLog(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
         
       // Swap Exact Input Single
-      await this.swapExactInputSingle(
+      await this.spCoinExchangeMin.swapExactInputSingle(
         _tokenIn, 
         _tokenOut,
         _poolFee,
