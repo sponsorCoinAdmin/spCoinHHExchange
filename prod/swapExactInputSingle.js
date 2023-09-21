@@ -17,7 +17,7 @@ consoleLogLineChar = (length, lineChar) => {
   consoleLog(line);
 } 
 
-class SwapExactSingle {
+class SwapExactInputSingle {
   constructor(ethers) {
     this.ethers = ethers,
     this.contractName = "SpCoinExchange";
@@ -133,5 +133,5 @@ class SwapExactSingle {
 }
 
 module.exports = {
-  SwapExactSingle
+  SwapExactInputSingle
 };

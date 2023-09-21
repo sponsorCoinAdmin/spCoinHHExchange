@@ -1,8 +1,8 @@
-const { SwapExactSingle } = require("./swapExactSingle");
+const { SwapExactInputSingle } = require("./swapExactInputSingle");
 
 class SpCoinExchange {
   constructor(ethers) {
-    this.swapExactSingle = new SwapExactSingle(ethers);
+    this.swapExactInputSingle = new SwapExactInputSingle(ethers);
     this.ethers = ethers,
     this.contractName = "SpCoinExchange";
     this.accounts;
@@ -18,7 +18,7 @@ class SpCoinExchange {
     this.spCoinContract = await contractFactory.deploy();
     await this.spCoinContract.deployed();
 
-    await this.swapExactSingle.deploy();
+    await this.swapExactInputSingle.deploy();
     return this.spCoinContract;
   }
 
@@ -27,23 +27,23 @@ class SpCoinExchange {
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
-      await this.swapExactSingle.depositEthToWeth(tokenInContract, _ethAmount);
+      await this.swapExactInputSingle.depositEthToWeth(tokenInContract, _ethAmount);
   }
 
   async approve(_tokenContract, _amount) {
-    return await this.swapExactSingle.approve(_tokenContract, _amount);
+    return await this.swapExactInputSingle.approve(_tokenContract, _amount);
   }
 
   setConsoleLoggingOn() {
-    this.swapExactSingle.setConsoleLoggingOn();
+    this.swapExactInputSingle.setConsoleLoggingOn();
   }
 
   setConsoleLoggingOff() {
-    this.swapExactSingle.setConsoleLoggingOff();
+    this.swapExactInputSingle.setConsoleLoggingOff();
   }
 
   logHeader(headerStr) {
-    this.swapExactSingle.logHeader(headerStr);
+    this.swapExactInputSingle.logHeader(headerStr);
   }
 
   async swapExactInputSingle(
@@ -53,7 +53,7 @@ class SpCoinExchange {
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96 ) {
-      await this.swapExactSingle.swapExactInputSingle(
+      await this.swapExactInputSingle.swapExactInputSingle(
         _tokenIn,
         _tokenOut,
         _poolFee,
@@ -73,7 +73,7 @@ class SpCoinExchange {
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await this.swapExactSingle.logSwapExactInputSingle (
+      await this.swapExactInputSingle.logSwapExactInputSingle (
         _tokenInName,
         _tokenOutName,
         _tokenIn,
