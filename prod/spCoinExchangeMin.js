@@ -1,3 +1,4 @@
+const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
 class SpCoinExchangeMin {
   constructor(ethers) {
@@ -11,14 +12,20 @@ class SpCoinExchangeMin {
   async deploy() {
     let contractName = this.contractName;
     let ethers = this.ethers;
-console.log("contractName:",contractName);
+consoleLog("contractName:",contractName);
     this.accounts = await ethers.getSigners(1);
     const contractFactory = await ethers.getContractFactory(contractName);
     this.spCoinContract = await contractFactory.deploy();
     await this.spCoinContract.deployed();
-console.log("this.spCoinContract.address:",this.spCoinContract.address);
+consoleLog("this.spCoinContract.address:",this.spCoinContract.address);
     return this.spCoinContract;
   }
+
+  init(spCoinContract, accounts ) {
+    this.spCoinContract = spCoinContract;
+    this.accounts = accounts;
+ }
+
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
@@ -34,9 +41,6 @@ console.log("this.spCoinContract.address:",this.spCoinContract.address);
   async approve(_tokenContract, _amount) {
     let account = this.accounts[0];
     let spenderAddress = this.spCoinContract.address;
-    console.log("_amount",_amount);
-    console.log("spenderAddress",spenderAddress);
-    console.log("_tokenContract",_tokenContract);
     return await _tokenContract.connect(account).approve(spenderAddress, _amount);
   }
 

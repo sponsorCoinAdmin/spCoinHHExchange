@@ -1,24 +1,9 @@
-consoleLogging = false;
-
-consoleLog = (...parms) => {
-  if (consoleLogging)
-     console.log(parms.join(' '));
-} 
-
-consoleLogLine = (length) => {
-  consoleLogLineChar(length, "=");
-} 
-
-consoleLogLineChar = (length, lineChar) => {
-  line = "";
-  for(var i=0; i < length; i++){
-    line += lineChar;
-  }
-  consoleLog(line);
-} 
+const { spCoinLogger } = require("./lib/logger/spCoinLogger.js");
+const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
 
 class SwapExactInputSingle {
   constructor(ethers) {
+    this.spCoinExchangeMin = new SpCoinExchangeMin(ethers);
     this.ethers = ethers,
     this.contractName = "SpCoinExchange";
     this.accounts;
@@ -29,6 +14,8 @@ class SwapExactInputSingle {
   init(spCoinContract, accounts ) {
      this.spCoinContract = spCoinContract;
      this.accounts = accounts;
+     this.spCoinExchangeMin.init(this.spCoinContract, this.accounts);
+
   }
 
   // Deposit a specified account of ETH to WETH
@@ -41,29 +28,7 @@ class SwapExactInputSingle {
     // return await _wethContract.connect(account).deposit({ value: _ethAmount });
   }
 
-  // Approve a specified account to spend a specified amount of a specific token. As follows:
-  // Approve msg.sender (account[0]) to allow spCoinContract to spend _amount in _token(s).
-  async approve(_tokenContract, _amount) {
-    consoleLog("approve( "+_amount+" )")
-    let account = this.accounts[0];
-    let spenderAddress = this.spCoinContract.address;
-    return await _tokenContract.connect(account).approve(spenderAddress, _amount);
-  }
-
-  setConsoleLoggingOn() {
-    consoleLogging = true;
-  }
-
-  setConsoleLoggingOff() {
-    consoleLogging = false;
-  }
-
-  logHeader(headerStr) {
-    consoleLogLine(100);
-    consoleLog(headerStr);
-  }
-
-  async swapExactInputSingle(
+   async swapExactInputSingle(
     _tokenIn,
     _tokenOut,
     _poolFee,

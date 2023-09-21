@@ -11,7 +11,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     before(async () => {
       spCoinExchange = new SpCoinExchange(ethers);
       await spCoinExchange.deploy();
-      spCoinExchange.setConsoleLoggingOn();
+      setConsoleLoggingOn();
     })
 
       // Test - swapExactInputSingleTest
@@ -28,7 +28,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const AMOUNT_OUT_MINIMUM = 0;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-      spCoinExchange.logHeader("swapExactInputSingleTest: WETH -> DAI")
+      logHeader("swapExactInputSingleTest: WETH -> DAI")
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
@@ -55,7 +55,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
-      spCoinExchange.logHeader("swapExactInputSingleTest: WETH -> SPCOIN")
+      logHeader("swapExactInputSingleTest: WETH -> SPCOIN")
 
       const TOKEN_IN_NAME = "WETH";
       const TOKEN_OUT_NAME = "SPCOIN";
@@ -98,7 +98,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const AMOUNT_OUT_MINIMUM = 0;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-      spCoinExchange.logHeader("swapExactInputSingleTest: SPCOIN -> WETH")
+      logHeader("swapExactInputSingleTest: SPCOIN -> WETH")
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);

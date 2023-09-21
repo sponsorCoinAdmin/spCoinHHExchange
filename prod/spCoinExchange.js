@@ -1,4 +1,5 @@
 const { SwapExactInputSingle } = require("./swapExactInputSingle");
+const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
 class SpCoinExchange {
   constructor(ethers) {
@@ -7,7 +8,6 @@ class SpCoinExchange {
     this.contractName = "SpCoinExchange";
     this.accounts;
     this.spCoinContract;
-    this.indent = "    ";
   }
 
   async deploy() {
@@ -22,28 +22,18 @@ class SpCoinExchange {
     return this.spCoinContract;
   }
 
-
-
-
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
       await this.swapExactInputSingle.depositEthToWeth(tokenInContract, _ethAmount);
   }
 
+ // Approve a specified account to spend a specified amount of a specific token. As follows:
+  // Approve msg.sender (account[0]) to allow spCoinContract to spend _amount in _token(s).
   async approve(_tokenContract, _amount) {
-    return await this.swapExactInputSingle.approve(_tokenContract, _amount);
-  }
-
-  setConsoleLoggingOn() {
-    this.swapExactInputSingle.setConsoleLoggingOn();
-  }
-
-  setConsoleLoggingOff() {
-    this.swapExactInputSingle.setConsoleLoggingOff();
-  }
-
-  logHeader(headerStr) {
-    this.swapExactInputSingle.logHeader(headerStr);
+    consoleLog("approve( "+_amount+" )")
+    let account = this.accounts[0];
+    let spenderAddress = this.spCoinContract.address;
+    return await _tokenContract.connect(account).approve(spenderAddress, _amount);
   }
 
   async swapExactInputSingle(
