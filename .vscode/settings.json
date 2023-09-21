@@ -3,6 +3,7 @@
         "abicoder",
         "IERC",
         "IWETH",
+        "parms",
         "SEPOLIA"
     ]
 }

@@ -12,11 +12,11 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       let contractName = "SpCoinExchange";
       spCoinExchange = new SpCoinExchange(ethers);
       await spCoinExchange.deploy();
+      spCoinExchange.setConsoleLoggingOn();
     })
 
       // Test - swapExactInputSingleTest
     it("swapExactInputSingleTest: WETH -> DAI", async function () {
-
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
@@ -28,6 +28,8 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const POOL_FEE = 3000;
       const AMOUNT_OUT_MINIMUM = 0;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
+
+      spCoinExchange.logHeader("swapExactInputSingleTest: WETH -> DAI")
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
@@ -54,6 +56,8 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
+      spCoinExchange.logHeader("swapExactInputSingleTest: WETH -> SPCOIN")
+
       const TOKEN_IN_NAME = "WETH";
       const TOKEN_OUT_NAME = "SPCOIN";
       const AMOUNT_IN = 10n ** 18n;
@@ -62,7 +66,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const POOL_FEE = 3000;
       const AMOUNT_OUT_MINIMUM = 0;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
-
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
@@ -95,6 +98,8 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const POOL_FEE = 3000;
       const AMOUNT_OUT_MINIMUM = 0;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
+
+      spCoinExchange.logHeader("swapExactInputSingleTest: SPCOIN -> WETH")
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
