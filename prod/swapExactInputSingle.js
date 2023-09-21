@@ -26,14 +26,9 @@ class SwapExactInputSingle {
     this.indent = "    ";
   }
 
-  async deploy() {
-    let contractName = this.contractName;
-    let ethers = this.ethers;
-    this.accounts = await ethers.getSigners(1);
-    const contractFactory = await ethers.getContractFactory(contractName);
-    this.spCoinContract = await contractFactory.deploy();
-    await this.spCoinContract.deployed();
-    return this.spCoinContract;
+  init(spCoinContract, accounts ) {
+     this.spCoinContract = spCoinContract;
+     this.accounts = accounts;
   }
 
   // Deposit a specified account of ETH to WETH

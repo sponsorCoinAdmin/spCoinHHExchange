@@ -18,7 +18,7 @@ class SpCoinExchange {
     this.spCoinContract = await contractFactory.deploy();
     await this.spCoinContract.deployed();
 
-    await this.swapExactInputSingle.deploy();
+    this.swapExactInputSingle.init(this.spCoinContract, this.accounts);
     return this.spCoinContract;
   }
 
