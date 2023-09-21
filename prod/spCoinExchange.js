@@ -36,22 +36,6 @@ class SpCoinExchange {
     return await _tokenContract.connect(account).approve(spenderAddress, _amount);
   }
 
-  async swapExactInputSingle(
-    _tokenIn,
-    _tokenOut,
-    _poolFee,
-    _amountIn,
-    _amountOutMin,
-    _sqrtPriceLimitX96 ) {
-      await this.swapExactInputSingle.swapExactInputSingle(
-        _tokenIn,
-        _tokenOut,
-        _poolFee,
-        _amountIn,
-        _amountOutMin,
-        _sqrtPriceLimitX96 );
-    }
-
   async logSwapExactInputSingle (
     _tokenInName,
     _tokenOutName,
@@ -63,7 +47,7 @@ class SpCoinExchange {
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await this.swapExactInputSingle.logSwapExactInputSingle (
+      await this.swapExactInputSingle.swapExactInputSingle (
         _tokenInName,
         _tokenOutName,
         _tokenIn,

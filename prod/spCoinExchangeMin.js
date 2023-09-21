@@ -29,11 +29,8 @@ consoleLog("this.spCoinContract.address:",this.spCoinContract.address);
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
-
     let account = this.accounts[0];
     await tokenInContract.connect(this.accounts[0]).deposit({ value: _ethAmount });
-
-    // return await _wethContract.connect(account).deposit({ value: _ethAmount });
   }
 
   // Approve a specified account to spend a specified amount of a specific token. As follows:

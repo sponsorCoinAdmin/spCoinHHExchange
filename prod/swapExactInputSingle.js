@@ -21,14 +21,10 @@ class SwapExactInputSingle {
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
     consoleLog("depositEthToWeth( "+_ethAmount+" )")
-
-    let account = this.accounts[0];
-    await tokenInContract.connect(this.accounts[0]).deposit({ value: _ethAmount });
-
-    // return await _wethContract.connect(account).deposit({ value: _ethAmount });
+    this.spCoinExchangeMin.depositEthToWeth(tokenInContract, _ethAmount);
   }
 
-  async logSwapExactInputSingle (
+  async swapExactInputSingle (
     _tokenInName,
     _tokenOutName,
     _tokenIn,
