@@ -8,36 +8,33 @@ class SpCoinExchange {
     this.spCoinExchangeMin = new SpCoinExchangeMin();
     this.contractName = "SpCoinExchange";
     this.accounts;
+    this.signerAccount;
     this.spCoinExchangeContract;
   }
 
   async deploy() {
     let contractName = this.contractName;
     this.accounts = await ethers.getSigners(1);
+    this.signerAccount = this.accounts[0]
     const contractFactory = await ethers.getContractFactory(contractName);
     this.spCoinExchangeContract = await contractFactory.deploy();
     await this.spCoinExchangeContract.deployed();
 
-    this.swapEIS.init(this.spCoinExchangeContract, this.accounts);
+    this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
     this.spCoinExchangeMin.init(this.spCoinExchangeContract);
     return this.spCoinExchangeContract;
   }
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
-    let account = this.accounts[0];
-    await this.spCoinExchangeMin.depositEthToWeth(account, tokenInContract, _ethAmount);
+    await this.spCoinExchangeMin.depositEthToWeth(this.signerAccount, tokenInContract, _ethAmount);
   }
 
   // Approve a specified account to spend a specified token of a specific amount token. As follows:
   // Approve msg.sender (account[0]) to allow spCoinExchangeContract to spend _amount in _token(s).
   async approve(_tokenContract, _amount) {
     consoleLog("approve( "+_amount+" )")
-    let account = this.accounts[0];
-    let spenderAddress = this.spCoinExchangeContract.address;
-    await this.spCoinExchangeMin.approve(account, _tokenContract, _amount);
- 
-    // return await _tokenContract.connect(account).approve(spenderAddress, _amount);
+    await this.spCoinExchangeMin.approve(this.signerAccount, _tokenContract, _amount);
   }
 
   async swapExactInputSingle (

@@ -10,16 +10,16 @@ class SwapExactInputSingle {
     this.indent = "    ";
   }
 
-  init(_spCoinExchangeContract, _accounts ) {
+  init(_spCoinExchangeContract, _signerAccount ) {
      this.spCoinExchangeContract = _spCoinExchangeContract;
-     this.signerAccount = _accounts[0];
+     this.signerAccount = _signerAccount;
      this.spCoinExchangeMin.init( this.spCoinExchangeContract );
   }
 
   // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(_account, _tokenInContract, _ethAmount) {
+  async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount) {
     consoleLog("depositEthToWeth( "+_ethAmount+" )")
-    this.spCoinExchangeMin.depositEthToWeth(_account, _tokenInContract, _ethAmount);
+    this.spCoinExchangeMin.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
   }
 
   async swapExactInputSingle (
