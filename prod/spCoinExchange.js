@@ -4,7 +4,6 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 class SpCoinExchange {
   constructor(ethers) {
     this.swapEIS = new SwapExactInputSingle(ethers);
-    this.ethers = ethers,
     this.contractName = "SpCoinExchange";
     this.accounts;
     this.spCoinContract;
@@ -12,7 +11,6 @@ class SpCoinExchange {
 
   async deploy() {
     let contractName = this.contractName;
-    let ethers = this.ethers;
     this.accounts = await ethers.getSigners(1);
     const contractFactory = await ethers.getContractFactory(contractName);
     this.spCoinContract = await contractFactory.deploy();

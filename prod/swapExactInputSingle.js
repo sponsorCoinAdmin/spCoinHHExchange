@@ -4,7 +4,6 @@ const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
 class SwapExactInputSingle {
   constructor(ethers) {
     this.spCoinExchangeMin = new SpCoinExchangeMin(ethers);
-    this.ethers = ethers,
     this.contractName = "SpCoinExchange";
     this.accounts;
     this.spCoinContract;
@@ -15,7 +14,6 @@ class SwapExactInputSingle {
      this.spCoinContract = spCoinContract;
      this.accounts = accounts;
      this.spCoinExchangeMin.init(this.spCoinContract, this.accounts);
-
   }
 
   // Deposit a specified account of ETH to WETH

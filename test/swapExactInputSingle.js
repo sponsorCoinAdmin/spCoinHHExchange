@@ -55,7 +55,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
-      logHeader("swapExactInputSingleTest: WETH -> SPCOIN")
 
       const TOKEN_IN_NAME = "WETH";
       const TOKEN_OUT_NAME = "SPCOIN";
@@ -65,6 +64,8 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const POOL_FEE = 3000;
       const AMOUNT_OUT_MINIMUM = 0;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
+      
+      logHeader("swapExactInputSingleTest: WETH -> SPCOIN")
 
       // Deposit TOKEN_IN
       let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
