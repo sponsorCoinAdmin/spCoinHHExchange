@@ -2,8 +2,8 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger.js");
 const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
 
 class SwapExactInputSingle {
-  constructor(ethers) {
-    this.spCoinExchangeMin = new SpCoinExchangeMin(ethers);
+  constructor() {
+    this.spCoinExchangeMin = new SpCoinExchangeMin();
     this.contractName = "SpCoinExchange";
     this.accounts;
     this.spCoinContract;
@@ -17,9 +17,9 @@ class SwapExactInputSingle {
   }
 
   // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(tokenInContract, _ethAmount) {
+  async depositEthToWeth(_account, tokenInContract, _ethAmount) {
     consoleLog("depositEthToWeth( "+_ethAmount+" )")
-    this.spCoinExchangeMin.depositEthToWeth(tokenInContract, _ethAmount);
+    this.spCoinExchangeMin.depositEthToWeth(_account, tokenInContract, _ethAmount);
   }
 
   async swapExactInputSingle (
