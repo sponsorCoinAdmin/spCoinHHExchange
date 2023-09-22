@@ -19,6 +19,7 @@ class SpCoinExchange {
     await this.spCoinExchangeContract.deployed();
 
     this.swapEIS.init(this.spCoinExchangeContract, this.accounts);
+    this.spCoinExchangeMin.init(this.spCoinExchangeContract);
     return this.spCoinExchangeContract;
   }
 
@@ -34,9 +35,9 @@ class SpCoinExchange {
     consoleLog("approve( "+_amount+" )")
     let account = this.accounts[0];
     let spenderAddress = this.spCoinExchangeContract.address;
-    // await this.spCoinExchangeMin.approve(account, _tokenContract, _amount);
+    await this.spCoinExchangeMin.approve(account, _tokenContract, _amount);
  
-    return await _tokenContract.connect(account).approve(spenderAddress, _amount);
+    // return await _tokenContract.connect(account).approve(spenderAddress, _amount);
   }
 
   async swapExactInputSingle (

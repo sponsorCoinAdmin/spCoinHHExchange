@@ -3,13 +3,11 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 class SpCoinExchangeMin {
   constructor() {
     this.contractName = "SpCoinExchange";
-    this.accounts;
     this.spCoinExchangeContract;
   }
 
-  init(spCoinExchangeContract, accounts ) {
-    this.spCoinExchangeContract = spCoinExchangeContract;
-    this.accounts = accounts;
+  init(_spCoinExchangeContract) {
+    this.spCoinExchangeContract = _spCoinExchangeContract;
   }
 
   // Deposit a specified account of ETH to WETH
@@ -21,7 +19,7 @@ class SpCoinExchangeMin {
   // Approve msg.sender (account[0]) to allow spCoinExchangeContract to spend _amount in _token(s).
   async approve(_account, _tokenContract, _amount) {
     let spenderAddress = this.spCoinExchangeContract.address;
-    return await _tokenContract.connect(account).approve(spenderAddress, _amount);
+    return await _tokenContract.connect(_account).approve(spenderAddress, _amount);
   }
 
   async swapExactInputSingle(
