@@ -6,14 +6,14 @@ class SwapExactInputSingle {
     this.spCoinExchangeMin = new SpCoinExchangeMin();
     this.contractName = "SpCoinExchange";
     this.accounts;
-    this.spCoinContract;
+    this.spCoinExchangeContract;
     this.indent = "    ";
   }
 
-  init(spCoinContract, accounts ) {
-     this.spCoinContract = spCoinContract;
+  init(spCoinExchangeContract, accounts ) {
+     this.spCoinExchangeContract = spCoinExchangeContract;
      this.accounts = accounts;
-     this.spCoinExchangeMin.init(this.spCoinContract, this.accounts);
+     this.spCoinExchangeMin.init(this.spCoinExchangeContract, this.accounts);
   }
 
   // Deposit a specified account of ETH to WETH
