@@ -27,7 +27,7 @@ describe("AllSwaps:", function () {
   // Before Initialization
   before(async () => {
     console.log(indent + "before Initializing");
-    accounts = await ethers.getSigners(1);
+    accounts = await ethers.getSigners();
     await deployContract("SwapExamples");
 
     /* ALTERNATE METHOD for weth contract assignment

@@ -29,7 +29,7 @@ class SpCoinExchange {
   async deploy() {
     let contractName = this.contractName;
     let ethers = this.ethers;
-    this.accounts = await ethers.getSigners(1);
+    this.accounts = await ethers.getSigners();
     const contractFactory = await ethers.getContractFactory(contractName);
     this.spCoinExchangeContract = await contractFactory.deploy();
     await this.spCoinExchangeContract.deployed();
