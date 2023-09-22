@@ -23,7 +23,7 @@ describe("SwapExamples:", function () {
   before(async () => {
     console.log(indent + "before Initializing");
 
-    accounts = await ethers.getSigners(1);
+    accounts = await ethers.getSigners();
 
     await deployContract("SwapExamples");
 

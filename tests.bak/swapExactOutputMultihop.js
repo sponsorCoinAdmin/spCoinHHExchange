@@ -10,7 +10,7 @@ describe("SwapExactOutputMultihop:", function () {
 
   // Before Initialization
   before(async () => {
-    accounts = await ethers.getSigners(1);
+    accounts = await ethers.getSigners();
     await deployContract("SwapExamples");
   })
 

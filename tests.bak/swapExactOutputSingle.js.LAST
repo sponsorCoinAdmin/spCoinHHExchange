@@ -13,7 +13,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
   // Before Initialization for each test
   before(async () => {
-    accounts = await ethers.getSigners(1);
+    accounts = await ethers.getSigners();
     await deployContract("SpCoinExchange");
    })
 
