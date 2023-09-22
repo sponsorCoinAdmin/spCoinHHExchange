@@ -54,7 +54,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
-      
 
       const TOKEN_IN_NAME = "WETH";
       const TOKEN_OUT_NAME = "SPCOIN";

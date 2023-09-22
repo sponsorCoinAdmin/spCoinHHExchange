@@ -17,7 +17,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   before(async () => {
     spCoinExchange = new SpCoinExchange(ethers);
     await spCoinExchange.deploy();
-    spCoinExchange.setConsoleLoggingOn();
+    setConsoleLoggingOn();
 
 
     accounts = await ethers.getSigners();
@@ -102,7 +102,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-    spCoinExchange.logHeader("swapExactOutputSingle: WETH -> DAI")
+    logHeader("swapExactOutputSingle: WETH -> DAI")
 
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
     tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
@@ -144,7 +144,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-    spCoinExchange.logHeader("swapExactOutputSingle: WETH -> SPCOIN")
+    logHeader("swapExactOutputSingle: WETH -> SPCOIN")
 
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
     tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
@@ -185,7 +185,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
     // const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
-    spCoinExchange.logHeader("swapExactOutputSingle: SPCOIN -> WETH")
+    logHeader("swapExactOutputSingle: SPCOIN -> WETH")
 
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
     tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
