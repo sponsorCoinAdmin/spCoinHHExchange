@@ -10,8 +10,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   let spCoinExchange;
   let spCoinExchangeContract;
   let accounts;
-  let tokenInContract;
-  let tokenOutContract;
   let spCoinExchangeMin;
   let signer;
   const indent = "  ";
@@ -84,12 +82,12 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
    
-    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
+    let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    let tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
   
     // Deposit WETH
-    await spCoinExchangeMin.depositEthToWeth(signer, tokenInContract, AMOUNT_IN_MAX);
-    await spCoinExchangeMin.approve(signer, tokenInContract, AMOUNT_IN_MAX);
+    await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN_MAX);
+    await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
       
     // Swap
     await swapExactOutputSingle(
@@ -122,10 +120,12 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
     
+    let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    let tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
  
     // Deposit WETH
-    await tokenInContract.connect(signer).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(signer).approve(spCoinExchangeContract.address, AMOUNT_IN_MAX);
+    await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN_MAX);
+    await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
 
     // Swap
     await swapExactOutputSingle(
@@ -162,12 +162,11 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     // const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
     const TOKEN_AMOUNT_OUT = 1n * 10n ** 12n;
     
-    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
+    let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
+    let tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
   
     // Deposit WETH
-    // await tokenInContract.connect(signer).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(signer).approve(spCoinExchangeContract.address, AMOUNT_IN_MAX);
+    await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
 
     // Swap
     await swapExactOutputSingle(
