@@ -48,8 +48,6 @@ async swapExactOutputSingle (
   _amountInMax,
   _amountOutMin,
   _sqrtPriceLimitX96) {
-    consoleLogLineChar(100, "R");
-    consoleLog("BEFORE");
     await this.spCoinExchangeContract.swapExactOutputSingle(
       _tokenIn,
       _tokenOut,
@@ -58,8 +56,6 @@ async swapExactOutputSingle (
       _amountOutMin,
       _sqrtPriceLimitX96
     );
-    consoleLog("AFTER");
-    consoleLogLineChar(100, "S");
   }
 
 }
