@@ -1,15 +1,18 @@
 const { SwapExactInputSingle } = require("./swapExactInputSingle");
+const { SwapExactOutputSingle } = require("./swapExactOutputSingle");
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
 
 class SpCoinExchange {
   constructor() {
     this.swapEIS = new SwapExactInputSingle();
+    this.swapEOS = new SwapExactOutputSingle();
     this.spCoinExchangeMin = new SpCoinExchangeMin();
     this.contractName = "SpCoinExchange";
     this.accounts;
     this.signerAccount;
     this.spCoinExchangeContract;
+    this.indent = "    ";
   }
 
   async deploy() {
@@ -21,6 +24,7 @@ class SpCoinExchange {
     await this.spCoinExchangeContract.deployed();
 
     this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
+    this.swapEOS.init(this.spCoinExchangeContract, this.signerAccount);
     this.spCoinExchangeMin.init(this.spCoinExchangeContract);
     return this.spCoinExchangeContract;
   }
@@ -33,7 +37,6 @@ class SpCoinExchange {
   // Approve a specified account to spend a specified token of a specific amount token. As follows:
   // Approve msg.sender (account[0]) to allow spCoinExchangeContract to spend _amount in _token(s).
   async approve(_tokenContract, _amount) {
-    consoleLog("approve( "+_amount+" )")
     await this.spCoinExchangeMin.approve(this.signerAccount, _tokenContract, _amount);
   }
 
@@ -62,48 +65,30 @@ class SpCoinExchange {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-  
-    async swapExactOutputSingle(
+    async swapExactOutputSingle (
       _tokenInName,
       _tokenOutName,
       _tokenIn,
       _tokenOut,
+      _tokenInABI,
+      _tokenOutABI,
       _poolFee,
       _amountInMax,
       _amountOutMin,
       _sqrtPriceLimitX96) {
-  
-        let beforeTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
-        let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
-  
-        console.log(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
-        console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
-          
-        // Swap Exact Input Single
-        // await swapExactOutputSingle(_tokenIn, _tokenOut, _poolFee, _amountInMax, _amountOutMin, _sqrtPriceLimitX96);
-        await swapExactOutputSingle(
+        await this.swapEOS.swapExactOutputSingle(
+          _tokenInName,
+          _tokenOutName,
           _tokenIn,
           _tokenOut,
+          _tokenInABI,
+          _tokenOutABI,
           _poolFee,
           _amountInMax,
           _amountOutMin,
           _sqrtPriceLimitX96);
-    
-        let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
-        let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
-  
-        console.log(indent + "AFTER TOKEN_IN   ~", _tokenInName, "balance:", afterTokenInBalanceOf);
-        console.log(indent + "AFTER TOKEN_OUT  ~", _tokenOutName, " balance:", afterTokenOutBalanceOf);
-  
-        console.log(indent + "DIFFERENCE       ~", _tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
-        console.log(indent + "DIFFERENCE       ~", _tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
-    }
-
+        }
     /////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 }
 

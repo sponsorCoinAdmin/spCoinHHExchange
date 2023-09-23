@@ -1,5 +1,4 @@
 require("dotenv").config();
-const { SpCoinExchange } = require("../prod/spCoinExchange");
 
 describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of WETH.\n"+
 "    In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap."
@@ -7,7 +6,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   console.log("SwapExactOutputSingle:");
 
   let spCoinExchange
-  let spCoinExchangeOLD
   let accounts
   let tokenInContract
   let tokenOutContract
@@ -15,19 +13,14 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
   // Before Initialization for each test
   before(async () => {
-    spCoinExchange = new SpCoinExchange(ethers);
-    await spCoinExchange.deploy();
-    setConsoleLoggingOn();
-
-
     accounts = await ethers.getSigners();
     await deployContract("SpCoinExchange");
    })
 
   async function deployContract(contract) {
     const SwapExamples = await ethers.getContractFactory(contract);
-    spCoinExchangeOLD = await SwapExamples.deploy();
-    await spCoinExchangeOLD.deployed();
+    spCoinExchange = await SwapExamples.deploy();
+    await spCoinExchange.deployed();
   }
 
   async function swapExactOutputSingle(
@@ -37,7 +30,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     _amountInMax,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await spCoinExchangeOLD.swapExactOutputSingle(
+      await spCoinExchange.swapExactOutputSingle(
         _tokenIn,
         _tokenOut,
         _poolFee,
@@ -96,20 +89,19 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const TOKEN_IN_NAME = "WETH";
     const TOKEN_OUT_NAME = "DAI";
     const AMOUNT_IN_MAX = 10n ** 18n;
-    const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
     const TOKEN_IN = process.env.GOERLI_WETH;
     const TOKEN_OUT = process.env.GOERLI_DAI;
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-    logHeader("swapExactOutputSingle: WETH -> DAI")
-
+    const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
+   
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
     tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
   
     // Deposit WETH
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(accounts[0]).approve(spCoinExchangeOLD.address, AMOUNT_IN_MAX);
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
 
     // Swap
     await logSwapExactOutputSingle(
@@ -138,20 +130,19 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const TOKEN_IN_NAME = "WETH";
     const TOKEN_OUT_NAME = "SPCOIN";
     const AMOUNT_IN_MAX = 10n ** 18n;
-    const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
     const TOKEN_IN = process.env.GOERLI_WETH;
     const TOKEN_OUT = process.env.GOERLI_SPCOIN;
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
-    logHeader("swapExactOutputSingle: WETH -> SPCOIN")
-
+    const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
+    
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
     tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
   
     // Deposit WETH
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(accounts[0]).approve(spCoinExchangeOLD.address, AMOUNT_IN_MAX);
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
 
     // Swap
     await logSwapExactOutputSingle(
@@ -180,19 +171,18 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const AMOUNT_IN_MAX = 10n * 10n ** 18n;
     const TOKEN_IN = process.env.GOERLI_SPCOIN;
     const TOKEN_OUT = process.env.GOERLI_WETH;
-    const TOKEN_AMOUNT_OUT = 1n * 10n ** 12n;
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
     // const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
-    logHeader("swapExactOutputSingle: SPCOIN -> WETH")
-
+    const TOKEN_AMOUNT_OUT = 1n * 10n ** 12n;
+    
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
     tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
   
     // Deposit WETH
     // await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(accounts[0]).approve(spCoinExchangeOLD.address, AMOUNT_IN_MAX);
+    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
 
     // Swap
     await logSwapExactOutputSingle(
