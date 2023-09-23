@@ -29,6 +29,9 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   async function deployContract(contract) {
     const SwapExamples = await ethers.getContractFactory(contract);
     spCoinExchange = await SwapExamples.deploy();
+    spCoinExchangeMin.init(spCoinExchange);
+    // spCoinExchangeMin.init(spCoinExchangeContract);
+
     await spCoinExchange.deployed();
   }
 
