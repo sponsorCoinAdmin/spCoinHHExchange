@@ -29,46 +29,25 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
    })
 
   async function swapExactOutputSingle(
-    _tokenIn,
-    _tokenOut,
-    _poolFee,
-    _amountInMax,
-    _amountOutMin,
-    _sqrtPriceLimitX96) {
-      await spCoinExchangeContract.swapExactOutputSingle(
-        _tokenIn,
-        _tokenOut,
-        _poolFee,
-        _amountInMax,
-        _amountOutMin,
-        _sqrtPriceLimitX96);
-  }
-
-  async function logSwapExactOutputSingle(
     _tokenInName,
     _tokenOutName,
     _tokenIn,
     _tokenOut,
+    _tokenInABI,
+    _tokenOutABI,
     _poolFee,
     _amountInMax,
     _amountOutMin,
     _sqrtPriceLimitX96) {
+
+      let tokenInContract = await ethers.getContractAt(_tokenInABI, _tokenIn);
+      let tokenOutContract = await ethers.getContractAt(_tokenOutABI, _tokenOut); 
 
       let beforeTokenInBalanceOf = await tokenInContract.balanceOf(signer.address);
       let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(signer.address);
 
       console.log(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
       console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
-        
-      // Swap Exact Ouput Single
-      // await swapExactOutputSingle(_tokenIn, _tokenOut, _poolFee, _amountInMax, _amountOutMin, _sqrtPriceLimitX96);
-      // await swapExactOutputSingle(
-      //   _tokenIn,
-      //   _tokenOut,
-      //   _poolFee,
-      //   _amountInMax,
-      //   _amountOutMin,
-      //   _sqrtPriceLimitX96);
 
       // Swap
       await spCoinExchangeMin.swapExactOutputSingle(
@@ -109,19 +88,17 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
   
     // Deposit WETH
-    // await tokenInContract.connect(signer).deposit({ value: AMOUNT_IN_MAX });
-    // await tokenInContract.connect(signer).approve(spCoinExchangeContract.address, AMOUNT_IN_MAX);
     await spCoinExchangeMin.depositEthToWeth(signer, tokenInContract, AMOUNT_IN_MAX);
     await spCoinExchangeMin.approve(signer, tokenInContract, AMOUNT_IN_MAX);
-
-
       
     // Swap
-    await logSwapExactOutputSingle(
+    await swapExactOutputSingle(
       TOKEN_IN_NAME,
       TOKEN_OUT_NAME,
       TOKEN_IN,
       TOKEN_OUT,
+      TOKEN_IN_ABI,
+      TOKEN_OUT_ABI,
       POOL_FEE,
       TOKEN_AMOUNT_OUT, 
       AMOUNT_IN_MAX, 
@@ -145,19 +122,19 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
     
-    tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
-  
+ 
     // Deposit WETH
     await tokenInContract.connect(signer).deposit({ value: AMOUNT_IN_MAX });
     await tokenInContract.connect(signer).approve(spCoinExchangeContract.address, AMOUNT_IN_MAX);
 
     // Swap
-    await logSwapExactOutputSingle(
+    await swapExactOutputSingle(
       TOKEN_IN_NAME,
       TOKEN_OUT_NAME,
       TOKEN_IN,
       TOKEN_OUT,
+      TOKEN_IN_ABI,
+      TOKEN_OUT_ABI,
       POOL_FEE,
       TOKEN_AMOUNT_OUT, 
       AMOUNT_IN_MAX, 
@@ -193,11 +170,13 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     await tokenInContract.connect(signer).approve(spCoinExchangeContract.address, AMOUNT_IN_MAX);
 
     // Swap
-    await logSwapExactOutputSingle(
+    await swapExactOutputSingle(
       TOKEN_IN_NAME,
       TOKEN_OUT_NAME,
       TOKEN_IN,
       TOKEN_OUT,
+      TOKEN_IN_ABI,
+      TOKEN_OUT_ABI,
       POOL_FEE,
       TOKEN_AMOUNT_OUT, 
       AMOUNT_IN_MAX, 
