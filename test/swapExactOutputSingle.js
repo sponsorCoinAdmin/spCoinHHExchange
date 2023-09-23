@@ -8,32 +8,25 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   console.log("SwapExactOutputSingle:");
 
   let spCoinExchange;
+  let spCoinExchangeContract;
   let accounts;
   let tokenInContract;
   let tokenOutContract;
   let spCoinExchangeMin;
+  let signer;
   const indent = "  ";
 
   // Before Initialization for each test
   before(async () => {
     spCoinExchange = new SpCoinExchange();
-    await spCoinExchange.deploy();
+    spCoinExchangeContract = await spCoinExchange.deploy();
     setConsoleLoggingOn();
     spCoinExchangeMin = new SpCoinExchangeMin();
-
+    spCoinExchangeMin.init(spCoinExchangeContract);
     
     accounts = await ethers.getSigners();
-    await deployContract("SpCoinExchange");
+    signer = accounts[0];
    })
-
-  async function deployContract(contract) {
-    const SwapExamples = await ethers.getContractFactory(contract);
-    spCoinExchange = await SwapExamples.deploy();
-    spCoinExchangeMin.init(spCoinExchange);
-    // spCoinExchangeMin.init(spCoinExchangeContract);
-
-    await spCoinExchange.deployed();
-  }
 
   async function swapExactOutputSingle(
     _tokenIn,
@@ -42,7 +35,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     _amountInMax,
     _amountOutMin,
     _sqrtPriceLimitX96) {
-      await spCoinExchange.swapExactOutputSingle(
+      await spCoinExchangeContract.swapExactOutputSingle(
         _tokenIn,
         _tokenOut,
         _poolFee,
@@ -61,8 +54,8 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     _amountOutMin,
     _sqrtPriceLimitX96) {
 
-      let beforeTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
-      let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+      let beforeTokenInBalanceOf = await tokenInContract.balanceOf(signer.address);
+      let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(signer.address);
 
       console.log(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
       console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
@@ -77,8 +70,8 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
         _amountOutMin,
         _sqrtPriceLimitX96);
   
-      let afterTokenInBalanceOf = await tokenInContract.balanceOf(accounts[0].address);
-      let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(accounts[0].address);
+      let afterTokenInBalanceOf = await tokenInContract.balanceOf(signer.address);
+      let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(signer.address);
 
       console.log(indent + "AFTER TOKEN_IN   ~", _tokenInName, "balance:", afterTokenInBalanceOf);
       console.log(indent + "AFTER TOKEN_OUT  ~", _tokenOutName, " balance:", afterTokenOutBalanceOf);
@@ -90,13 +83,8 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   // Test - swapExactOutputSingle
   it("swapExactOutputSingle  WETH -> DAI", async function () {
 
-    /* ALTERNATE METHOD for tokenInContract contract assignment
-      tokenInContract = await ethers.getContractAt("IWETH", WETH9);
-      tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
-    */
-
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
-    const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
+    const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
     const TOKEN_IN_NAME = "WETH";
     const TOKEN_OUT_NAME = "DAI";
@@ -109,11 +97,13 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
    
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
+    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
   
     // Deposit WETH
-    await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
+    // await tokenInContract.connect(signer).deposit({ value: AMOUNT_IN_MAX });
+    // await tokenInContract.connect(signer).approve(spCoinExchangeContract.address, AMOUNT_IN_MAX);
+    await spCoinExchangeMin.depositEthToWeth(signer, tokenInContract, AMOUNT_IN_MAX);
+    await spCoinExchangeMin.approve(signer, tokenInContract, AMOUNT_IN_MAX);
 
     // Swap
     await logSwapExactOutputSingle(
@@ -131,13 +121,8 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     // Test - swapExactOutputSingle
   it("swapExactOutputSingle WETH -> SPCOIN", async function () {
 
-    /* ALTERNATE METHOD for tokenInContract contract assignment
-      tokenInContract = await ethers.getContractAt("IWETH", WETH9);
-      tokenOutContract = await ethers.getContractAt("IERC20", TOKEN_OUT);
-    */
-
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
-    const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
+    const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
     const TOKEN_IN_NAME = "WETH";
     const TOKEN_OUT_NAME = "SPCOIN";
@@ -150,11 +135,11 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const TOKEN_AMOUNT_OUT = 100n * 10n ** 18n;
     
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
+    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
   
     // Deposit WETH
-    await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
+    await tokenInContract.connect(signer).deposit({ value: AMOUNT_IN_MAX });
+    await tokenInContract.connect(signer).approve(spCoinExchangeContract.address, AMOUNT_IN_MAX);
 
     // Swap
     await logSwapExactOutputSingle(
@@ -176,7 +161,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     */
 
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
-    const ERC20 = require('../contracts/interfaces/ERC20_ABI.json')
+    const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
     const TOKEN_IN_NAME = "SPCOIN";
     const TOKEN_OUT_NAME = "WETH";
@@ -190,11 +175,11 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const TOKEN_AMOUNT_OUT = 1n * 10n ** 12n;
     
     tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    tokenOutContract = await ethers.getContractAt(ERC20, TOKEN_OUT); 
+    tokenOutContract = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT); 
   
     // Deposit WETH
-    // await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
-    await tokenInContract.connect(accounts[0]).approve(spCoinExchange.address, AMOUNT_IN_MAX);
+    // await tokenInContract.connect(signer).deposit({ value: AMOUNT_IN_MAX });
+    await tokenInContract.connect(signer).approve(spCoinExchangeContract.address, AMOUNT_IN_MAX);
 
     // Swap
     await logSwapExactOutputSingle(

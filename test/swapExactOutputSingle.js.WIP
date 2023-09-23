@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { SpCoinExchange } = require("../prod/spCoinExchange");
-const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
+// const { SpCoinExchangeMin } = require("../prod/spCoinExchangeMin");
 
 describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of WETH.\n"+
 "    In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap."
@@ -43,7 +43,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     // Deposit WETH
     // await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
     // await tokenInContract.connect(accounts[0]).approve(spCoinExchangeOLD.address, AMOUNT_IN_MAX);
-
     await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN_MAX);
     await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
 
