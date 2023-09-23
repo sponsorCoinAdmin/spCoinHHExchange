@@ -11,17 +11,17 @@ class SpCoinExchangeMin {
   }
 
   // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(_account, tokenInContract, _ethAmount) {
-    // consoleLog("EXECUTING: depositEthToWeth( _account = " + _account.address + "_amount = " + _amount +" )");
-    await tokenInContract.connect(_account).deposit({ value: _ethAmount });
+  async depositEthToWeth(_signerAccount, tokenInContract, _ethAmount) {
+    consoleLog("EXECUTING: depositEthToWeth( _signerAccount = " + _signerAccount.address + " _ethAmount = " + _ethAmount +" )");
+    await tokenInContract.connect(_signerAccount).deposit({ value: _ethAmount });
   }
 
   // Approve a specified account to spend a specified token of a specific amount token. As follows:
   // Approve msg.sender (account[0]) to allow spCoinExchangeContract to spend _amount in _token(s).
-  async approve(_account, _tokenContract, _amount) {
+  async approve(_signerAccount, _tokenContract, _amount) {
     consoleLog("EXECUTING: approve( _amount = " + _amount + " )")
     let spenderAddress = this.spCoinExchangeContract.address;
-    return await _tokenContract.connect(_account).approve(spenderAddress, _amount);
+    return await _tokenContract.connect(_signerAccount).approve(spenderAddress, _amount);
   }
 
   async swapExactInputSingle(
