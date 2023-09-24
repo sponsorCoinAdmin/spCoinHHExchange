@@ -36,16 +36,22 @@ class SwapExactInputSingle {
     _amountOutMin,
     _sqrtPriceLimitX96) {
 
-      consoleLogLineChar(100, "-");
-      consoleLog("swapExactInputSingle ~",_tokenInName+"( "+_amountIn+" )", "=>",_tokenOutName)
       let signerAccount = this.signerAccount;
       let indent = this.indent;
 
-      let tokenInContract = await ethers.getContractAt(_tokenInABI, _tokenInAddress);
-      let tokenOutContract = await ethers.getContractAt(_tokenOutABI, _tokenOutAddress);
+      let tokenInName = await _tokenInContract.name()
+      let tokenInSymbol = await _tokenInContract.symbol()
+      let tokenInBalanceOf = await _tokenInContract.balanceOf(signerAccount.address)
+      let tokenOutName = await _tokenOutContract.name()
+      let tokenOutSymbol = await _tokenOutContract.symbol()
+      let tokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address)
 
-      let beforeTokenInBalanceOf = await tokenInContract.balanceOf(signerAccount.address);
-      let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(signerAccount.address);
+
+      consoleLogLineChar(100, "-");
+      consoleLog("swapExactInputSingle ~",_tokenInName+"( "+_amountIn+" )", "=>",_tokenOutName)
+
+      let beforeTokenInBalanceOf = await _tokenInContract.balanceOf(signerAccount.address);
+      let beforeTokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address);
 
       consoleLog(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
       consoleLog(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
@@ -60,8 +66,8 @@ class SwapExactInputSingle {
         _sqrtPriceLimitX96
       );
       
-      let afterTokenInBalanceOf = await tokenInContract.balanceOf(signerAccount.address);
-      let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(signerAccount.address);
+      let afterTokenInBalanceOf = await _tokenInContract.balanceOf(signerAccount.address);
+      let afterTokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address);
 
       consoleLog(indent + "AFTER TOKEN_IN   ~", _tokenInName, "balance:", afterTokenInBalanceOf);
       consoleLog(indent + "AFTER TOKEN_OUT  ~", _tokenOutName, " balance:", afterTokenOutBalanceOf);
