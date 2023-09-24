@@ -23,8 +23,8 @@ class SwapExactInputSingle {
   }
 
   async swapExactInputSingle (
-    // _tokenInContract,
-    // _tokenOutContract,
+    _tokenInContract,
+    _tokenOutContract,
     _tokenInABI,
     _tokenOutABI,
     _tokenInName,
