@@ -55,8 +55,8 @@ class SpCoinExchange {
     _tokenOutContract,  
     _tokenInName,
     _tokenOutName,
-    _tokenIn,
-    _tokenOut,
+    _tokenInAddress,
+    _tokenOutAddress,
     _poolFee,
     _amountIn,
     _amountOutMin,
@@ -66,8 +66,8 @@ class SpCoinExchange {
         _tokenOutContract,    
         _tokenInName,
         _tokenOutName,
-        _tokenIn,
-        _tokenOut,
+        _tokenInAddress,
+        _tokenOutAddress,
         _poolFee,
         _amountIn,
         _amountOutMin,
@@ -78,8 +78,8 @@ class SpCoinExchange {
     async swapExactOutputSingle (
       _tokenInName,
       _tokenOutName,
-      _tokenIn,
-      _tokenOut,
+      _tokenInAddress,
+      _tokenOutAddress,
       _tokenInABI,
       _tokenOutABI,
       _poolFee,
@@ -89,8 +89,8 @@ class SpCoinExchange {
         await this.swapEOS.swapExactOutputSingle(
           _tokenInName,
           _tokenOutName,
-          _tokenIn,
-          _tokenOut,
+          _tokenInAddress,
+          _tokenOutAddress,
           _tokenInABI,
           _tokenOutABI,
           _poolFee,
@@ -101,9 +101,9 @@ class SpCoinExchange {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     async swapExactInputMultiHop(
-      _tokenIn,
+      _tokenInAddress,
       _tokenIntermediary,
-      _tokenOut,
+      _tokenOutAddress,
       _tokenInABI,
       _tokenOutABI,
       _poolFee,
@@ -111,9 +111,9 @@ class SpCoinExchange {
       _amountOutMin,
     ) {
       await this.swapEIMH.swapExactInputMultiHop(
-        _tokenIn,
+        _tokenInAddress,
         _tokenIntermediary,
-        _tokenOut,
+        _tokenOutAddress,
         _tokenInABI,
         _tokenOutABI,
         _poolFee,
@@ -124,9 +124,9 @@ class SpCoinExchange {
   
     /////////////////////////////////////////////////////////////////////////////////////////////////
 /*    async swapExactOutputMultiHop(
-      _tokenIn,
+      _tokenInAddress,
       _tokenIntermediary,
-      _tokenOut,
+      _tokenOutAddress,
       _tokenInABI,
       _tokenOutABI,
       _poolFee,
@@ -134,9 +134,9 @@ class SpCoinExchange {
       _amountInMaximum,
     ) {
       await this.swapEOMH.swapExactOutputSingle(
-        _tokenIn,
+        _tokenInAddress,
         _tokenIntermediary,
-        _tokenOut,
+        _tokenOutAddress,
         _tokenInABI,
         _tokenOutABI,
         _poolFee,
