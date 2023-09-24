@@ -58,6 +58,42 @@ async swapExactOutputSingle (
     );
   }
 
+  async swapExactInputMultihop(
+    _tokenIn,
+    _tokenIntermediary,
+    _tokenOut,
+    _poolFee,
+    _amountIn,
+    _amountOutMin,
+  ) {
+    await this.spCoinExchangeContract.swapExactInputMultihop(
+      _tokenIn,
+      _tokenIntermediary,
+      _tokenOut,
+      _poolFee,
+      _amountIn,
+      _amountOutMin,
+      );
+  }
+
+  async swapExactOutputMultihop(
+    _tokenIn,
+    _tokenIntermediary,
+    _tokenOut,
+    _poolFee,
+    _amountOut,
+    _amountInMaximum,
+  ) {
+    await this.spCoinExchangeContract.swapExactOutputSingle(
+      _tokenIn,
+      _tokenIntermediary,
+      _tokenOut,
+      _poolFee,
+      _amountOut,
+      _amountInMaximum,
+    );
+  }
+
 }
 
 module.exports = {
