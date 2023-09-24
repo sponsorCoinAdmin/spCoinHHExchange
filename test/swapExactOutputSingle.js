@@ -25,24 +25,27 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const TOKEN_OUT_NAME = "DAI";
     const AMOUNT_OUT_MIN = 100n * 10n ** 18n;
     const AMOUNT_IN_MAX = 10n ** 18n;
-    const TOKEN_IN = process.env.GOERLI_WETH;
-    const TOKEN_OUT = process.env.GOERLI_DAI;
+    const TOKEN_IN_ADDRESS = process.env.GOERLI_WETH;
+    const TOKEN_OUT_ADDRESS = process.env.GOERLI_DAI;
     const POOL_FEE = 3000;
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
     logHeader("swapExactOutputSingle: WETH -> DAI")
-    let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-  
+    let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+    let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
+
     // Deposit WETH
-    await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN_MAX);
-    await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
+    await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
 
     // Swap
     await spCoinExchange.swapExactOutputSingle(
+      TOKEN_IN_CONTRACT,
+      TOKEN_OUT_CONTRACT,
       TOKEN_IN_NAME,
       TOKEN_OUT_NAME,
-      TOKEN_IN,
-      TOKEN_OUT,
+      TOKEN_IN_ADDRESS,
+      TOKEN_OUT_ADDRESS,
       TOKEN_IN_ABI,
       TOKEN_OUT_ABI,
       POOL_FEE,
@@ -61,25 +64,28 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       const TOKEN_IN_NAME = "WETH";
       const TOKEN_OUT_NAME = "SPCOIN";
       const AMOUNT_IN_MAX = 10n ** 18n;
-      const TOKEN_IN = process.env.GOERLI_WETH;
-      const TOKEN_OUT = process.env.GOERLI_SPCOIN;
+      const TOKEN_IN_ADDRESS = process.env.GOERLI_WETH;
+      const TOKEN_OUT_ADDRESS = process.env.GOERLI_SPCOIN;
       const POOL_FEE = 3000;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
   
       const AMOUNT_OUT_MIN = 100n * 10n ** 18n;
       
-      let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-   
+      let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+      let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
+     
       // Deposit WETH
-      await spCoinExchange.depositEthToWeth(tokenInContract, AMOUNT_IN_MAX);
-      await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
+      await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+      await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
   
       // Swap
       await spCoinExchange.swapExactOutputSingle(
+        TOKEN_IN_CONTRACT,
+        TOKEN_OUT_CONTRACT,
         TOKEN_IN_NAME,
         TOKEN_OUT_NAME,
-        TOKEN_IN,
-        TOKEN_OUT,
+        TOKEN_IN_ADDRESS,
+        TOKEN_OUT_ADDRESS,
         TOKEN_IN_ABI,
         TOKEN_OUT_ABI,
         POOL_FEE,
@@ -96,25 +102,28 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       const TOKEN_IN_NAME = "SPCOIN";
       const TOKEN_OUT_NAME = "WETH";
       const AMOUNT_IN_MAX = 10n * 10n ** 18n;
-      const TOKEN_IN = process.env.GOERLI_SPCOIN;
-      const TOKEN_OUT = process.env.GOERLI_WETH;
+      const TOKEN_IN_ADDRESS = process.env.GOERLI_SPCOIN;
+      const TOKEN_OUT_ADDRESS = process.env.GOERLI_WETH;
       const POOL_FEE = 3000;
       const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
   
       // const AMOUNT_OUT_MIN = 100n * 10n ** 18n;
       const AMOUNT_OUT_MIN = 1n * 10n ** 12n;
       
-      let tokenInContract = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN);
-    
+      let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+      let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
+      
       // Deposit WETH
-      await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
+      await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
   
       // Swap
       await spCoinExchange.swapExactOutputSingle(
+        TOKEN_IN_CONTRACT,
+        TOKEN_OUT_CONTRACT,
         TOKEN_IN_NAME,
         TOKEN_OUT_NAME,
-        TOKEN_IN,
-        TOKEN_OUT,
+        TOKEN_IN_ADDRESS,
+        TOKEN_OUT_ADDRESS,
         TOKEN_IN_ABI,
         TOKEN_OUT_ABI,
         POOL_FEE,
