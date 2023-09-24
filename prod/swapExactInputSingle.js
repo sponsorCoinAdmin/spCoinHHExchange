@@ -25,8 +25,6 @@ class SwapExactInputSingle {
   async swapExactInputSingle (
     _tokenInContract,
     _tokenOutContract,
-    _tokenInABI,
-    _tokenOutABI,
     _tokenInName,
     _tokenOutName,
     _tokenInAddress,
@@ -46,15 +44,17 @@ class SwapExactInputSingle {
       let tokenOutSymbol = await _tokenOutContract.symbol()
       let tokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address)
 
-
       consoleLogLineChar(100, "-");
       consoleLog("swapExactInputSingle ~",_tokenInName+"( "+_amountIn+" )", "=>",_tokenOutName)
 
       let beforeTokenInBalanceOf = await _tokenInContract.balanceOf(signerAccount.address);
       let beforeTokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address);
 
-      consoleLog(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
-      consoleLog(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
+      consoleLog(indent + "BEFORE TOKEN_IN  ~", tokenInName, "balance:", beforeTokenInBalanceOf);
+      consoleLog(indent + "BEFORE TOKEN_OUT ~", tokenOutName, " balance:", beforeTokenOutBalanceOf);
+        
+      consoleLog(indent + "BEFORE TOKEN NAME ~ ", await _tokenInContract.name());
+      consoleLog(indent + "BEFORE TOKEN SYMBOL ~ ", await _tokenInContract.symbol());
         
       // Swap Exact Input Single
       await this.spCoinExchangeMin.swapExactInputSingle(

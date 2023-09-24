@@ -53,8 +53,6 @@ class SpCoinExchange {
     async swapExactInputSingle (
     _tokenInContract,
     _tokenOutContract,  
-    _tokenInABI,
-    _tokenOutABI,
     _tokenInName,
     _tokenOutName,
     _tokenIn,
@@ -66,8 +64,6 @@ class SpCoinExchange {
       await this.swapEIS.swapExactInputSingle (
         _tokenInContract,
         _tokenOutContract,    
-        _tokenInABI,
-        _tokenOutABI,
         _tokenInName,
         _tokenOutName,
         _tokenIn,
