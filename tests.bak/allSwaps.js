@@ -46,10 +46,10 @@ describe("AllSwaps:", function () {
     await swapExamples.deployed();
   }
 
-  // Test - swapExactOutputMultihop
-  it("swapExactOutputMultihop", async () => {
+  // Test - swapExactOutputMultiHop
+  it("swapExactOutputMultiHop", async () => {
     let testId = ++testNum;
-    console.log(indent2 + "Test " + testId + " ~ swapExactOutputMultihop...");
+    console.log(indent2 + "Test " + testId + " ~ swapExactOutputMultiHop...");
 
     const wethAmountInMax = 10n ** 18n;
     const diaAmountOut = 100n * 10n ** 18n;
@@ -60,7 +60,7 @@ describe("AllSwaps:", function () {
     await weth.connect(accounts[0]).approve(swapExamples.address, wethAmountInMax);
 
     // Swap
-    await swapExamples.swapExactOutputMultihop(diaAmountOut, wethAmountInMax);
+    await swapExamples.swapExactOutputMultiHop(diaAmountOut, wethAmountInMax);
 
     const diaAfterBalance = await dai.balanceOf(accounts[0].address);
 
@@ -70,7 +70,7 @@ describe("AllSwaps:", function () {
   }).timeout(100000);;
 
   // Test - swapExactInputMultiHop
-  it("swapExactInputMultihop", async () => {
+  it("swapExactInputMultiHop", async () => {
     let testId = ++testNum;
     console.log(indent2 + "Test " + testId + " ~ swapExactInputMultiHop...");
     const amountIn = 10n ** 18n
@@ -80,7 +80,7 @@ describe("AllSwaps:", function () {
     await weth.approve(swapExamples.address, amountIn)
 
     // Swap
-    await swapExamples.swapExactInputMultihop(amountIn)
+    await swapExamples.swapExactInputMultiHop(amountIn)
 
     console.log(indent3 + "2 Resp " + testNum + " ~ DAI balance", await dai.balanceOf(accounts[0].address));
   }).timeout(1000000);

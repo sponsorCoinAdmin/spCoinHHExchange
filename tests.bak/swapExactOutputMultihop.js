@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-describe("SwapExactOutputMultihop:", function () {
-  console.log("SwapExactOutputMultihop:");
+describe("SwapExactOutputMultiHop:", function () {
+  console.log("SwapExactOutputMultiHop:");
 
   let swapExamples
   let accounts
@@ -20,7 +20,7 @@ describe("SwapExactOutputMultihop:", function () {
     await swapExamples.deployed();
   }
 
-  it("swapExactOutputMultihop2", async () => {
+  it("swapExactOutputMultiHop", async () => {
     
     /* ALTERNATE METHOD for weth contract assignment
       tokenInContract = await ethers.getContractAt("IWETH", WETH9);
@@ -58,7 +58,7 @@ describe("SwapExactOutputMultihop:", function () {
     console.log(indent1 + "BEFORE TOKEN_IN           ~", TOKEN_IN_NAME, "balance:", beforeTokenInBalanceOf);
     console.log(indent1 + "BEFORE TOKEN_INTERMEDIARY ~", TOKEN_INTERMEDIARY_NAME, "balance:", beforeTokenIntermediaryBalanceOf);
     console.log(indent1 + "BEFORE TOKEN_OUT          ~", TOKEN_OUT_NAME, " balance:", beforeTokenOutBalanceOf);
-    await swapExamples.swapExactOutputMultihop(
+    await swapExamples.swapExactOutputMultiHop(
       TOKEN_IN,
       TOKEN_INTERMEDIARY,
       TOKEN_OUT,

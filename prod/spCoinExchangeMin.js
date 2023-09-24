@@ -58,7 +58,7 @@ async swapExactOutputSingle (
     );
   }
 
-  async swapExactInputMultihop(
+  async swapExactInputMultiHop(
     _tokenIn,
     _tokenIntermediary,
     _tokenOut,
@@ -66,7 +66,7 @@ async swapExactOutputSingle (
     _amountIn,
     _amountOutMin,
   ) {
-    await this.spCoinExchangeContract.swapExactInputMultihop(
+    await this.spCoinExchangeContract.swapExactInputMultiHop(
       _tokenIn,
       _tokenIntermediary,
       _tokenOut,
@@ -76,7 +76,7 @@ async swapExactOutputSingle (
       );
   }
 
-  async swapExactOutputMultihop(
+  async swapExactOutputMultiHop(
     _tokenIn,
     _tokenIntermediary,
     _tokenOut,

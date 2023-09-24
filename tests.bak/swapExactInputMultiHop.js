@@ -1,9 +1,9 @@
 require("dotenv").config();
 const { SpCoinExchange } = require("../prod/spCoinExchange");
 
-describe("SwapExactInputMultihop: swapInputMultiplePools swaps a fixed amount of tokenIn for a maximum possible amount of tokenOut"
+describe("SwapExactInputMultiHop: swapInputMultiplePools swaps a fixed amount of tokenIn for a maximum possible amount of tokenOut"
 , function () {
-  console.log("swapExactInputMultihop:");
+  console.log("swapExactInputMultiHop:");
 
 
   let spCoinExchange;
@@ -15,8 +15,8 @@ describe("SwapExactInputMultihop: swapInputMultiplePools swaps a fixed amount of
     setConsoleLoggingOn();
   })
 
-  // Test - SwapExactInputMultihop
-  it("swapExactInputMultihop: WETH --> USDC --> DAI", async () => {
+  // Test - SwapExactInputMultiHop
+  it("swapExactInputMultiHop: WETH --> USDC --> DAI", async () => {
     console.log(indent + "swapExactInputSingleTest => WETH --> USDC --> DAI");
 
     const TOKEN_IN_NAME           = "WETH";
@@ -53,10 +53,13 @@ describe("SwapExactInputMultihop: swapInputMultiplePools swaps a fixed amount of
     console.log(indent1 + "BEFORE TOKEN_IN           ~", TOKEN_IN_NAME, "balance:", beforeTokenInBalanceOf);
     console.log(indent1 + "BEFORE TOKEN_INTERMEDIARY ~", TOKEN_INTERMEDIARY_NAME, "balance:", beforeTokenIntermediaryBalanceOf);
     console.log(indent1 + "BEFORE TOKEN_OUT          ~", TOKEN_OUT_NAME, " balance:", beforeTokenOutBalanceOf);
-    await spCoinExchange.swapExactInputMultihop(
+    await spCoinExchange.swapExactInputMultiHop(
       TOKEN_IN,
       TOKEN_INTERMEDIARY,
       TOKEN_OUT,
+      TOKEN_IN_ABI,
+      TOKEN_INTERMEDIARY_ABI,
+      TOKEN_OUT_ABI,
       POOL_FEE,
       AMOUNT_IN,
       AMOUNT_OUT_MINIMUM

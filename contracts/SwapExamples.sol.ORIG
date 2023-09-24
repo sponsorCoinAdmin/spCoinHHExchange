@@ -87,7 +87,7 @@ contract SwapExamples {
 
     /// @notice swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of DAI
     /// swap WETH --> USDC --> DAI
-   function swapExactInputMultihop(uint256 amountIn) external returns (uint256 amountOut) {
+   function swapExactInputMultiHop(uint256 amountIn) external returns (uint256 amountOut) {
         // Transfer `amountIn` of DAI to this contract.
         TransferHelper.safeTransferFrom(WETH9, msg.sender, address(this), amountIn);
 
@@ -110,9 +110,9 @@ contract SwapExamples {
         amountOut = swapRouter.exactInput(params);
     }
 
-    /// @notice swapExactOutputMultihop swaps a minimum possible amount of WETH for a fixed amount of USDC
+    /// @notice swapExactOutputMultiHop swaps a minimum possible amount of WETH for a fixed amount of USDC
     /// swap WETH --> USDC --> DAI
-    function swapExactOutputMultihop(uint256 amountOut, uint256 amountInMaximum)
+    function swapExactOutputMultiHop(uint256 amountOut, uint256 amountInMaximum)
         external
         returns (uint256 amountIn)
     {

@@ -1,5 +1,9 @@
 const { SwapExactInputSingle } = require("./swapExactInputSingle");
 const { SwapExactOutputSingle } = require("./swapExactOutputSingle");
+
+const { SwapExactInputMultiHop } = require("./swapExactInputMultiHop");
+// const { SwapExactOutputMultiHop } = require("./swapExactOutputMultiHop");
+
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
 
@@ -7,6 +11,8 @@ class SpCoinExchange {
   constructor() {
     this.swapEIS = new SwapExactInputSingle();
     this.swapEOS = new SwapExactOutputSingle();
+    this.swapEIMH = new SwapExactInputMultiHop();
+    // this.swapEOMH = new SwapExactOutputMultiHop();
     this.spCoinExchangeMin = new SpCoinExchangeMin();
     this.contractName = "SpCoinExchange";
     this.accounts;
@@ -25,6 +31,9 @@ class SpCoinExchange {
 
     this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
     this.swapEOS.init(this.spCoinExchangeContract, this.signerAccount);
+    this.swapEIMH.init(this.spCoinExchangeContract, this.signerAccount);
+    // this.swapEOMH.init(this.spCoinExchangeContract, this.signerAccount);
+    
     this.spCoinExchangeMin.init(this.spCoinExchangeContract);
     return this.spCoinExchangeContract;
   }
@@ -40,7 +49,8 @@ class SpCoinExchange {
     await this.spCoinExchangeMin.approve(this.signerAccount, _tokenContract, _amount);
   }
 
-  async swapExactInputSingle (
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    async swapExactInputSingle (
     _tokenInName,
     _tokenOutName,
     _tokenIn,
@@ -88,9 +98,56 @@ class SpCoinExchange {
           _amountOutMin,
           _sqrtPriceLimitX96);
         }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    async swapExactInputMultiHop(
+      _tokenIn,
+      _tokenIntermediary,
+      _tokenOut,
+      _tokenInABI,
+      _tokenOutABI,
+      _poolFee,
+      _amountIn,
+      _amountOutMin,
+    ) {
+      await this.swapEIMH.swapExactInputMultiHop(
+        _tokenIn,
+        _tokenIntermediary,
+        _tokenOut,
+        _tokenInABI,
+        _tokenOutABI,
+        _poolFee,
+        _amountIn,
+        _amountOutMin,
+        );
+    }
+  
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+/*    async swapExactOutputMultiHop(
+      _tokenIn,
+      _tokenIntermediary,
+      _tokenOut,
+      _tokenInABI,
+      _tokenOutABI,
+      _poolFee,
+      _amountOut,
+      _amountInMaximum,
+    ) {
+      await this.swapEOMH.swapExactOutputSingle(
+        _tokenIn,
+        _tokenIntermediary,
+        _tokenOut,
+        _tokenInABI,
+        _tokenOutABI,
+        _poolFee,
+        _amountOut,
+        _amountInMaximum,
+      );
+    }
+    */
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-}
+  }
 
 module.exports = {
   SpCoinExchange

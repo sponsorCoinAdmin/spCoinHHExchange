@@ -43,7 +43,7 @@ describe("SwapExamples:", function () {
   }
 
   // Test - swapExactInputMultiHop
-  it("swapExactInputMultihop", async () => {
+  it("swapExactInputMultiHop", async () => {
     let testId = ++testNum;
     console.log(indent2 + "Test " + testId + " ~ swapExactInputMultiHop...");
     const amountIn = 10n ** 18n
@@ -53,7 +53,7 @@ describe("SwapExamples:", function () {
     await weth.approve(swapExamples.address, amountIn)
 
     // Swap
-    await swapExamples.swapExactInputMultihop(amountIn)
+    await swapExamples.swapExactInputMultiHop(amountIn)
 
     console.log(indent3 + "2 Resp " + testNum + " ~ DAI balance", await dai.balanceOf(accounts[0].address));
   }).timeout(1000000);

@@ -100,7 +100,7 @@ contract SpCoinExchange {
 
     /// @notice swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of _tokenIn
     /// swap _tokenIn --> _tokenIntermediary --> _tokenOut
-   function swapExactInputMultihop(
+   function swapExactInputMultiHop(
                                 address _tokenIn,
                                 address _tokenIntermediary,
                                 address _tokenOut,
@@ -129,9 +129,9 @@ contract SpCoinExchange {
         amountOut = swapRouter.exactInput(params);
     }
 
-    /// @notice swapExactOutputMultihop swaps a minimum possible amount of WETH for a fixed amount of _tokenIntermediary
+    /// @notice swapExactOutputMultiHop swaps a minimum possible amount of WETH for a fixed amount of _tokenIntermediary
     /// swap _tokenIn --> _tokenIntermediary --> _tokenOut
-    function swapExactOutputMultihop(
+    function swapExactOutputMultiHop(
         address _tokenIn,
         address _tokenIntermediary,
         address _tokenOut,
