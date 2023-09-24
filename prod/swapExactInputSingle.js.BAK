@@ -23,31 +23,40 @@ class SwapExactInputSingle {
   }
 
   async swapExactInputSingle (
-    _tokenInABI,
-    _tokenOutABI,
-    _tokenInName,
-    _tokenOutName,
     _tokenInAddress,
     _tokenOutAddress,
+    _tokenInABI,
+    _tokenOutABI,
     _poolFee,
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96) {
 
-      consoleLogLineChar(100, "-");
-      consoleLog("swapExactInputSingle ~",_tokenInName+"( "+_amountIn+" )", "=>",_tokenOutName)
       let signerAccount = this.signerAccount;
       let indent = this.indent;
 
       let tokenInContract = await ethers.getContractAt(_tokenInABI, _tokenInAddress);
       let tokenOutContract = await ethers.getContractAt(_tokenOutABI, _tokenOutAddress);
+      console.log("signerAccount.address",signerAccount.address);
+      let tokenInName = await tokenInContract.name()
+      let tokenInSymbol = await tokenInContract.symbol()
+      let tokenInBalanceOf = await tokenInContract.balanceOf(signerAccount.address)
+      let tokenOutName = await tokenOutContract.name()
+      let tokenOutSymbol = await tokenOutContract.symbol()
+      let tokenOutBalanceOf = await tokenOutContract.balanceOf(signerAccount.address)
 
-      let beforeTokenInBalanceOf = await tokenInContract.balanceOf(signerAccount.address);
-      let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(signerAccount.address);
+      consoleLogLineChar(100, "-");
+      consoleLog("swapExactInputSingle ~",tokenInName+"( "+_amountIn+" )", "=>",tokenOutName)
 
-      consoleLog(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
-      consoleLog(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
+      let beforeTokenInBalanceOf = tokenInBalanceOf;
+      let beforeTokenOutBalanceOf = tokenOutBalanceOf;
+
+      consoleLog(indent + "BEFORE TOKEN_IN  ~", tokenInName, "balance:", beforeTokenInBalanceOf);
+      consoleLog(indent + "BEFORE TOKEN_OUT ~", tokenOutName, " balance:", beforeTokenOutBalanceOf);
         
+      consoleLog(indent + "BEFORE TOKEN NAME ~ ", await tokenInContract.name());
+      consoleLog(indent + "BEFORE TOKEN SYMBOL ~ ", await tokenInContract.symbol());
+      // consoleLog(indent + "BEFORE TOKEN_OUT ~", tokenOutName, " balance:", beforeTokenOutBalanceOf);
       // Swap Exact Input Single
       await this.spCoinExchangeMin.swapExactInputSingle(
         _tokenInAddress, 
@@ -61,11 +70,11 @@ class SwapExactInputSingle {
       let afterTokenInBalanceOf = await tokenInContract.balanceOf(signerAccount.address);
       let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(signerAccount.address);
 
-      consoleLog(indent + "AFTER TOKEN_IN   ~", _tokenInName, "balance:", afterTokenInBalanceOf);
-      consoleLog(indent + "AFTER TOKEN_OUT  ~", _tokenOutName, " balance:", afterTokenOutBalanceOf);
+      consoleLog(indent + "AFTER TOKEN_IN   ~", tokenInName, "balance:", afterTokenInBalanceOf);
+      consoleLog(indent + "AFTER TOKEN_OUT  ~", tokenOutName, " balance:", afterTokenOutBalanceOf);
 
-      consoleLog(indent + "DIFFERENCE       ~", _tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
-      consoleLog(indent + "DIFFERENCE       ~", _tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
+      consoleLog(indent + "DIFFERENCE       ~", tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
+      consoleLog(indent + "DIFFERENCE       ~", tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
   }
 }
 
