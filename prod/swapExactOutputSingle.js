@@ -25,8 +25,6 @@ class SwapExactOutputSingle {
   async swapExactOutputSingle(
     _tokenInContract,
     _tokenOutContract,
-    _tokeninName,
-    _tokenOutName,
     _tokenIn,
     _tokenOut,
     _poolFee,
