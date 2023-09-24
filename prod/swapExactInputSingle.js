@@ -45,7 +45,7 @@ class SwapExactInputSingle {
       let beforeTokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address)
 
       consoleLogLineChar(100, "-");
-      consoleLog("swapExactInputSingle ~",_tokenInName+"( "+_amountIn+" )", "=>",_tokenOutName)
+      consoleLog("swapExactInputSingle ~",_tokenInName+"( "+_amountIn+" )", "=>",tokenOutName)
 
       consoleLog(indent + "TOKEN_IN  ~", tokenInName, "SYMBOL", tokenInSymbol, "balance:", beforeTokenInBalanceOf);
       consoleLog(indent + "TOKEN_OUT ~", tokenOutName, "SYMBOL", tokenOutSymbol, " balance:", beforeTokenOutBalanceOf);
@@ -64,10 +64,10 @@ class SwapExactInputSingle {
       let afterTokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address);
 
       consoleLog(indent + "AFTER TOKEN_IN   ~", _tokenInName, "balance:", afterTokenInBalanceOf);
-      consoleLog(indent + "AFTER TOKEN_OUT  ~", _tokenOutName, " balance:", afterTokenOutBalanceOf);
+      consoleLog(indent + "AFTER TOKEN_OUT  ~", tokenOutName, " balance:", afterTokenOutBalanceOf);
 
       consoleLog(indent + "DIFFERENCE       ~", _tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
-      consoleLog(indent + "DIFFERENCE       ~", _tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
+      consoleLog(indent + "DIFFERENCE       ~", tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
   }
 }
 

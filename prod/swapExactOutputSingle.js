@@ -34,16 +34,22 @@ class SwapExactOutputSingle {
     _amountOutMin,
     _sqrtPriceLimitX96) {
 
-      consoleLogLineChar(100, "-");
-      consoleLog("swapExactOutputSingle ~", _tokenInName + "( _amountInMax = " + _amountInMax + ", _amountOutMin = ", _amountOutMin + ")", "=>",_tokenOutName)
-      let signer = this.signerAccount;
+      let signerAccount = this.signerAccount;
       let indent = this.indent;
 
-      let beforeTokenInBalanceOf = await _tokenInContract.balanceOf(signer.address);
-      let beforeTokenOutBalanceOf = await _tokenOutContract.balanceOf(signer.address);
+      let tokenInName = await _tokenInContract.name()
+      let tokenInSymbol = await _tokenInContract.symbol()
+      let beforeTokenInBalanceOf = await _tokenInContract.balanceOf(signerAccount.address)
+      let tokenOutName = await _tokenOutContract.name()
+      let tokenOutSymbol = await _tokenOutContract.symbol()
+      let beforeTokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address)
+
+      consoleLogLineChar(100, "-");
+      consoleLog("swapExactOutputSingle ~", _tokenInName + "( _amountInMax = " + _amountInMax + ", _amountOutMin = ", _amountOutMin + ")", "=>",tokenOutName)
+      let signer = this.signerAccount;
 
       consoleLog(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
-      consoleLog(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
+      consoleLog(indent + "BEFORE TOKEN_OUT ~", tokenOutName, " balance:", beforeTokenOutBalanceOf);
 
       // Swap
       await this.spCoinExchangeMin.swapExactOutputSingle(
@@ -58,10 +64,10 @@ class SwapExactOutputSingle {
       let afterTokenOutBalanceOf = await _tokenOutContract.balanceOf(signer.address);
 
       consoleLog(indent + "AFTER TOKEN_IN   ~", _tokenInName, "balance:", afterTokenInBalanceOf);
-      consoleLog(indent + "AFTER TOKEN_OUT  ~", _tokenOutName, " balance:", afterTokenOutBalanceOf);
+      consoleLog(indent + "AFTER TOKEN_OUT  ~", tokenOutName, " balance:", afterTokenOutBalanceOf);
 
       consoleLog(indent + "DIFFERENCE       ~", _tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
-      consoleLog(indent + "DIFFERENCE       ~", _tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
+      consoleLog(indent + "DIFFERENCE       ~", tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
   }
 
 }
