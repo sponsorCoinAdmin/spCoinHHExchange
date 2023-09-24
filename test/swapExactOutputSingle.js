@@ -42,8 +42,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     await spCoinExchange.swapExactOutputSingle(
       TOKEN_IN_CONTRACT,
       TOKEN_OUT_CONTRACT,
-      TOKEN_IN_NAME,
-      TOKEN_OUT_NAME,
       TOKEN_IN_ADDRESS,
       TOKEN_OUT_ADDRESS,
       POOL_FEE,
@@ -80,8 +78,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       await spCoinExchange.swapExactOutputSingle(
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT,
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
         POOL_FEE,
@@ -95,8 +91,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
         
-      const TOKEN_IN_NAME = "SPCOIN";
-      const TOKEN_OUT_NAME = "WETH";
       const AMOUNT_IN_MAX = 10n * 10n ** 18n;
       const TOKEN_IN_ADDRESS = process.env.GOERLI_SPCOIN;
       const TOKEN_OUT_ADDRESS = process.env.GOERLI_WETH;
@@ -116,8 +110,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
       await spCoinExchange.swapExactOutputSingle(
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT,
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
         POOL_FEE,

@@ -53,8 +53,6 @@ class SpCoinExchange {
     async swapExactInputSingle (
     _tokenInContract,
     _tokenOutContract,  
-    _tokenInName,
-    _tokenOutName,
     _tokenInAddress,
     _tokenOutAddress,
     _poolFee,
@@ -76,8 +74,6 @@ class SpCoinExchange {
     async swapExactOutputSingle (
       _tokenInContract,
       _tokenOutContract,  
-      _tokenInName,
-      _tokenOutName,
       _tokenInAddress,
       _tokenOutAddress,
       _poolFee,

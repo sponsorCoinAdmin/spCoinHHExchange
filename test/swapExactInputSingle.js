@@ -40,8 +40,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT,
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
         POOL_FEE,
@@ -76,8 +74,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT,
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
         POOL_FEE,
@@ -110,8 +106,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT,
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
         POOL_FEE,
