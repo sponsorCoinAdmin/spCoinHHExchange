@@ -11,8 +11,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   let spCoinExchangeContract;
   let accounts;
   let spCoinExchangeMin;
-  let signer;
-  const indent = "  ";
 
   // Before Initialization for each test
   before(async () => {
@@ -25,46 +23,6 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     accounts = await ethers.getSigners();
     signer = accounts[0];
    })
-
-  async function swapExactOutputSingle(
-    _tokenInName,
-    _tokenOutName,
-    _tokenIn,
-    _tokenOut,
-    _tokenInABI,
-    _tokenOutABI,
-    _poolFee,
-    _amountInMax,
-    _amountOutMin,
-    _sqrtPriceLimitX96) {
-
-      let tokenInContract = await ethers.getContractAt(_tokenInABI, _tokenIn);
-      let tokenOutContract = await ethers.getContractAt(_tokenOutABI, _tokenOut); 
-
-      let beforeTokenInBalanceOf = await tokenInContract.balanceOf(signer.address);
-      let beforeTokenOutBalanceOf = await tokenOutContract.balanceOf(signer.address);
-
-      console.log(indent + "BEFORE TOKEN_IN  ~", _tokenInName, "balance:", beforeTokenInBalanceOf);
-      console.log(indent + "BEFORE TOKEN_OUT ~", _tokenOutName, " balance:", beforeTokenOutBalanceOf);
-
-      // Swap
-      await spCoinExchangeMin.swapExactOutputSingle(
-      _tokenIn,
-      _tokenOut,
-      _poolFee,
-      _amountInMax,
-      _amountOutMin,
-      _sqrtPriceLimitX96);
-
-      let afterTokenInBalanceOf = await tokenInContract.balanceOf(signer.address);
-      let afterTokenOutBalanceOf = await tokenOutContract.balanceOf(signer.address);
-
-      console.log(indent + "AFTER TOKEN_IN   ~", _tokenInName, "balance:", afterTokenInBalanceOf);
-      console.log(indent + "AFTER TOKEN_OUT  ~", _tokenOutName, " balance:", afterTokenOutBalanceOf);
-
-      console.log(indent + "DIFFERENCE       ~", _tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
-      console.log(indent + "DIFFERENCE       ~", _tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
-  }
 
   // Test - swapExactOutputSingle
   it("swapExactOutputSingle  WETH -> DAI", async function () {
@@ -90,7 +48,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
       
     // Swap
-    await swapExactOutputSingle(
+    await spCoinExchange.swapExactOutputSingle(
       TOKEN_IN_NAME,
       TOKEN_OUT_NAME,
       TOKEN_IN,
@@ -128,7 +86,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
 
     // Swap
-    await swapExactOutputSingle(
+    await spCoinExchange.swapExactOutputSingle(
       TOKEN_IN_NAME,
       TOKEN_OUT_NAME,
       TOKEN_IN,
@@ -169,7 +127,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     await spCoinExchange.approve(tokenInContract, AMOUNT_IN_MAX);
 
     // Swap
-    await swapExactOutputSingle(
+    await spCoinExchange.swapExactOutputSingle(
       TOKEN_IN_NAME,
       TOKEN_OUT_NAME,
       TOKEN_IN,
