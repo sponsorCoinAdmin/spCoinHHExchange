@@ -42,15 +42,15 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
 
     // Swap
     await spCoinExchange.swapExactInputMultiHop(
-      TOKEN_IN_CONTRACT,
-      TOKEN_INTERMEDIARY_CONTRACT,
-      TOKEN_OUT_CONTRACT,
       TOKEN_IN_ADDRESS,
       TOKEN_INTERMEDIARY_ADDRESS,
       TOKEN_OUT_ADDRESS,
       POOL_FEE,
       AMOUNT_IN,
-      AMOUNT_OUT_MINIMUM
+      AMOUNT_OUT_MINIMUM,
+      TOKEN_IN_CONTRACT,
+      TOKEN_INTERMEDIARY_CONTRACT,
+      TOKEN_OUT_CONTRACT,
     )
     
   }).timeout(1000000);

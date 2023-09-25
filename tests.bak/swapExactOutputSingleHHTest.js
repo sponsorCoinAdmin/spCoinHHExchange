@@ -38,14 +38,15 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
     // Swap
     await spCoinExchange.swapExactOutputSingle(
-      TOKEN_IN_CONTRACT,
-      TOKEN_OUT_CONTRACT,
       TOKEN_IN_ADDRESS,
       TOKEN_OUT_ADDRESS,
       POOL_FEE,
       AMOUNT_OUT_MIN,
       AMOUNT_IN_MAX,
-      SQRT_ROOT_PRICE_LIMIT_X96);
+      SQRT_ROOT_PRICE_LIMIT_X96,
+      TOKEN_IN_CONTRACT,
+      TOKEN_OUT_CONTRACT,
+);
   }).timeout(100000);
 
   // Test - swapExactOutputSingle
@@ -71,14 +72,15 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
     // Swap
     await spCoinExchange.swapExactOutputSingle(
-      TOKEN_IN_CONTRACT,
-      TOKEN_OUT_CONTRACT,
       TOKEN_IN_ADDRESS,
       TOKEN_OUT_ADDRESS,
       POOL_FEE,
       AMOUNT_OUT_MIN, 
       AMOUNT_IN_MAX, 
-      SQRT_ROOT_PRICE_LIMIT_X96);
+      SQRT_ROOT_PRICE_LIMIT_X96,
+      TOKEN_IN_CONTRACT,
+      TOKEN_OUT_CONTRACT,
+);
   }).timeout(100000);
 
   it("swapExactOutputSingle SPCOIN -> WETH", async function () {
@@ -103,14 +105,15 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
     // Swap
     await spCoinExchange.swapExactOutputSingle(
-      TOKEN_IN_CONTRACT,
-      TOKEN_OUT_CONTRACT,
       TOKEN_IN_ADDRESS,
       TOKEN_OUT_ADDRESS,
       POOL_FEE,
       AMOUNT_OUT_MIN, 
       AMOUNT_IN_MAX, 
-      SQRT_ROOT_PRICE_LIMIT_X96);
+      SQRT_ROOT_PRICE_LIMIT_X96,
+      TOKEN_IN_CONTRACT,
+      TOKEN_OUT_CONTRACT
+    );
   }).timeout(100000);
   
 });
