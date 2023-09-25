@@ -136,16 +136,16 @@ contract SpCoinExchange {
         address _tokenIntermediary,
         address _tokenOut,
         uint24  _poolFee,
-        uint256 amountOut,
-        uint256 amountInMaximum) external returns (uint256 amountIn)
+        uint256 _amountOut,
+        uint256 _amountInMaximum) external returns (uint256 amountIn)
     {
         TransferHelper.safeTransferFrom(
             _tokenIn,
             msg.sender,
             address(this),
-            amountInMaximum
+            _amountInMaximum
         );
-        TransferHelper.safeApprove(_tokenIn, address(swapRouter), amountInMaximum);
+        TransferHelper.safeApprove(_tokenIn, address(swapRouter), _amountInMaximum);
 
         // The parameter path is encoded as (tokenOut, fee, tokenIn/tokenOut, fee, tokenIn)
         ISwapRouter.ExactOutputParams memory params = ISwapRouter
@@ -159,19 +159,19 @@ contract SpCoinExchange {
                 ),
                 recipient: msg.sender,
                 deadline: block.timestamp,
-                amountOut: amountOut,
-                amountInMaximum: amountInMaximum
+                amountOut: _amountOut,
+                amountInMaximum: _amountInMaximum
             });
 
         amountIn = swapRouter.exactOutput(params);
         
-        if (amountIn < amountInMaximum) {
+        if (amountIn < _amountInMaximum) {
             TransferHelper.safeApprove(_tokenIn, address(swapRouter), 0);
             TransferHelper.safeTransferFrom(
                 _tokenIn,
                 address(this),
                 msg.sender,
-                amountInMaximum - amountIn
+                _amountInMaximum - amountIn
             );
         }
     }    
