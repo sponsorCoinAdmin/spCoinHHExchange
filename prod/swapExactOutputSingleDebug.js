@@ -23,14 +23,15 @@ class SwapExactOutputSingle {
   }
   
   async swapExactOutputSingle(
-    _tokenInContract,
-    _tokenOutContract,
     _tokenIn,
     _tokenOut,
     _poolFee,
     _amountInMax,
     _amountOutMin,
-    _sqrtPriceLimitX96) {
+    _sqrtPriceLimitX96,
+    _tokenInContract,
+    _tokenOutContract,
+  ) {
 
       let signerAccount = this.signerAccount;
       let indent = this.indent;

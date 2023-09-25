@@ -61,14 +61,15 @@ class SpCoinExchange {
 
       console.log("arguments.length", arguments.length);
       await this.swapEIS.swapExactInputSingle (
-        _tokenInContract,
-        _tokenOutContract,    
         _tokenInAddress,
         _tokenOutAddress,
         _poolFee,
         _amountIn,
         _amountOutMin,
-        _sqrtPriceLimitX96);
+        _sqrtPriceLimitX96,
+        _tokenInContract,
+        _tokenOutContract
+      );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,14 +84,14 @@ class SpCoinExchange {
       _tokenOutContract  
     ) {
         await this.swapEOS.swapExactOutputSingle(
-          _tokenInContract,
-          _tokenOutContract,  
           _tokenInAddress,
           _tokenOutAddress,
           _poolFee,
           _amountInMax,
           _amountOutMin,
-          _sqrtPriceLimitX96);
+          _sqrtPriceLimitX96,
+          _tokenInContract,
+          _tokenOutContract  );
         }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,40 +107,40 @@ class SpCoinExchange {
       _tokenOutContract
     ) {
       await this.swapEIMH.swapExactInputMultiHop(
-        _tokenInContract,
-        _tokenIntermediaryContract,  
-        _tokenOutContract,  
         _tokenInAddress,
         _tokenIntermediaryAddress,
         _tokenOutAddress,
         _poolFee,
         _amountIn,
         _amountOutMin,
+        _tokenInContract,
+        _tokenIntermediaryContract,  
+        _tokenOutContract
       );
     }
   
 /////////////////////////////////////////////////////////////////////////////////////////////////
     async swapExactOutputMultiHop(
-       _tokenInAddress,
-      _tokenIntermediaryAddress,
-      _tokenOutAddress,
-      _poolFee,
-      _amountOut,
-      _amountInMaximum,
-      _tokenInContract,
-      _tokenIntermediaryContract,
-      _tokenOutContract
-    ) {
-      await this.swapEOMH.swapExactOutputMultiHop(
-        _tokenInContract,
-        _tokenIntermediaryContract,
-        _tokenOutContract,
         _tokenInAddress,
         _tokenIntermediaryAddress,
         _tokenOutAddress,
         _poolFee,
         _amountOut,
         _amountInMaximum,
+        _tokenInContract,
+        _tokenIntermediaryContract,
+        _tokenOutContract
+    ) {
+      await this.swapEOMH.swapExactOutputMultiHop(
+        _tokenInAddress,
+        _tokenIntermediaryAddress,
+        _tokenOutAddress,
+        _poolFee,
+        _amountOut,
+        _amountInMaximum,
+        _tokenInContract,
+        _tokenIntermediaryContract,
+        _tokenOutContract
         );
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////

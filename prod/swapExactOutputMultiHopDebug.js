@@ -23,15 +23,15 @@ class SwapExactOutputMultiHop {
   }
 
   async swapExactOutputMultiHop (
-      _tokenInContract,
-      _tokenIntermediaryContract, 
-      _tokenOutContract,  
       _tokenInAddress,
       _tokenIntermediaryAddress,
       _tokenOutAddress,
       _poolFee,
       _amountIn,
       _amountOutMin,
+      _tokenInContract,
+      _tokenIntermediaryContract, 
+      _tokenOutContract,  
   ) {
 
     let signerAccount = this.signerAccount;

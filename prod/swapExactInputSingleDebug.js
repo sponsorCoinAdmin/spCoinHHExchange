@@ -23,14 +23,15 @@ class SwapExactInputSingle {
   }
 
   async swapExactInputSingle (
-    _tokenInContract,
-    _tokenOutContract,
     _tokenInAddress,
     _tokenOutAddress,
     _poolFee,
     _amountIn,
     _amountOutMin,
-    _sqrtPriceLimitX96) {
+    _sqrtPriceLimitX96,
+    _tokenInContract,
+    _tokenOutContract
+  ) {
 
       let signerAccount = this.signerAccount;
       let indent = this.indent;
