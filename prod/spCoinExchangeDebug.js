@@ -50,15 +50,14 @@ class SpCoinExchange {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     async swapExactInputSingle (
-    _tokenInContract,
-    _tokenOutContract,  
     _tokenInAddress,
     _tokenOutAddress,
     _poolFee,
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96,
-    ) {
+    _tokenInContract,
+    _tokenOutContract) {
 
       console.log("arguments.length", arguments.length);
       await this.swapEIS.swapExactInputSingle (
