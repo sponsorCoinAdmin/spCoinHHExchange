@@ -1,7 +1,7 @@
 const { spCoinLogger } = require("./lib/logger/spCoinLogger.js");
 const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
 
-class SwapExactInputMultiHop {
+class SwapExactOutputMultiHop {
   constructor() {
     this.spCoinExchangeMin = new SpCoinExchangeMin();
     this.contractName = "SpCoinExchange";
@@ -22,7 +22,7 @@ class SwapExactInputMultiHop {
     this.spCoinExchangeMin.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
   }
 
-  async swapExactInputMultiHop (
+  async swapExactOutputMultiHop (
       _tokenInContract,
       _tokenIntermediaryContract, 
       _tokenOutContract,  
@@ -50,15 +50,15 @@ class SwapExactInputMultiHop {
     let beforeTokenOutBalanceOf = await _tokenOutContract.balanceOf(signerAccount.address)
 
     consoleLogLineChar(100, "-");
-    consoleLog("swapExactInputMultiHop ~", tokenInName+"( "+_amountIn+" )", "=>",tokenOutName)
+    consoleLog("swapExactOutputMultiHop ~", tokenInName+"( "+_amountIn+" )", "=>",tokenOutName)
 
     consoleLog(indent + "BEFORE TOKEN_IN                ~", tokenInName + "(" + tokenInSymbol + ") balance:", beforeTokenInBalanceOf);
     consoleLog(indent + "BEFORE TOKEN_INTERMEDIARY      ~", tokenIntermediaryName + "(" + tokenIntermediarySymbol + ") balance:", beforeTokenIntermediaryBalanceOf);
     consoleLog(indent + "BEFORE TOKEN_OUT               ~", tokenOutName + "(" + tokenOutSymbol + ") balance:", beforeTokenOutBalanceOf);
       
-    // Swap Exact Input MultiHop
+    // Swap Exact Output MultiHop
     
-    await this.spCoinExchangeMin.swapExactInputMultiHop(
+    await this.spCoinExchangeMin.swapExactOutputMultiHop(
       _tokenInAddress,
       _tokenIntermediaryAddress,
       _tokenOutAddress,
@@ -82,5 +82,5 @@ class SwapExactInputMultiHop {
 }
 
 module.exports = {
-  SwapExactInputMultiHop
+  SwapExactOutputMultiHop
 };

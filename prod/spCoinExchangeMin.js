@@ -84,7 +84,7 @@ async swapExactOutputSingle (
     _amountOut,
     _amountInMaximum,
   ) {
-    await this.spCoinExchangeContract.swapExactOutputSingle(
+    await this.spCoinExchangeContract.swapExactOutputMultiHop(
       _tokenIn,
       _tokenIntermediary,
       _tokenOut,

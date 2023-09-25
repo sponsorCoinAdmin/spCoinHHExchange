@@ -47,7 +47,7 @@ describe("SwapExactOutputMultiHop:", function () {
     const tokenIntermediaryContract = await ethers.getContractAt(ERC20, TOKEN_INTERMEDIARY);
     const tokenOutContract          = await ethers.getContractAt(ERC20, TOKEN_OUT);
   
-    // Deposit WETH
+    // Deposit WETH by wrapping existing eth
     await tokenInContract.connect(accounts[0]).deposit({ value: AMOUNT_IN_MAX });
     await tokenInContract.connect(accounts[0]).approve(swapExamples.address, AMOUNT_IN_MAX);
 

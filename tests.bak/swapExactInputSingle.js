@@ -19,8 +19,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
-      const TOKEN_IN_NAME = "WETH";
-      const TOKEN_OUT_NAME = "DAI";
       const AMOUNT_IN = 10n ** 18n;
       const TOKEN_IN_ADDRESS = process.env.GOERLI_WETH;
       const TOKEN_OUT_ADDRESS = process.env.GOERLI_DAI;
@@ -30,18 +28,16 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
 
       logHeader("swapExactInputSingleTest: WETH -> DAI")
 
-      // Deposit TOKEN_IN_ADDRESS
       let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
 
+      // Deposit WETH by wrapping existing eth
       await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN);
 
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT,
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
         POOL_FEE,
@@ -56,8 +52,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
 
-      const TOKEN_IN_NAME = "WETH";
-      const TOKEN_OUT_NAME = "SPCOIN";
       const AMOUNT_IN = 10n ** 18n;
       const TOKEN_IN_ADDRESS = process.env.GOERLI_WETH;
       const TOKEN_OUT_ADDRESS = process.env.GOERLI_SPCOIN;
@@ -76,8 +70,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT,
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
         POOL_FEE,
@@ -91,8 +83,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
-      const TOKEN_IN_NAME = "SPCOIN";
-      const TOKEN_OUT_NAME = "WETH";
       const AMOUNT_IN = 10n ** 18n;
       const TOKEN_IN_ADDRESS = process.env.GOERLI_SPCOIN;
       const TOKEN_OUT_ADDRESS = process.env.GOERLI_WETH;
@@ -110,8 +100,6 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT,
-        TOKEN_IN_NAME,
-        TOKEN_OUT_NAME,
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
         POOL_FEE,
