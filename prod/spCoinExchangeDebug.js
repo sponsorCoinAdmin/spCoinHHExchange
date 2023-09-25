@@ -1,8 +1,7 @@
-const { SwapExactInputSingle } = require("./swapExactInputSingle");
-const { SwapExactOutputSingle } = require("./swapExactOutputSingle");
-
-const { SwapExactInputMultiHop } = require("./swapExactInputMultiHop");
-const { SwapExactOutputMultiHop } = require("./swapExactOutputMultiHop");
+const { SwapExactInputSingle } = require("./swapExactInputSingleDebug");
+const { SwapExactOutputSingle } = require("./swapExactOutputSingleDebug");
+const { SwapExactInputMultiHop } = require("./swapExactInputMultiHopDebug");
+const { SwapExactOutputMultiHop } = require("./swapExactOutputMultiHopDebug");
 
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
@@ -58,7 +57,10 @@ class SpCoinExchange {
     _poolFee,
     _amountIn,
     _amountOutMin,
-    _sqrtPriceLimitX96) {
+    _sqrtPriceLimitX96,
+    ) {
+
+      console.log("arguments.length", arguments.length);
       await this.swapEIS.swapExactInputSingle (
         _tokenInContract,
         _tokenOutContract,    

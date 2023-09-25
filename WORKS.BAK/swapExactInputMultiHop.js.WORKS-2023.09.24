@@ -12,7 +12,7 @@ describe("SwapExactInputMultiHop: swapInputMultiplePools swaps a fixed amount of
   before(async () => {
     spCoinExchange = new SpCoinExchange();
     await spCoinExchange.deploy();
-    setConsoleLoggingOn();
+    setConsoleDebugLoggingOn();
   })
 
   // Test - SwapExactInputMultiHop

@@ -17,7 +17,7 @@ consoleLogLineChar = (length, lineChar) => {
   consoleLog(line);
 } 
 
-setConsoleLoggingOn = () => {
+setConsoleDebugLoggingOn = () => {
   consoleLogging = true;
 }
 
@@ -35,7 +35,7 @@ class spCoinLogger {
       this.parentName = parentName;
     }
 
-    setConsoleLoggingOn() {
+    setConsoleDebugLoggingOn() {
         consoleLogging = true;
     }
     

@@ -12,7 +12,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   before(async () => {
     spCoinExchange = new SpCoinExchange();
     await spCoinExchange.deploy();
-    setConsoleLoggingOn();
+    setConsoleDebugLoggingOn();
   })
 
   // Test - swapExactOutputSingle

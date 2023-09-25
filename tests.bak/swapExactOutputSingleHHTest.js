@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SpCoinExchange } = require("../prod/spCoinExchange");
+const { SpCoinExchange } = require("../prod/spCoinExchangeDebug");
 
 describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of WETH.\n"+
 "    In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap."
@@ -12,7 +12,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   before(async () => {
     spCoinExchange = new SpCoinExchange();
     await spCoinExchange.deploy();
-    setConsoleLoggingOn();
+    setConsoleDebugLoggingOn();
   })
 
   // Test - swapExactOutputSingle

@@ -1,9 +1,9 @@
 require("dotenv").config();
-const { SpCoinExchange } = require("../prod/spCoinExchange");
+const { SpCoinExchange } = require("../prod/spCoinExchangeDebug");
 
-describe("SwapExactInputMultiHop: swapInputMultiplePools swaps a fixed amount of tokenIn for a maximum possible amount of tokenOut"
+describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amount of tokenIn for a maximum possible amount of tokenOut"
 , function () {
-  console.log("swapExactInputMultiHop:");
+  console.log("SwapExactInputMultiHopHHTest:");
 
   let spCoinExchange;
 
@@ -11,12 +11,12 @@ describe("SwapExactInputMultiHop: swapInputMultiplePools swaps a fixed amount of
   before(async () => {
     spCoinExchange = new SpCoinExchange();
     await spCoinExchange.deploy();
-    setConsoleLoggingOn();
+    setConsoleDebugLoggingOn();
   })
 
   // Test - SwapExactInputMultiHop
-  it("swapExactInputMultiHop: WETH --> USDC --> DAI", async () => {
-    console.log("swapExactInputSingleTest => WETH --> USDC --> DAI");
+  it("swapExactInputMultiHopHHTest: WETH --> USDC --> DAI", async () => {
+    console.log("swapExactInputSingleHHTest => WETH --> USDC --> DAI");
 
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const TOKEN_INTERMEDIARY_ABI = require('../contracts/interfaces/ERC20_ABI.json')

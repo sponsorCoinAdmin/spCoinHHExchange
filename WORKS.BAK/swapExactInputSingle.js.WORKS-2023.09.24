@@ -11,7 +11,7 @@ describe("SwapExactInputSingleTest: Swaps exact amount of _tokenIn for a maximum
     before(async () => {
       spCoinExchange = new SpCoinExchange();
       await spCoinExchange.deploy();
-      setConsoleLoggingOn();
+      setConsoleDebugLoggingOn();
     })
 
       // Test - swapExactInputSingleTest

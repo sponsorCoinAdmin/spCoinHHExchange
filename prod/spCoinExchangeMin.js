@@ -84,6 +84,13 @@ async swapExactOutputSingle (
     _amountOut,
     _amountInMaximum,
   ) {
+    // consoleLog("ZZZZZZZZZZZZZZZZZZZZ SpCoinExchangeMin.swapExactOutputMultiHop Parameters ZZZZZZZZZZZZZZZZZZZ");
+    // consoleLog("_tokenIn           :", _tokenIn);
+    // consoleLog("_tokenIntermediary :", _tokenIntermediary);
+    // consoleLog("_tokenOut          :", _tokenOut);
+    // consoleLog("_poolFee           :", _poolFee);
+    // consoleLog("_amountOut         :", _amountOut);
+    // consoleLog("_amountInMaximum   :", _amountInMaximum);
     await this.spCoinExchangeContract.swapExactOutputMultiHop(
       _tokenIn,
       _tokenIntermediary,
