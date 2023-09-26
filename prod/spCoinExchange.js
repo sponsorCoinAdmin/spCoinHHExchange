@@ -39,7 +39,6 @@ class SpCoinExchange {
 
   async init(spCoinExchangeContract, signerAccount, swapExactInputSingle) {
     let contractName = this.contractName;
-    this.accounts = await ethers.getSigners();
 
     const contractFactory = await ethers.getContractFactory(contractName);
     this.spCoinExchangeContract = await contractFactory.deploy();
