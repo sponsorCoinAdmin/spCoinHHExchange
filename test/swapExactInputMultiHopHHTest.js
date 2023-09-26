@@ -49,8 +49,8 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
       AMOUNT_IN,
       AMOUNT_OUT_MINIMUM,
       TOKEN_IN_CONTRACT,
-      TOKEN_INTERMEDIARY_CONTRACT,
-      TOKEN_OUT_CONTRACT,
+      // TOKEN_INTERMEDIARY_CONTRACT,
+      // TOKEN_OUT_CONTRACT,
     )
     
   }).timeout(1000000);

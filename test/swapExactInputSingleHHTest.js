@@ -42,9 +42,9 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         AMOUNT_IN,
         AMOUNT_OUT_MINIMUM,
         SQRT_ROOT_PRICE_LIMIT_X96,
-        TOKEN_IN_CONTRACT,
-        TOKEN_OUT_CONTRACT,
-);
+        // TOKEN_IN_CONTRACT,
+        // TOKEN_OUT_CONTRACT,
+      );
     }).timeout(100000);
 
       // Test - swapExactInputSingleTest
@@ -76,8 +76,9 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         AMOUNT_IN,
         AMOUNT_OUT_MINIMUM,
         SQRT_ROOT_PRICE_LIMIT_X96,
-        TOKEN_IN_CONTRACT,
-        TOKEN_OUT_CONTRACT);
+        // TOKEN_IN_CONTRACT,
+        // TOKEN_OUT_CONTRACT
+      );
     }).timeout(100000);
 
     // Test - swapExactInputSingleTest
@@ -106,8 +107,8 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         AMOUNT_IN,
         AMOUNT_OUT_MINIMUM,
         SQRT_ROOT_PRICE_LIMIT_X96,
-        TOKEN_IN_CONTRACT,
-        TOKEN_OUT_CONTRACT
+        // TOKEN_IN_CONTRACT,
+        // TOKEN_OUT_CONTRACT
       );
     }).timeout(100000);  
 
