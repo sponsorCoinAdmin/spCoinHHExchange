@@ -26,26 +26,38 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       }
 
       async deploySpCoinExchange() {
-        spCoinExchangeContract = await this.deploy("SpCoinExchange");
+        const spCoinExchangeContract = await this.deploy("SpCoinExchange");
         return spCoinExchangeContract;
       }
 
       async deploy(contractName) {
         this.contractName = contractName;
+        console.log("DEPLOYING", contractName);
         const contractFactory = await ethers.getContractFactory(contractName);
-        this.spCoinExchangeContract = await contractFactory.deploy();
-        await this.spCoinExchangeContract.deployed();
-        return this.spCoinExchangeContract;
-      }
+        const spCoinExchangeContract = await contractFactory.deploy();
+        await spCoinExchangeContract.deployed();
+        return spCoinExchangeContract;
+        }
     }
 
+     async function deployContract(contractName) {
+      console.log("DEPLOYING", contractName);
+      const contractFactory = await ethers.getContractFactory(contractName);
+      const spCoinExchangeContract = await contractFactory.deploy();
+      await spCoinExchangeContract.deployed();
+      return spCoinExchangeContract;
+  }
+  
     // Before Initialization
     before(async () => {
 
       const connection = new deployHHConnection();
-      const spCoinExchangeContract = await connection.deploySpCoinExchange;
+      let spCoinExchangeContract = await connection.deploySpCoinExchange();
       const signerAccount = await connection.getSigner(0);
       spCoinExchange = new SpCoinExchange();
+
+      // spCoinExchangeContract = await spCoinExchange.deployContract("SpCoinExchange");
+      // spCoinExchangeContract = await deployContract("SpCoinExchange");
 
       const swapExactInputSingle = new SwapExactInputSingle();
 
@@ -85,8 +97,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       );
     }).timeout(100000);
 
-    /*
-      // Test - swapExactInputSingleTest
+    // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> SPCOIN", async function () {
 
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
@@ -150,5 +161,4 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         TOKEN_OUT_CONTRACT
       );
     }).timeout(100000);  
-*/
 });
