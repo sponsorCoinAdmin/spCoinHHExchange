@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { SpCoinExchange } = require("../prod/spCoinExchange");
 const { SwapExactInputSingle } = require("../prod/swapExactInputSingleDebug");
+const { DeployHHConnection } = require("./deployHHConnection");
 
 describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut"
 , function () {
@@ -8,46 +9,13 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
     let spCoinExchange;
 
-    class deployHHConnection {
-      constructor() {
-        this.contract;
-        this.accounts;
-        this.contractName;
-      }
-
-      async getSigner( idx ) {
-        this.accounts = await this.getSigners();
-        return this.accounts[idx];
-      }
-
-      async getSigners() {
-        this.accounts = await ethers.getSigners();
-        return this.accounts;
-      }
-
-      async deploySpCoinExchange() {
-        spCoinExchangeContract = await this.deploy("SpCoinExchange");
-        return spCoinExchangeContract;
-      }
-
-      async deploy(contractName) {
-        this.contractName = contractName;
-        const contractFactory = await ethers.getContractFactory(contractName);
-        this.spCoinExchangeContract = await contractFactory.deploy();
-        await this.spCoinExchangeContract.deployed();
-        return this.spCoinExchangeContract;
-      }
-    }
-
     // Before Initialization
     before(async () => {
-
-      const connection = new deployHHConnection();
-      const spCoinExchangeContract = await connection.deploySpCoinExchange;
+      const connection = new DeployHHConnection();
+      let spCoinExchangeContract = await connection.deploySpCoinExchange();
       const signerAccount = await connection.getSigner(0);
-      spCoinExchange = new SpCoinExchange();
-
       const swapExactInputSingle = new SwapExactInputSingle();
+      spCoinExchange = new SpCoinExchange();
 
       await spCoinExchange.init(spCoinExchangeContract, signerAccount, swapExactInputSingle);
       setConsoleDebugLoggingOn();
@@ -85,8 +53,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       );
     }).timeout(100000);
 
-    /*
-      // Test - swapExactInputSingleTest
+    // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> SPCOIN", async function () {
 
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
@@ -150,5 +117,4 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         TOKEN_OUT_CONTRACT
       );
     }).timeout(100000);  
-*/
 });

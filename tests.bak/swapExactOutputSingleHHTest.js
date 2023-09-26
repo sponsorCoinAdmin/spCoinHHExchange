@@ -1,4 +1,6 @@
+const { DeployHHConnection } = require("./deployHHConnection");
 require("dotenv").config();
+
 const { SpCoinExchange } = require("../prod/spCoinExchange");
 
 describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of WETH.\n"+
