@@ -7,10 +7,46 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
     let spCoinExchange;
 
+    class deployHHConnection {
+      constructor() {
+        this.contract;
+        this.accounts;
+        this.contractName;
+      }
+
+      async getSigner( idx ) {
+        this.accounts = await this.getSigners();
+        return this.accounts[idx];
+      }
+
+      async getSigners() {
+        this.accounts = await ethers.getSigners();
+        return this.accounts;
+      }
+
+      async deploySpCoinExchange() {
+        spCoinExchangeContract = await this.deploy("SpCoinExchange");
+        return spCoinExchangeContract;
+      }
+
+      async deploy(contractName) {
+        this.contractName = contractName;
+        const contractFactory = await ethers.getContractFactory(contractName);
+        this.spCoinExchangeContract = await contractFactory.deploy();
+        await this.spCoinExchangeContract.deployed();
+        return this.spCoinExchangeContract;
+      }
+    }
+
     // Before Initialization
     before(async () => {
+
+      const connection = new deployHHConnection();
+      const spCoinExchangeContract = await connection.deploySpCoinExchange;
+      const signerAccount = await connection.getSigner(0);
       spCoinExchange = new SpCoinExchange();
-      await spCoinExchange.deploy();
+
+      await spCoinExchange.init(spCoinExchangeContract, signerAccount);
       setConsoleDebugLoggingOn();
     })
 

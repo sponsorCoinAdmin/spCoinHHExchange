@@ -37,6 +37,22 @@ class SpCoinExchange {
     return this.spCoinExchangeContract;
   }
 
+  async init(spCoinExchangeContract, signerAccount) {
+    let contractName = this.contractName;
+    this.accounts = await ethers.getSigners();
+    this.signerAccount = this.accounts[0]
+    const contractFactory = await ethers.getContractFactory(contractName);
+    this.spCoinExchangeContract = await contractFactory.deploy();
+    await this.spCoinExchangeContract.deployed();
+
+    this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
+    this.swapEOS.init(this.spCoinExchangeContract, this.signerAccount);
+    this.swapEIMH.init(this.spCoinExchangeContract, this.signerAccount);
+    this.swapEOMH.init(this.spCoinExchangeContract, this.signerAccount);
+    this.spCoinExchangeMin.init(this.spCoinExchangeContract);
+    return this.spCoinExchangeContract;
+  }
+
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
     await this.spCoinExchangeMin.depositEthToWeth(this.signerAccount, tokenInContract, _ethAmount);
