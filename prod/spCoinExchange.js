@@ -40,9 +40,7 @@ class SpCoinExchange {
   async init(spCoinExchangeContract, signerAccount, swapExactInputSingle) {
     let contractName = this.contractName;
 
-    const contractFactory = await ethers.getContractFactory(contractName);
-    this.spCoinExchangeContract = await contractFactory.deploy();
-    await this.spCoinExchangeContract.deployed();
+    await this.deployContract(contractName)
 
     // this.spCoinExchangeContract = spCoinExchangeContract;
     this.signerAccount = signerAccount;
@@ -51,6 +49,16 @@ class SpCoinExchange {
     this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
     this.spCoinExchangeMin.init(this.spCoinExchangeContract);
   }
+
+  async deployContract(contractName) {
+    console.log("DEPLOYONG", contractName);
+    this.contractName = contractName;
+    const contractFactory = await ethers.getContractFactory(contractName);
+    this.spCoinExchangeContract = await contractFactory.deploy();
+    await this.spCoinExchangeContract.deployed();
+    return this.spCoinExchangeContract;
+}
+
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
