@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { SpCoinExchange } = require("../prod/spCoinExchange");
+const { SwapExactInputSingle } = require("../prod/swapExactInputSingleDebug");
 
 describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut"
 , function () {
@@ -46,7 +47,10 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       const signerAccount = await connection.getSigner(0);
       spCoinExchange = new SpCoinExchange();
 
-      await spCoinExchange.init(spCoinExchangeContract, signerAccount);
+      const swapExactInputSingle = new SwapExactInputSingle();
+
+
+      await spCoinExchange.init(spCoinExchangeContract, signerAccount, swapExactInputSingle);
       setConsoleDebugLoggingOn();
     })
 
@@ -78,8 +82,8 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         AMOUNT_IN,
         AMOUNT_OUT_MINIMUM,
         SQRT_ROOT_PRICE_LIMIT_X96,
-        // TOKEN_IN_CONTRACT,
-        // TOKEN_OUT_CONTRACT,
+        TOKEN_IN_CONTRACT,
+        TOKEN_OUT_CONTRACT,
       );
     }).timeout(100000);
 
@@ -112,8 +116,8 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         AMOUNT_IN,
         AMOUNT_OUT_MINIMUM,
         SQRT_ROOT_PRICE_LIMIT_X96,
-        // TOKEN_IN_CONTRACT,
-        // TOKEN_OUT_CONTRACT
+        TOKEN_IN_CONTRACT,
+        TOKEN_OUT_CONTRACT
       );
     }).timeout(100000);
 
@@ -143,8 +147,8 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         AMOUNT_IN,
         AMOUNT_OUT_MINIMUM,
         SQRT_ROOT_PRICE_LIMIT_X96,
-        // TOKEN_IN_CONTRACT,
-        // TOKEN_OUT_CONTRACT
+        TOKEN_IN_CONTRACT,
+        TOKEN_OUT_CONTRACT
       );
     }).timeout(100000);  
 

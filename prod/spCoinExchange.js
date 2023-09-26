@@ -9,7 +9,7 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 class SpCoinExchange {
   constructor() {
     this.sCoinExchangeMin = new SpCoinExchangeMin();
-    this.swapEIS = new SwapExactInputSingle();
+    // this.swapEIS = new SwapExactInputSingle();
     this.swapEOS = new SwapExactOutputSingle();
     this.swapEIMH = new SwapExactInputMultiHop();
     this.swapEOMH = new SwapExactOutputMultiHop();
@@ -37,18 +37,19 @@ class SpCoinExchange {
     return this.spCoinExchangeContract;
   }
 
-  async init(spCoinExchangeContract, signerAccount) {
+  async init(spCoinExchangeContract, signerAccount, swapExactInputSingle) {
     let contractName = this.contractName;
     this.accounts = await ethers.getSigners();
-    this.signerAccount = this.accounts[0]
+
     const contractFactory = await ethers.getContractFactory(contractName);
     this.spCoinExchangeContract = await contractFactory.deploy();
     await this.spCoinExchangeContract.deployed();
 
+    // this.spCoinExchangeContract = spCoinExchangeContract;
+    this.signerAccount = signerAccount;
+    this.swapEIS = swapExactInputSingle;
+
     this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
-    this.swapEOS.init(this.spCoinExchangeContract, this.signerAccount);
-    this.swapEIMH.init(this.spCoinExchangeContract, this.signerAccount);
-    this.swapEOMH.init(this.spCoinExchangeContract, this.signerAccount);
     this.spCoinExchangeMin.init(this.spCoinExchangeContract);
     return this.spCoinExchangeContract;
   }
