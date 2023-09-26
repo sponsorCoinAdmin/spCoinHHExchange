@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { SpCoinExchange } = require("../prod/spCoinExchange");
 const { SwapExactInputSingle } = require("../prod/swapExactInputSingleDebug");
+const { DeployHHConnection } = require("./deployHHConnection");
 
 describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut"
 , function () {
@@ -8,58 +9,13 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
     let spCoinExchange;
 
-    class deployHHConnection {
-      constructor() {
-        this.contract;
-        this.accounts;
-        this.contractName;
-      }
-
-      async getSigner( idx ) {
-        this.accounts = await this.getSigners();
-        return this.accounts[idx];
-      }
-
-      async getSigners() {
-        this.accounts = await ethers.getSigners();
-        return this.accounts;
-      }
-
-      async deploySpCoinExchange() {
-        const spCoinExchangeContract = await this.deploy("SpCoinExchange");
-        return spCoinExchangeContract;
-      }
-
-      async deploy(contractName) {
-        this.contractName = contractName;
-        console.log("DEPLOYING", contractName);
-        const contractFactory = await ethers.getContractFactory(contractName);
-        const spCoinExchangeContract = await contractFactory.deploy();
-        await spCoinExchangeContract.deployed();
-        return spCoinExchangeContract;
-        }
-    }
-
-     async function deployContract(contractName) {
-      console.log("DEPLOYING", contractName);
-      const contractFactory = await ethers.getContractFactory(contractName);
-      const spCoinExchangeContract = await contractFactory.deploy();
-      await spCoinExchangeContract.deployed();
-      return spCoinExchangeContract;
-  }
-  
     // Before Initialization
     before(async () => {
-
-      const connection = new deployHHConnection();
+      const connection = new DeployHHConnection();
       let spCoinExchangeContract = await connection.deploySpCoinExchange();
       const signerAccount = await connection.getSigner(0);
-      spCoinExchange = new SpCoinExchange();
-
-      // spCoinExchangeContract = await spCoinExchange.deployContract("SpCoinExchange");
-      // spCoinExchangeContract = await deployContract("SpCoinExchange");
-
       const swapExactInputSingle = new SwapExactInputSingle();
+      spCoinExchange = new SpCoinExchange();
 
       await spCoinExchange.init(spCoinExchangeContract, signerAccount, swapExactInputSingle);
       setConsoleDebugLoggingOn();

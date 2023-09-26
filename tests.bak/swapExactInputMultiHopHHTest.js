@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { DeployHHConnection } = require("./deployHHConnection");
 const { SpCoinExchange } = require("../prod/spCoinExchange");
 
 describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amount of tokenIn for a maximum possible amount of tokenOut"
