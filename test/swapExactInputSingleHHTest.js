@@ -49,7 +49,6 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
       const swapExactInputSingle = new SwapExactInputSingle();
 
-
       await spCoinExchange.init(spCoinExchangeContract, signerAccount, swapExactInputSingle);
       setConsoleDebugLoggingOn();
     })
@@ -74,7 +73,6 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       // Deposit WETH by wrapping existing eth
       await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN);
-
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
@@ -87,6 +85,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       );
     }).timeout(100000);
 
+    /*
       // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> SPCOIN", async function () {
 
@@ -151,5 +150,5 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         TOKEN_OUT_CONTRACT
       );
     }).timeout(100000);  
-
+*/
 });

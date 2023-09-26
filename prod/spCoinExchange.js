@@ -50,7 +50,6 @@ class SpCoinExchange {
 
     this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
     this.spCoinExchangeMin.init(this.spCoinExchangeContract);
-    return this.spCoinExchangeContract;
   }
 
   // Deposit a specified account of ETH to WETH
