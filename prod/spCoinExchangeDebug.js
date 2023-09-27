@@ -1,4 +1,4 @@
-const { SpCoinExchange } = require("./spCoinExchangeMin");
+const { SpCoinExchange } = require("./spCoinExchange");
 
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 

@@ -1,5 +1,5 @@
 const { spCoinLogger } = require("./lib/logger/spCoinLogger.js");
-const { SpCoinExchange } = require("./spCoinExchangeMin");
+const { SpCoinExchange } = require("./spCoinExchange");
 
 class SwapExactOutputMultiHop {
   constructor() {
