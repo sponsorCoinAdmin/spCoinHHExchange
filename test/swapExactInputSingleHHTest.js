@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SpCoinExchange } = require("../prod/spCoinExchangeDebug");
+const { SpCoinExchangeDebug } = require("../prod/spCoinExchangeDebug");
 const { DeployHHConnection } = require("./deployHHConnection");
 const { SwapExactInputSingle } = require("../prod/swapExactInputSingleDebug");
 
@@ -16,7 +16,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       let spCoinExchangeContract = await connection.deploySpCoinExchange();
       SIGNER = await connection.getSigner(0);
       const swapExactInputSingle = new SwapExactInputSingle();
-      spCoinExchange = new SpCoinExchange();
+      spCoinExchange = new SpCoinExchangeDebug();
 
       await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactInputSingle);
       setConsoleDebugLoggingOn();

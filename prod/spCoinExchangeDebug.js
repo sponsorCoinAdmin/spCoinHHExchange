@@ -2,7 +2,7 @@ const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
 
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
-class SpCoinExchange {
+class SpCoinExchangeDebug {
   constructor() {
     this.spCoinExchangeMin = new SpCoinExchangeMin();
   }
@@ -184,5 +184,5 @@ class SpCoinExchange {
   }
 
 module.exports = {
-  SpCoinExchange
+  SpCoinExchangeDebug
 };
