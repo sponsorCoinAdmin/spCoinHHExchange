@@ -1,8 +1,4 @@
 const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
-const { SwapExactInputSingle } = require("./swapExactInputSingleDebug");
-const { SwapExactOutputSingle } = require("./swapExactOutputSingleDebug");
-const { SwapExactInputMultiHop } = require("./swapExactInputMultiHopDebug");
-const { SwapExactOutputMultiHop } = require("./swapExactOutputMultiHopDebug");
 
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
@@ -93,6 +89,17 @@ class SpCoinExchange {
           _tokenOutContract
         );
       }
+      else{
+        this.sCoinExchangeMin.swapExactOutputSingle (
+          _tokenInAddress,
+          _tokenOutAddress,
+          _poolFee,
+          _amountInMax,
+          _amountOutMin,
+          _sqrtPriceLimitX96,
+        )
+      }
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -109,7 +116,7 @@ class SpCoinExchange {
     ) {
       if ( arguments.length === 9 )
       {
-        await this.swapEIMH.swapExactInputMultiHop(
+        await this.swapClass.swapExactInputMultiHop(
           _tokenInAddress,
           _tokenIntermediaryAddress,
           _tokenOutAddress,
@@ -121,6 +128,18 @@ class SpCoinExchange {
           _tokenOutContract
         );
       }
+      else{
+        this.sCoinExchangeMin.swapExactInputMultiHop (
+          _tokenInAddress,
+          _tokenIntermediaryAddress,
+          _tokenOutAddress,
+          _poolFee,
+          _amountIn,
+          _amountOutMin,
+          _tokenInContract,
+        )
+      }
+
     }
   
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +156,7 @@ class SpCoinExchange {
     ) {
       if ( arguments.length === 9 )
       {
-        await this.swapEOMH.swapExactOutputMultiHop(
+        await this.swapClass.swapExactOutputMultiHop(
           _tokenInAddress,
           _tokenIntermediaryAddress,
           _tokenOutAddress,
@@ -149,6 +168,17 @@ class SpCoinExchange {
           _tokenOutContract
         );
       }
+      else{
+        this.sCoinExchangeMin.swapExactOutputMultiHop (
+          _tokenInAddress,
+          _tokenIntermediaryAddress,
+          _tokenOutAddress,
+          _poolFee,
+          _amountOut,
+          _amountInMaximum,
+        )
+      }
+
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////
   }
