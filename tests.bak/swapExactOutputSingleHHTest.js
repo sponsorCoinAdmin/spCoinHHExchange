@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SpCoinExchange } = require("../prod/spCoinExchange");
+const { SpCoinExchange } = require("../prod/spCoinExchangeDebug");
 const { DeployHHConnection } = require("./deployHHConnection");
 const { SwapExactOutputSingle } = require("../prod/swapExactOutputSingleDebug");
 
