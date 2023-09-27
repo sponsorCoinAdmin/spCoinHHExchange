@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { SpCoinExchange } = require("../prod/spCoinExchange");
-const { SwapExactInputSingle } = require("../prod/swapExactInputSingleDebug");
 const { DeployHHConnection } = require("./deployHHConnection");
+const { SwapExactInputSingle } = require("../prod/swapExactInputSingleDebug");
 
 describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut"
 , function () {

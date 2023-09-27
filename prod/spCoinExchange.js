@@ -9,41 +9,20 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 class SpCoinExchange {
   constructor() {
     this.sCoinExchangeMin = new SpCoinExchangeMin();
-    // this.swapEIS = new SwapExactInputSingle();
-    this.swapEOS = new SwapExactOutputSingle();
-    this.swapEIMH = new SwapExactInputMultiHop();
-    this.swapEOMH = new SwapExactOutputMultiHop();
     this.spCoinExchangeMin = new SpCoinExchangeMin();
-    this.contractName = "SpCoinExchange";
     this.accounts;
     this.signerAccount;
     this.spCoinExchangeContract;
     this.indent = "    ";
   }
 
-  async deploy() {
-    let contractName = this.contractName;
-    this.accounts = await ethers.getSigners();
-    this.signerAccount = this.accounts[0]
-    const contractFactory = await ethers.getContractFactory(contractName);
-    this.spCoinExchangeContract = await contractFactory.deploy();
-    await this.spCoinExchangeContract.deployed();
-
-    this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
-    this.swapEOS.init(this.spCoinExchangeContract, this.signerAccount);
-    this.swapEIMH.init(this.spCoinExchangeContract, this.signerAccount);
-    this.swapEOMH.init(this.spCoinExchangeContract, this.signerAccount);
-    this.spCoinExchangeMin.init(this.spCoinExchangeContract);
-    return this.spCoinExchangeContract;
-  }
-
-  async init(spCoinExchangeContract, signerAccount, swapExactInputSingle) {
+  async init(spCoinExchangeContract, signerAccount, swapClass) {
 
     this.spCoinExchangeContract = spCoinExchangeContract;
     this.signerAccount = signerAccount;
-    this.swapEIS = swapExactInputSingle;
+    this.swapClass = swapClass;
 
-    this.swapEIS.init(this.spCoinExchangeContract, this.signerAccount);
+    this.swapClass.init(this.spCoinExchangeContract, this.signerAccount);
     this.spCoinExchangeMin.init(this.spCoinExchangeContract);
   }
 
@@ -72,7 +51,7 @@ class SpCoinExchange {
       console.log("arguments.length", arguments.length);
       if ( arguments.length === 8 )
       {
-        await this.swapEIS.swapExactInputSingle (
+        await this.swapClass.swapExactInputSingle (
           _tokenInAddress,
           _tokenOutAddress,
           _poolFee,
@@ -108,7 +87,8 @@ class SpCoinExchange {
     ) {
       if ( arguments.length === 8 )
       {
-        await this.swapEOS.swapExactOutputSingle(
+        // console.log("swapExactOutputSingle:", JSON.stringify(this.swapEOS, null, 2))
+        await this.swapClass.swapExactOutputSingle(
           _tokenInAddress,
           _tokenOutAddress,
           _poolFee,

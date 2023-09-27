@@ -33,13 +33,13 @@ class SpCoinExchangeMin {
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96 ) {
-      consoleLog("ZZZZZZZZZZZZZZZZZZZZ SpCoinExchangeMin.swapExactInputSingle Parameters ZZZZZZZZZZZZZZZZZZZ");
-      consoleLog("_tokenIn           :", _tokenIn);
-      consoleLog("_tokenOut          :", _tokenOut);
-      consoleLog("_poolFee           :", _poolFee);
-      consoleLog("_amountIn          :", _amountIn);
-      consoleLog("_amountOutMin      :", _amountOutMin);
-      consoleLog("_sqrtPriceLimitX96 :", _sqrtPriceLimitX96);
+      // consoleLog("ZZZZZZZZZZZZZZZZZZZZ SpCoinExchangeMin.swapExactInputSingle Parameters ZZZZZZZZZZZZZZZZZZZ");
+      // consoleLog("_tokenIn           :", _tokenIn);
+      // consoleLog("_tokenOut          :", _tokenOut);
+      // consoleLog("_poolFee           :", _poolFee);
+      // consoleLog("_amountIn          :", _amountIn);
+      // consoleLog("_amountOutMin      :", _amountOutMin);
+      // consoleLog("_sqrtPriceLimitX96 :", _sqrtPriceLimitX96);
   
       await this.spCoinExchangeContract.swapExactInputSingle(
         _tokenIn, 
