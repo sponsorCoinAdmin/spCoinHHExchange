@@ -1,6 +1,7 @@
 require("dotenv").config();
-const { DeployHHConnection } = require("./deployHHConnection");
 const { SpCoinExchange } = require("../prod/spCoinExchange");
+const { DeployHHConnection } = require("./deployHHConnection");
+const { SwapExactOutputMultiHop } = require("../prod/swapExactOutputMultiHopDebug");
 
 describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed amount of tokenIn for a maximum possible amount of tokenOut"
 , function () {
@@ -10,10 +11,15 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
 
   // Before Initialization
   before(async () => {
+    const connection = new DeployHHConnection();
+    let spCoinExchangeContract = await connection.deploySpCoinExchange();
+    const signerAccount = await connection.getSigner(0);
+    const swapExactOutputMultiHop = new SwapExactOutputMultiHop();
     spCoinExchange = new SpCoinExchange();
-    await spCoinExchange.deploy();
+
+    await spCoinExchange.init(spCoinExchangeContract, signerAccount, swapExactOutputMultiHop);
     setConsoleDebugLoggingOn();
-  })
+   })
 
   // Test - SwapExactOutputMultiHop
   it("swapExactOutputMultiHopHHTest: WETH --> USDC --> DAI", async () => {
