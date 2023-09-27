@@ -1,10 +1,10 @@
-const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
+const { SpCoinExchange } = require("./spCoinExchangeMin");
 
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
 class SpCoinExchangeDebug {
   constructor() {
-    this.spCoinExchangeMin = new SpCoinExchangeMin();
+    this.spCoinExchangeMin = new SpCoinExchange();
   }
 
   async init(spCoinExchangeContract, signerAccount, swapClass) {

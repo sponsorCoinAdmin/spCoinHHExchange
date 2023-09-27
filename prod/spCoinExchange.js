@@ -1,6 +1,6 @@
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
-class SpCoinExchangeMin {
+class SpCoinExchange {
   constructor() {
     this.contractName = "SpCoinExchange";
     this.spCoinExchangeContract;
@@ -33,7 +33,7 @@ class SpCoinExchangeMin {
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96 ) {
-      // consoleLog("ZZZZZZZZZZZZZZZZZZZZ SpCoinExchangeMin.swapExactInputSingle Parameters ZZZZZZZZZZZZZZZZZZZ");
+      // consoleLog("ZZZZZZZZZZZZZZZZZZZZ SpCoinExchange.swapExactInputSingle Parameters ZZZZZZZZZZZZZZZZZZZ");
       // consoleLog("_tokenIn           :", _tokenIn);
       // consoleLog("_tokenOut          :", _tokenOut);
       // consoleLog("_poolFee           :", _poolFee);
@@ -94,7 +94,7 @@ async swapExactOutputSingle (
     _amountOut,
     _amountInMaximum,
   ) {
-    // consoleLog("ZZZZZZZZZZZZZZZZZZZZ SpCoinExchangeMin.swapExactOutputMultiHop Parameters ZZZZZZZZZZZZZZZZZZZ");
+    // consoleLog("ZZZZZZZZZZZZZZZZZZZZ SpCoinExchange.swapExactOutputMultiHop Parameters ZZZZZZZZZZZZZZZZZZZ");
     // consoleLog("_tokenIn           :", _tokenIn);
     // consoleLog("_tokenIntermediary :", _tokenIntermediary);
     // consoleLog("_tokenOut          :", _tokenOut);
@@ -114,5 +114,5 @@ async swapExactOutputSingle (
 }
 
 module.exports = {
-  SpCoinExchangeMin
+  SpCoinExchange
 };

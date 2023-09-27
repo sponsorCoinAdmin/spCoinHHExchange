@@ -1,9 +1,9 @@
 const { spCoinLogger } = require("./lib/logger/spCoinLogger.js");
-const { SpCoinExchangeMin } = require("./spCoinExchangeMin");
+const { SpCoinExchange } = require("./spCoinExchangeMin");
 
 class SwapExactInputMultiHop {
   constructor() {
-    this.spCoinExchangeMin = new SpCoinExchangeMin();
+    this.spCoinExchangeMin = new SpCoinExchange();
     this.contractName = "SpCoinExchange";
     this.signerAccount;
     this.spCoinExchangeContract;
