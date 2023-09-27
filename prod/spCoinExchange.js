@@ -8,22 +8,16 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
 class SpCoinExchange {
   constructor() {
-    this.sCoinExchangeMin = new SpCoinExchangeMin();
     this.spCoinExchangeMin = new SpCoinExchangeMin();
-    this.accounts;
-    this.signerAccount;
-    this.spCoinExchangeContract;
-    this.indent = "    ";
   }
 
   async init(spCoinExchangeContract, signerAccount, swapClass) {
 
-    this.spCoinExchangeContract = spCoinExchangeContract;
     this.signerAccount = signerAccount;
     this.swapClass = swapClass;
 
-    this.swapClass.init(this.spCoinExchangeContract, this.signerAccount);
-    this.spCoinExchangeMin.init(this.spCoinExchangeContract);
+    this.swapClass.init(spCoinExchangeContract, signerAccount);
+    this.spCoinExchangeMin.init(spCoinExchangeContract);
   }
 
   // Deposit a specified account of ETH to WETH
