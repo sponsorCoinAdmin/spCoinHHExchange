@@ -24,7 +24,7 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
 
   // Test - SwapExactOutputMultiHop
   it("swapExactOutputMultiHopHHTest: WETH --> USDC --> DAI", async () => {
-    console.log("swapExactOutputSingleTest => WETH --> USDC --> DAI");
+    console.log("swapExactOutputMultiHopTest => WETH --> USDC --> DAI");
 
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const TOKEN_INTERMEDIARY_ABI = require('../contracts/interfaces/ERC20_ABI.json')
@@ -42,7 +42,7 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
     let TOKEN_INTERMEDIARY_CONTRACT = await ethers.getContractAt(TOKEN_INTERMEDIARY_ABI, TOKEN_INTERMEDIARY_ADDRESS);
     let TOKEN_OUT_CONTRACT          = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     
-    logHeader("swapExactOutputSingleTestHHTest: WETH -> USDC -> DAI")
+    logHeader("swapExactOutputMultiHopTestHHTest: WETH -> USDC -> DAI")
 
     // Deposit WETH by wrapping existing eth
     await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);

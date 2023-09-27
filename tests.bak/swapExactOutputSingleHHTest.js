@@ -9,12 +9,13 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   console.log("SwapExactOutputSingle:");
 
   let spCoinExchange
+  let SIGNER;
 
   // Before Initialization for each test
   before(async () => {
     const connection = new DeployHHConnection();
     let spCoinExchangeContract = await connection.deploySpCoinExchange();
-    const SIGNER = await connection.getSigner(0);
+    SIGNER = await connection.getSigner(0);
     const swapExactOutputSingle = new SwapExactOutputSingle();
     spCoinExchange = new SpCoinExchange();
 
@@ -41,7 +42,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
     // Deposit WETH
     await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
-    await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
 
     // Swap
     await spCoinExchange.swapExactOutputSingle(
@@ -108,7 +109,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     
     // Deposit WETH
-    await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
 
     // Swap
     await spCoinExchange.swapExactOutputSingle(
