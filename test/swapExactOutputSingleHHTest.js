@@ -14,11 +14,11 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   before(async () => {
     const connection = new DeployHHConnection();
     let spCoinExchangeContract = await connection.deploySpCoinExchange();
-    const signerAccount = await connection.getSigner(0);
+    const SIGNER = await connection.getSigner(0);
     const swapExactOutputSingle = new SwapExactOutputSingle();
     spCoinExchange = new SpCoinExchange();
 
-    await spCoinExchange.init(spCoinExchangeContract, signerAccount, swapExactOutputSingle);
+    await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactOutputSingle);
     setConsoleDebugLoggingOn();
 })
 
@@ -75,7 +75,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     
     // Deposit WETH by wrapping existing eth
     await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
-    await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
 
     // Swap
     await spCoinExchange.swapExactOutputSingle(

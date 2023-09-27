@@ -8,16 +8,17 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
     console.log("SwapExactInputSingleHHTest:");
 
     let spCoinExchange;
+    let SIGNER;
 
     // Before Initialization
     before(async () => {
       const connection = new DeployHHConnection();
       let spCoinExchangeContract = await connection.deploySpCoinExchange();
-      const signerAccount = await connection.getSigner(0);
+      SIGNER = await connection.getSigner(0);
       const swapExactInputSingle = new SwapExactInputSingle();
       spCoinExchange = new SpCoinExchange();
 
-      await spCoinExchange.init(spCoinExchangeContract, signerAccount, swapExactInputSingle);
+      await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactInputSingle);
       setConsoleDebugLoggingOn();
     })
 
@@ -40,7 +41,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
       // Deposit WETH by wrapping existing eth
       await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN);
-      await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN);
+      await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_ADDRESS,
         TOKEN_OUT_ADDRESS,
@@ -72,7 +73,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
       await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN);
-      await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN);
+      await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
 
       await spCoinExchange.swapExactInputSingle(
        
@@ -104,7 +105,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       // Deposit TOKEN_IN_ADDRESS
       let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
-      await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN);
+      await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
 
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_ADDRESS,

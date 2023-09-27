@@ -8,16 +8,17 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
   console.log("SwapExactInputMultiHopHHTest:");
 
   let spCoinExchange;
+  let SIGNER;
 
   // Before Initialization
   before(async () => {
     const connection = new DeployHHConnection();
     let spCoinExchangeContract = await connection.deploySpCoinExchange();
-    const signerAccount = await connection.getSigner(0);
+    SIGNER = await connection.getSigner(0);
     const swapExactInputMultiHop = new SwapExactInputMultiHop();
     spCoinExchange = new SpCoinExchange();
 
-    await spCoinExchange.init(spCoinExchangeContract, signerAccount, swapExactInputMultiHop);
+    await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactInputMultiHop);
     setConsoleDebugLoggingOn();
  })
 
@@ -45,7 +46,7 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
 
     // Deposit WETH by wrapping existing eth
     await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN);
-    await spCoinExchange.approve(TOKEN_IN_CONTRACT, AMOUNT_IN);
+    await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
 
     // Swap
     await spCoinExchange.swapExactInputMultiHop(
