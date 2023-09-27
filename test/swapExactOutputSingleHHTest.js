@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SpCoinExchangeDebug } = require("../prod/spCoinExchangeDebug");
+const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
 const { DeployHHConnection } = require("./deployHHConnection");
 const { SwapExactOutputSingle } = require("../prod/swapExactOutputSingleDebug");
 
@@ -18,6 +18,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     SIGNER = await connection.getSigner(0);
     const swapExactOutputSingle = new SwapExactOutputSingle();
     spCoinExchange = new SpCoinExchangeDebug();
+      // spCoinExchange = new SpCoinExchange();
 
     await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactOutputSingle);
     setConsoleDebugLoggingOn();

@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SpCoinExchangeDebug } = require("../prod/spCoinExchangeDebug");
+const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
 const { DeployHHConnection } = require("./deployHHConnection");
 const { SwapExactInputMultiHop } = require("../prod/swapExactInputMultiHopDebug");
 
@@ -17,6 +17,7 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
     SIGNER = await connection.getSigner(0);
     const swapExactInputMultiHop = new SwapExactInputMultiHop();
     spCoinExchange = new SpCoinExchangeDebug();
+      // spCoinExchange = new SpCoinExchange();
 
     await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactInputMultiHop);
     setConsoleDebugLoggingOn();
