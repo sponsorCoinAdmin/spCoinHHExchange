@@ -1,4 +1,8 @@
 const { SpCoinExchange } = require("./spCoinExchange");
+const { SwapExactInputSingle } = require("../prod/swapExactInputSingleDebug");
+const { SwapExactOutputSingle } = require("../prod/swapExactOutputSingleDebug");
+const { SwapExactInputMultiHop } = require("../prod/swapExactInputMultiHopDebug");
+const { SwapExactOutputMultiHop } = require("../prod/swapExactOutputMultiHopDebug");
 
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
@@ -6,7 +10,10 @@ const spCoinExchange = new SpCoinExchange();
 
 class SpCoinExchangeDebug {
   constructor() {
-    // spCoinExchange = new SpCoinExchange();
+    this.swapEIS  = new SwapExactInputSingle()
+    this.swapEOS  = new SwapExactOutputSingle()
+    this.swapEIMH = new SwapExactInputMultiHop()
+    this.swapEOMH = new SwapExactOutputMultiHop()
   }
 
   async init(spCoinExchangeContract, signerAccount, swapClass) {
@@ -15,6 +22,10 @@ class SpCoinExchangeDebug {
     this.swapClass = swapClass;
 
     this.swapClass.init(spCoinExchangeContract, signerAccount);
+    this.swapEIS.init(spCoinExchangeContract, signerAccount);
+    this.swapEOS.init(spCoinExchangeContract, signerAccount);
+    this.swapEIMH.init(spCoinExchangeContract, signerAccount);
+    this.swapEOMH.init(spCoinExchangeContract, signerAccount);
     spCoinExchange.init(spCoinExchangeContract);
   }
 
@@ -43,7 +54,7 @@ class SpCoinExchangeDebug {
       console.log("arguments.length", arguments.length);
       if ( arguments.length === 8 )
       {
-        await this.swapClass.swapExactInputSingle (
+        await this.swapEIS.swapExactInputSingle (
           _tokenInAddress,
           _tokenOutAddress,
           _poolFee,
@@ -80,7 +91,7 @@ class SpCoinExchangeDebug {
       if ( arguments.length === 8 )
       {
         // console.log("swapExactOutputSingle:", JSON.stringify(this.swapEOS, null, 2))
-        await this.swapClass.swapExactOutputSingle(
+        await this.swapEOS.swapExactOutputSingle(
           _tokenInAddress,
           _tokenOutAddress,
           _poolFee,
@@ -118,7 +129,7 @@ class SpCoinExchangeDebug {
     ) {
       if ( arguments.length === 9 )
       {
-        await this.swapClass.swapExactInputMultiHop(
+        await this.swapEIMH.swapExactInputMultiHop(
           _tokenInAddress,
           _tokenIntermediaryAddress,
           _tokenOutAddress,
@@ -141,7 +152,6 @@ class SpCoinExchangeDebug {
           _tokenInContract,
         )
       }
-
     }
   
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,7 +168,7 @@ class SpCoinExchangeDebug {
     ) {
       if ( arguments.length === 9 )
       {
-        await this.swapClass.swapExactOutputMultiHop(
+        await this.swapEIMH.swapExactOutputMultiHop(
           _tokenInAddress,
           _tokenIntermediaryAddress,
           _tokenOutAddress,
