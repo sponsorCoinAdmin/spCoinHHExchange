@@ -2,24 +2,18 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger.js");
 const { SpCoinExchange } = require("./spCoinExchange");
 
 class SwapExactOutputSingle {
-  constructor() {
-    this.spCoinExchangeMin = new SpCoinExchange();
+  constructor(_spCoinExchange) {
     this.contractName = "SpCoinExchange";
-    this.signerAccount;
-    this.spCoinExchangeContract;
+    this.spCoinExchange = _spCoinExchange;
+    this.spCoinExchangeContract = _spCoinExchange.spCoinExchangeContract;
+    this.signerAccount = _spCoinExchange.signerAccount;
     this.indent = "    ";
-  }
-
-  init( _signerAccount, _spCoinExchangeContract ) {
-     this.spCoinExchangeContract = _spCoinExchangeContract;
-     this.signerAccount = _signerAccount;
-     this.spCoinExchangeMin.init( this.spCoinExchangeContract );
   }
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount) {
     consoleLog("depositEthToWeth( "+_ethAmount+" )")
-    this.spCoinExchangeMin.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
+    this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
   }
   
   async swapExactOutputSingle(
@@ -51,7 +45,7 @@ class SwapExactOutputSingle {
       consoleLog(indent + "BEFORE TOKEN_OUT ~", tokenOutName, " balance:", beforeTokenOutBalanceOf);
 
       // Swap
-      await this.spCoinExchangeMin.swapExactOutputSingle(
+      await this.spCoinExchange.swapExactOutputSingle(
       _tokenIn,
       _tokenOut,
       _poolFee,

@@ -1,4 +1,4 @@
-consoleLogging = false;
+consoleLogging = true;
 
 consoleLog = (...parms) => {
   if (consoleLogging)

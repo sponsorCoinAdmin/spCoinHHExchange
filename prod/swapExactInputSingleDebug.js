@@ -2,24 +2,18 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger.js");
 const { SpCoinExchange } = require("./spCoinExchange");
 
 class SwapExactInputSingle {
-  constructor() {
-    this.spCoinExchangeMin = new SpCoinExchange();
+  constructor(_spCoinExchange) {
     this.contractName = "SpCoinExchange";
-    this.signerAccount;
-    this.spCoinExchangeContract;
+    this.spCoinExchange = _spCoinExchange;
+    this.spCoinExchangeContract = _spCoinExchange.spCoinExchangeContract;
+    this.signerAccount = _spCoinExchange.signerAccount;
     this.indent = "    ";
-  }
-
-  init( _signerAccount, _spCoinExchangeContract ) {
-     this.spCoinExchangeContract = _spCoinExchangeContract;
-     this.signerAccount = _signerAccount;
-     this.spCoinExchangeMin.init( this.spCoinExchangeContract );
   }
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount) {
     consoleLog("depositEthToWeth( "+_ethAmount+" )")
-    this.spCoinExchangeMin.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
+    this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
   }
 
   async swapExactInputSingle (
@@ -34,9 +28,13 @@ class SwapExactInputSingle {
   ) {
 
       let signerAccount = this.signerAccount;
+
+      console.log ("this.signerAccount.address", this.signerAccount.address);
+
       let indent = this.indent;
 
       let tokenInName = await _tokenInContract.name()
+
       let tokenInSymbol = await _tokenInContract.symbol()
       let beforeTokenInBalanceOf = await _tokenInContract.balanceOf(signerAccount.address)
       let tokenOutName = await _tokenOutContract.name()
@@ -50,7 +48,7 @@ class SwapExactInputSingle {
       consoleLog(indent + "TOKEN_OUT ~", tokenOutName, "SYMBOL", tokenOutSymbol, " balance:", beforeTokenOutBalanceOf);
         
       // Swap Exact Input Single
-      await this.spCoinExchangeMin.swapExactInputSingle(
+      await this.spCoinExchange.swapExactInputSingle(
         _tokenInAddress, 
         _tokenOutAddress,
         _poolFee,

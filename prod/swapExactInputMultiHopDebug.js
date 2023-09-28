@@ -2,24 +2,18 @@ const { spCoinLogger } = require("./lib/logger/spCoinLogger.js");
 const { SpCoinExchange } = require("./spCoinExchange");
 
 class SwapExactInputMultiHop {
-  constructor() {
-    this.spCoinExchangeMin = new SpCoinExchange();
+  constructor(_spCoinExchange) {
     this.contractName = "SpCoinExchange";
-    this.signerAccount;
-    this.spCoinExchangeContract;
+    this.spCoinExchange = _spCoinExchange;
+    this.spCoinExchangeContract = _spCoinExchange.spCoinExchangeContract;
+    this.signerAccount = _spCoinExchange.signerAccount;
     this.indent = "    ";
-  }
-
-  init( _signerAccount, _spCoinExchangeContract ) {
-     this.spCoinExchangeContract = _spCoinExchangeContract;
-     this.signerAccount = _signerAccount;
-     this.spCoinExchangeMin.init( this.spCoinExchangeContract );
   }
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount) {
     consoleLog("depositEthToWeth( "+_ethAmount+" )")
-    this.spCoinExchangeMin.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
+    this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
   }
 
   async swapExactInputMultiHop (
@@ -58,7 +52,7 @@ class SwapExactInputMultiHop {
       
     // Swap Exact Input MultiHop
     
-    await this.spCoinExchangeMin.swapExactInputMultiHop(
+    await this.spCoinExchange.swapExactInputMultiHop(
       _tokenInAddress,
       _tokenIntermediaryAddress,
       _tokenOutAddress,

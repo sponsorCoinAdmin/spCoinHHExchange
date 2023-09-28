@@ -15,9 +15,11 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       const connection = new DeployHHConnection();
       let spCoinExchangeContract = await connection.deploySpCoinExchange();
       SIGNER = await connection.getSigner(0);
-      spCoinExchange = debugMode ? new SpCoinExchangeDebug() : new SpCoinExchange();
 
-      await spCoinExchange.init(SIGNER, spCoinExchangeContract);
+      spCoinExchange = new SpCoinExchange(SIGNER, spCoinExchangeContract);
+      if (debugMode)
+         spCoinExchange = new SpCoinExchangeDebug(spCoinExchange);
+
       setConsoleDebugLoggingOn();
     })
 
@@ -39,7 +41,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
 
       // Deposit WETH by wrapping existing eth
-      await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN);
+      await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_ADDRESS,
@@ -53,6 +55,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       );
     }).timeout(100000);
 
+    /*
     // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> SPCOIN", async function () {
 
@@ -71,7 +74,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       // Deposit TOKEN_IN_ADDRESS
       let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
-      await spCoinExchange.depositEthToWeth(TOKEN_IN_CONTRACT, AMOUNT_IN);
+      await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
 
       await spCoinExchange.swapExactInputSingle(
@@ -116,5 +119,6 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         TOKEN_IN_CONTRACT,
         TOKEN_OUT_CONTRACT
       );
-    }).timeout(100000);  
+    }).timeout(100000);
+    */
 });

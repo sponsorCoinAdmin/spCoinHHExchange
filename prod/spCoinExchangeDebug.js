@@ -6,38 +6,40 @@ const { SwapExactOutputMultiHop } = require("../prod/swapExactOutputMultiHopDebu
 
 const { spCoinLogger } = require("./lib/logger/spCoinLogger");
 
-const spCoinExchange = new SpCoinExchange();
 
 class SpCoinExchangeDebug {
-  constructor() {
-    this.swapEIS  = new SwapExactInputSingle()
-    this.swapEOS  = new SwapExactOutputSingle()
-    this.swapEIMH = new SwapExactInputMultiHop()
-    this.swapEOMH = new SwapExactOutputMultiHop()
+  constructor(_spCoinExchange) {
+    this.spCoinExchange = _spCoinExchange;
+    this.swapEIS  = new SwapExactInputSingle(this.spCoinExchange)
+    this.swapEOS  = new SwapExactOutputSingle(this.spCoinExchange)
+    this.swapEIMH = new SwapExactInputMultiHop(this.spCoinExchange)
+    this.swapEOMH = new SwapExactOutputMultiHop(this.spCoinExchange)
   }
 
   async init( _signerAccount, _spCoinExchangeContract ) {
 
+    // console.log("_spCoinExchangeContract :", JSON.stringify(_spCoinExchangeContract,null,2));
     this.signerAccount = _signerAccount;
     // this.swapClass = swapClass;
 
     // this.swapClass.init(spCoinExchangeContract, signerAccount);
-    this.swapEIS.init( _signerAccount, _spCoinExchangeContract );
-    this.swapEOS.init( _signerAccount, _spCoinExchangeContract );
-    this.swapEIMH.init( _signerAccount, _spCoinExchangeContract );
-    this.swapEOMH.init( _signerAccount, _spCoinExchangeContract );
-    spCoinExchange.init(_spCoinExchangeContract);
-  }
-
-  // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(tokenInContract, _ethAmount) {
-    await spCoinExchange.depositEthToWeth(this.signerAccount, tokenInContract, _ethAmount);
   }
 
   // Approve a specified account to spend a specified token of a specific amount token. As follows:
   // Approve msg.sender (account[0]) to allow spCoinExchangeContract to spend _amount in _token(s).
   async approve(_signerAccount, _tokenContract, _amount) {
-    await spCoinExchange.approve(_signerAccount, _tokenContract, _amount);
+    // consoleLog("EXECUTING: approve( _signerAccount = " + _signerAccount.address + ",");
+    // consoleLog("                    _tokenContract = " + await _tokenContract.name() + "( " + await _tokenContract.symbol() +" )");
+    // consoleLog("                    _amount        = " + _amount +" )");
+     await this.spCoinExchange.approve(_signerAccount, _tokenContract, _amount);
+  }
+
+  // Deposit a specified account of ETH to WETH
+  async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount) {
+    // consoleLog("EXECUTING: depositEthToWeth( _signerAccount   = " + _signerAccount.address + ",");
+    // consoleLog("                             _tokenInContract = " +await _tokenInContract.name() + "( " + await _tokenInContract.symbol() +" )");
+    // consoleLog("                             _ethAmount       = " + _ethAmount +" )");
+    await this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
   }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +68,7 @@ class SpCoinExchangeDebug {
         )
       }
       else{
-        this.sCoinExchangeMin.swapExactInputSingle (
+        this.spCoinExchange.swapExactInputSingle (
           _tokenInAddress,
           _tokenOutAddress,
           _poolFee,
@@ -90,7 +92,6 @@ class SpCoinExchangeDebug {
     ) {
       if ( arguments.length === 8 )
       {
-        // console.log("swapExactOutputSingle:", JSON.stringify(this.swapEOS, null, 2))
         await this.swapEOS.swapExactOutputSingle(
           _tokenInAddress,
           _tokenOutAddress,
@@ -103,7 +104,7 @@ class SpCoinExchangeDebug {
         );
       }
       else{
-        this.sCoinExchangeMin.swapExactOutputSingle (
+        this.spCoinExchange.swapExactOutputSingle (
           _tokenInAddress,
           _tokenOutAddress,
           _poolFee,
@@ -142,7 +143,7 @@ class SpCoinExchangeDebug {
         );
       }
       else{
-        this.sCoinExchangeMin.swapExactInputMultiHop (
+        this.spCoinExchange.swapExactInputMultiHop (
           _tokenInAddress,
           _tokenIntermediaryAddress,
           _tokenOutAddress,
@@ -181,7 +182,7 @@ class SpCoinExchangeDebug {
         );
       }
       else{
-        this.sCoinExchangeMin.swapExactOutputMultiHop (
+        this.spCoinExchange.swapExactOutputMultiHop (
           _tokenInAddress,
           _tokenIntermediaryAddress,
           _tokenOutAddress,
@@ -197,5 +198,6 @@ class SpCoinExchangeDebug {
 
 module.exports = {
   SpCoinExchange,
-  SpCoinExchangeDebug
+  SpCoinExchangeDebug,
+  spCoinLogger
 };
