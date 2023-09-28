@@ -47,7 +47,7 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
 
     // Deposit WETH by wrapping existing eth
     await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
-    await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
+    await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN);
 
     // Swap
     await spCoinExchange.swapExactInputMultiHop(

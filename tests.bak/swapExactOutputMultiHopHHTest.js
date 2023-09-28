@@ -47,7 +47,7 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
 
     // Deposit WETH by wrapping existing eth
     await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
-    await spCoinExchange.approve(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
 
     // consoleLog(" test/SwapExactOutputMultiHop Parameters ");
     // consoleLog("TOKEN_IN_ADDRESS           :", TOKEN_IN_ADDRESS);

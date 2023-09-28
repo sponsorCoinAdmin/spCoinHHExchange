@@ -16,7 +16,7 @@ class SpCoinExchange {
 
   // Approve a specified account to spend a specified token of a specific amount token. As follows:
   // Approve msg.sender (account[0]) to allow spCoinExchangeContract to spend _amount in _token(s).
-  async approve(_signerAccount, _tokenContract, _amount) {
+  async approve(_tokenContract, _amount) {
     let spenderAddress = this.spCoinExchangeContract.address;
     return await _tokenContract.connect(this.signerAccount).approve(spenderAddress, _amount);
   }
