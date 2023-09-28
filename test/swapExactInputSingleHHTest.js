@@ -1,7 +1,6 @@
 require("dotenv").config();
 const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
 const { DeployHHConnection } = require("./deployHHConnection");
-const { SwapExactInputSingle } = require("../prod/swapExactInputSingleDebug");
 
 describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut"
 , function () {
@@ -9,21 +8,20 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
     let spCoinExchange;
     let SIGNER;
+    let debugMode = true;
 
     // Before Initialization
     before(async () => {
       const connection = new DeployHHConnection();
       let spCoinExchangeContract = await connection.deploySpCoinExchange();
       SIGNER = await connection.getSigner(0);
-      const swapExactInputSingle = new SwapExactInputSingle();
-      spCoinExchange = new SpCoinExchangeDebug();
-      // spCoinExchange = new SpCoinExchange();
+      spCoinExchange = debugMode ? new SpCoinExchangeDebug() : new SpCoinExchange();
 
-      await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactInputSingle);
+      await spCoinExchange.init(SIGNER, spCoinExchangeContract);
       setConsoleDebugLoggingOn();
     })
 
-      // Test - swapExactInputSingleTest
+    // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> DAI", async function () {
       const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')

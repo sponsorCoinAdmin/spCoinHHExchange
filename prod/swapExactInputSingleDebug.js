@@ -10,7 +10,7 @@ class SwapExactInputSingle {
     this.indent = "    ";
   }
 
-  init(_spCoinExchangeContract, _signerAccount ) {
+  init( _signerAccount, _spCoinExchangeContract ) {
      this.spCoinExchangeContract = _spCoinExchangeContract;
      this.signerAccount = _signerAccount;
      this.spCoinExchangeMin.init( this.spCoinExchangeContract );

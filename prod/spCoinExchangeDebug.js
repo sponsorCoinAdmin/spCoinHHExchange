@@ -16,17 +16,17 @@ class SpCoinExchangeDebug {
     this.swapEOMH = new SwapExactOutputMultiHop()
   }
 
-  async init(spCoinExchangeContract, signerAccount, swapClass) {
+  async init( _signerAccount, _spCoinExchangeContract ) {
 
-    this.signerAccount = signerAccount;
-    this.swapClass = swapClass;
+    this.signerAccount = _signerAccount;
+    // this.swapClass = swapClass;
 
-    this.swapClass.init(spCoinExchangeContract, signerAccount);
-    this.swapEIS.init(spCoinExchangeContract, signerAccount);
-    this.swapEOS.init(spCoinExchangeContract, signerAccount);
-    this.swapEIMH.init(spCoinExchangeContract, signerAccount);
-    this.swapEOMH.init(spCoinExchangeContract, signerAccount);
-    spCoinExchange.init(spCoinExchangeContract);
+    // this.swapClass.init(spCoinExchangeContract, signerAccount);
+    this.swapEIS.init( _signerAccount, _spCoinExchangeContract );
+    this.swapEOS.init( _signerAccount, _spCoinExchangeContract );
+    this.swapEIMH.init( _signerAccount, _spCoinExchangeContract );
+    this.swapEOMH.init( _signerAccount, _spCoinExchangeContract );
+    spCoinExchange.init(_spCoinExchangeContract);
   }
 
   // Deposit a specified account of ETH to WETH
@@ -196,5 +196,6 @@ class SpCoinExchangeDebug {
   }
 
 module.exports = {
+  SpCoinExchange,
   SpCoinExchangeDebug
 };
