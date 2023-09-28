@@ -41,7 +41,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
 
       // Deposit WETH by wrapping existing eth
-      await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
+      await spCoinExchange.depositEthToWeth( TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.swapExactInputSingle(
         TOKEN_IN_ADDRESS,
@@ -74,7 +74,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       // Deposit TOKEN_IN_ADDRESS
       let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
-      await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN);
+      await spCoinExchange.depositEthToWeth( TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN);
 
       await spCoinExchange.swapExactInputSingle(

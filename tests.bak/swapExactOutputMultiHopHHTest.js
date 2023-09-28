@@ -46,7 +46,7 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
     logHeader("swapExactOutputMultiHopTestHHTest: WETH -> USDC -> DAI")
 
     // Deposit WETH by wrapping existing eth
-    await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.depositEthToWeth( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
     await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
 
     // consoleLog(" test/SwapExactOutputMultiHop Parameters ");

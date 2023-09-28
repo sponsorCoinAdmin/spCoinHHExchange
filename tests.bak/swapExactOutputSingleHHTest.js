@@ -42,7 +42,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
 
     // Deposit WETH
-    await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.depositEthToWeth( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
     await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
 
     // Swap
@@ -76,7 +76,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     
     // Deposit WETH by wrapping existing eth
-    await spCoinExchange.depositEthToWeth(SIGNER, TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.depositEthToWeth( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
     await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
 
     // Swap

@@ -34,11 +34,10 @@ class SpCoinExchangeDebug {
   }
 
   // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount) {
-    // consoleLog("EXECUTING: depositEthToWeth( _signerAccount   = " + _signerAccount.address + ",");
+  async depositEthToWeth(_tokenInContract, _ethAmount) {
     // consoleLog("                             _tokenInContract = " +await _tokenInContract.name() + "( " + await _tokenInContract.symbol() +" )");
     // consoleLog("                             _ethAmount       = " + _ethAmount +" )");
-    await this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
+    await this.spCoinExchange.depositEthToWeth(_tokenInContract, _ethAmount);
   }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////

@@ -8,9 +8,8 @@ class SpCoinExchange {
   }
 
   // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(_signerAccount, tokenInContract, _ethAmount) {
-    consoleLog("EXECUTING: depositEthToWeth( _signerAccount = " + _signerAccount.address + " _ethAmount = " + _ethAmount +" )");
-    consoleLog("this.signerAccount.address = " + this.signerAccount.address +" )");
+  async depositEthToWeth(tokenInContract, _ethAmount) {
+    consoleLog("EXECUTING: depositEthToWeth( this.spCoinExchangeContract = " + this.spCoinExchangeContract.address + " _ethAmount = " + _ethAmount +" )");
     await tokenInContract.connect(this.signerAccount).deposit({ value: _ethAmount });
   }
 
