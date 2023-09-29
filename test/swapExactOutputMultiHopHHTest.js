@@ -19,11 +19,11 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
     console.log("swapExactOutputMultiHopTest => WETH --> USDC --> DAI");
 
     const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
-    const TOKEN_INTERMEDIARY_ABI = require('../contracts/interfaces/ERC20_ABI.json')
+    const TOKEN_BASE_ABI = require('../contracts/interfaces/ERC20_ABI.json')
     const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
 
     const TOKEN_IN_ADDRESS           = process.env.GOERLI_WETH;
-    const TOKEN_INTERMEDIARY_ADDRESS = process.env.GOERLI_USDC;
+    const TOKEN_BASE_ADDRESS = process.env.GOERLI_USDC;
     const TOKEN_OUT_ADDRESS          = process.env.GOERLI_DAI;
     const POOL_FEE = 3000;
 
@@ -31,7 +31,7 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
     const AMOUNT_OUT = 100n * 10n ** 18n;
 
     let TOKEN_IN_CONTRACT           = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
-    let TOKEN_INTERMEDIARY_CONTRACT = await ethers.getContractAt(TOKEN_INTERMEDIARY_ABI, TOKEN_INTERMEDIARY_ADDRESS);
+    let TOKEN_BASE_CONTRACT = await ethers.getContractAt(TOKEN_BASE_ABI, TOKEN_BASE_ADDRESS);
     let TOKEN_OUT_CONTRACT          = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     
     logHeader("swapExactOutputMultiHopTestHHTest: WETH -> USDC -> DAI")
@@ -42,7 +42,7 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
 
     // consoleLog(" test/SwapExactOutputMultiHop Parameters ");
     // consoleLog("TOKEN_IN_ADDRESS           :", TOKEN_IN_ADDRESS);
-    // consoleLog("TOKEN_INTERMEDIARY_ADDRESS :", TOKEN_INTERMEDIARY_ADDRESS);
+    // consoleLog("TOKEN_BASE_ADDRESS :", TOKEN_BASE_ADDRESS);
     // consoleLog("TOKEN_OUT_ADDRESS          :", TOKEN_OUT_ADDRESS);
     // consoleLog("POOL_FEE                   :", POOL_FEE);
     // consoleLog("AMOUNT_OUT                 :", AMOUNT_OUT);
@@ -51,13 +51,13 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
     // Swap
     await spCoinExchange.swapExactOutputMultiHop(
       TOKEN_IN_ADDRESS,
-      TOKEN_INTERMEDIARY_ADDRESS,
+      TOKEN_BASE_ADDRESS,
       TOKEN_OUT_ADDRESS,
       POOL_FEE,
       AMOUNT_OUT, 
       AMOUNT_IN_MAX,
       TOKEN_IN_CONTRACT,
-      TOKEN_INTERMEDIARY_CONTRACT,
+      TOKEN_BASE_CONTRACT,
       TOKEN_OUT_CONTRACT,
 );
   }).timeout(1000000);

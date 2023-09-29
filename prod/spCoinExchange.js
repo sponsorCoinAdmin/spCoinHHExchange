@@ -6,8 +6,8 @@ class SpCoinExchange {
   }
 
   // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(tokenInContract, _ethAmount) {
-    await tokenInContract.connect(this.signerAccount).deposit({ value: _ethAmount });
+  async depositEthToWeth(wethContract, _ethAmount) {
+    await wethContract.connect(this.signerAccount).deposit({ value: _ethAmount });
   }
 
   // Approve a specified account to spend a specified token of a specific amount token. As follows:
