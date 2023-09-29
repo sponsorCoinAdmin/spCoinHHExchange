@@ -1,3 +1,5 @@
+const { spCoinLogger } = require("../prod/lib/logger/spCoinLogger.js");
+
 const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
 
 async function getSpCoinExchange(debugMode) {
@@ -6,8 +8,10 @@ async function getSpCoinExchange(debugMode) {
   let signer = await connection.getSigner(0);
 
   spCoinExchange = new SpCoinExchange(signer, spCoinExchangeContract);
-  if (debugMode)
-     spCoinExchange = new SpCoinExchangeDebug(spCoinExchange);
+  if (debugMode) {
+    console.log("*** LOGGING MODE ON ***")
+    spCoinExchange = new SpCoinExchangeDebug(spCoinExchange);
+  }
   return spCoinExchange;
 }
 

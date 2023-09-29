@@ -51,7 +51,7 @@ class SpCoinExchangeDebug {
     _tokenInContract,
     _tokenOutContract) {
 
-      consoleLog("arguments.length", arguments.length);
+      // consoleLog("arguments.length", arguments.length);
       if ( arguments.length === 8 )
       {
         await this.swapEIS.swapExactInputSingle (
@@ -197,5 +197,4 @@ class SpCoinExchangeDebug {
 module.exports = {
   SpCoinExchange,
   SpCoinExchangeDebug,
-  spCoinLogger
 };

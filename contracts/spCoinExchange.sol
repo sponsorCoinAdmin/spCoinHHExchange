@@ -99,10 +99,10 @@ contract SpCoinExchange {
     }
 
     /// @notice swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of _tokenIn
-    /// swap _tokenIn --> _tokenIntermediary --> _tokenOut
+    /// swap _tokenIn --> _tokenBase --> _tokenOut
    function swapExactInputMultiHop(
                                 address _tokenIn,
-                                address _tokenIntermediary,
+                                address _tokenBase,
                                 address _tokenOut,
                                 uint24  _poolFee,
                                 uint256 _amountIn,
@@ -115,10 +115,10 @@ contract SpCoinExchange {
 
         // Multiple pool swaps are encoded through bytes called a `path`. A path is a sequence of token addresses and poolFees that define the pools used in the swaps.
         // The format for pool encoding is (tokenIn, fee, tokenOut/tokenIn, fee, tokenOut) where tokenIn/tokenOut parameter is the shared token across the pools.
-        // Since we are swapping _tokenIn to _tokenIntermediary and then _tokenIntermediary to _tokenIn the path encoding is (_tokenIn, 0.3%, _tokenIntermediary, 0.3%, _tokenIn).
+        // Since we are swapping _tokenIn to _tokenBase and then _tokenBase to _tokenIn the path encoding is (_tokenIn, 0.3%, _tokenBase, 0.3%, _tokenIn).
         ISwapRouter.ExactInputParams memory params =
             ISwapRouter.ExactInputParams({
-                path: abi.encodePacked(_tokenIn, uint24(_poolFee), _tokenIntermediary, uint24(100), _tokenOut),
+                path: abi.encodePacked(_tokenIn, uint24(_poolFee), _tokenBase, uint24(_poolFee), _tokenOut),
                 recipient: msg.sender,
                 deadline: block.timestamp,
                 amountIn: _amountIn,
@@ -129,11 +129,11 @@ contract SpCoinExchange {
         amountOut = swapRouter.exactInput(params);
     }
 
-    /// @notice swapExactOutputMultiHop swaps a minimum possible amount of WETH for a fixed amount of _tokenIntermediary
-    /// swap _tokenIn --> _tokenIntermediary --> _tokenOut
+    /// @notice swapExactOutputMultiHop swaps a minimum possible amount of WETH for a fixed amount of _tokenBase
+    /// swap _tokenIn --> _tokenBase --> _tokenOut
     function swapExactOutputMultiHop(
         address _tokenIn,
-        address _tokenIntermediary,
+        address _tokenBase,
         address _tokenOut,
         uint24  _poolFee,
         uint256 _amountOut,
@@ -153,7 +153,7 @@ contract SpCoinExchange {
                 path: abi.encodePacked(
                     _tokenOut,
                     uint24(100),
-                    _tokenIntermediary,
+                    _tokenBase,
                     uint24(_poolFee),
                     _tokenIn
                 ),
