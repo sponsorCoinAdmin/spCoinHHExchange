@@ -29,7 +29,7 @@ class SwapExactInputSingle {
 
       let signerAccount = this.signerAccount;
 
-      console.log ("this.signerAccount.address", this.signerAccount.address);
+      consoleLog ("this.signerAccount.address", this.signerAccount.address);
 
       let indent = this.indent;
 

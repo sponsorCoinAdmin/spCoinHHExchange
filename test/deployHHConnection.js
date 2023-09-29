@@ -1,36 +1,49 @@
+const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
 
-    class DeployHHConnection {
-      constructor() {
-        this.contract;
-        this.accounts;
-        this.contractName;
-      }
+async function getSpCoinExchange(debugMode) {
+  const connection = new DeployHHConnection();
+  let spCoinExchangeContract = await connection.deploySpCoinExchange();
+  let signer = await connection.getSigner(0);
 
-      async getSigner( idx ) {
-        this.accounts = await this.getSigners();
-        return this.accounts[idx];
-      }
+  spCoinExchange = new SpCoinExchange(signer, spCoinExchangeContract);
+  if (debugMode)
+     spCoinExchange = new SpCoinExchangeDebug(spCoinExchange);
+  return spCoinExchange;
+}
 
-      async getSigners() {
-        this.accounts = await ethers.getSigners();
-        return this.accounts;
-      }
+class DeployHHConnection {
+  constructor() {
+    this.contract;
+    this.accounts;
+    this.contractName;
+  }
 
-      async deploySpCoinExchange() {
-        const spCoinExchangeContract = await this.deploy("SpCoinExchange");
-        return spCoinExchangeContract;
-      }
+  async getSigner( idx ) {
+    this.accounts = await this.getSigners();
+    return this.accounts[idx];
+  }
 
-      async deploy(contractName) {
-        this.contractName = contractName;
-        console.log("DEPLOYING", contractName);
-        const contractFactory = await ethers.getContractFactory(contractName);
-        const spCoinExchangeContract = await contractFactory.deploy();
-        await spCoinExchangeContract.deployed();
-        return spCoinExchangeContract;
-        }
+  async getSigners() {
+    this.accounts = await ethers.getSigners();
+    return this.accounts;
+  }
+
+  async deploySpCoinExchange() {
+    const spCoinExchangeContract = await this.deploy("SpCoinExchange");
+    return spCoinExchangeContract;
+  }
+
+  async deploy(contractName) {
+    this.contractName = contractName;
+    consoleLog("DEPLOYING", contractName);
+    const contractFactory = await ethers.getContractFactory(contractName);
+    const spCoinExchangeContract = await contractFactory.deploy();
+    await spCoinExchangeContract.deployed();
+    return spCoinExchangeContract;
     }
+}
 
-    module.exports = {
-      DeployHHConnection
-    };
+module.exports = {
+  DeployHHConnection,
+  getSpCoinExchange
+};

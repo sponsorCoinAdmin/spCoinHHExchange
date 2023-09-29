@@ -1,5 +1,3 @@
-const { spCoinLogger } = require("./lib/logger/spCoinLogger");
-
 class SpCoinExchange {
   constructor(_signerAccount, _spCoinExchangeContract) {
     this.contractName = "SpCoinExchange";
@@ -9,7 +7,6 @@ class SpCoinExchange {
 
   // Deposit a specified account of ETH to WETH
   async depositEthToWeth(tokenInContract, _ethAmount) {
-    consoleLog("EXECUTING: depositEthToWeth( this.spCoinExchangeContract = " + this.spCoinExchangeContract.address + " _ethAmount = " + _ethAmount +" )");
     await tokenInContract.connect(this.signerAccount).deposit({ value: _ethAmount });
   }
 
@@ -27,14 +24,14 @@ class SpCoinExchange {
     _amountIn,
     _amountOutMin,
     _sqrtPriceLimitX96 ) {
-      // consoleLog("XXXXXXXXXXXXXXXXXX SpCoinExchange.swapExactInputSingle Parameters XXXXXXXXXXXXXXXXXXXX");
-      // consoleLog("_tokenIn           :", _tokenIn);
-      // consoleLog("_tokenOut          :", _tokenOut);
-      // consoleLog("_poolFee           :", _poolFee);
-      // consoleLog("_amountIn          :", _amountIn);
-      // consoleLog("_amountOutMin      :", _amountOutMin);
-      // consoleLog("_sqrtPriceLimitX96 :", _sqrtPriceLimitX96);
-      // consoleLog("this.spCoinExchangeContract :", JSON.stringify(this.spCoinExchangeContract,null,2));
+      // console.log("XXXXXXXXXXXXXXXXXX SpCoinExchange.swapExactInputSingle Parameters XXXXXXXXXXXXXXXXXXXX");
+      // console.log("_tokenIn           :", _tokenIn);
+      // console.log("_tokenOut          :", _tokenOut);
+      // console.log("_poolFee           :", _poolFee);
+      // console.log("_amountIn          :", _amountIn);
+      // console.log("_amountOutMin      :", _amountOutMin);
+      // console.log("_sqrtPriceLimitX96 :", _sqrtPriceLimitX96);
+      // console.log("this.spCoinExchangeContract :", JSON.stringify(this.spCoinExchangeContract,null,2));
   
       await this.spCoinExchangeContract.swapExactInputSingle(
         _tokenIn, 
@@ -89,13 +86,13 @@ async swapExactOutputSingle (
     _amountOut,
     _amountInMaximum,
   ) {
-    // consoleLog("PPPPPPPPPPPPPPP SpCoinExchange.swapExactOutputMultiHop Parameters PPPPPPPPPPPPPPPPPPPP");
-    // consoleLog("_tokenIn           :", _tokenIn);
-    // consoleLog("_tokenIntermediary :", _tokenIntermediary);
-    // consoleLog("_tokenOut          :", _tokenOut);
-    // consoleLog("_poolFee           :", _poolFee);
-    // consoleLog("_amountOut         :", _amountOut);
-    // consoleLog("_amountInMaximum   :", _amountInMaximum);
+    // console.log("PPPPPPPPPPPPPPP SpCoinExchange.swapExactOutputMultiHop Parameters PPPPPPPPPPPPPPPPPPPP");
+    // console.log("_tokenIn           :", _tokenIn);
+    // console.log("_tokenIntermediary :", _tokenIntermediary);
+    // console.log("_tokenOut          :", _tokenOut);
+    // console.log("_poolFee           :", _poolFee);
+    // console.log("_amountOut         :", _amountOut);
+    // console.log("_amountInMaximum   :", _amountInMaximum);
     await this.spCoinExchangeContract.swapExactOutputMultiHop(
       _tokenIn,
       _tokenIntermediary,

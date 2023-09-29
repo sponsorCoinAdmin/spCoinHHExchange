@@ -1,4 +1,4 @@
-consoleLogging = true;
+consoleLogging = false;
 
 consoleLog = (...parms) => {
   if (consoleLogging)
@@ -21,7 +21,7 @@ setConsoleDebugLoggingOn = () => {
   consoleLogging = true;
 }
 
-setConsoleLoggingOff = () => {
+setConsoleDebugLoggingOff = () => {
   consoleLogging = false;
 }
 

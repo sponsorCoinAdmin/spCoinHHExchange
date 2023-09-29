@@ -1,27 +1,18 @@
 require("dotenv").config();
-const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
-const { DeployHHConnection } = require("./deployHHConnection");
+const { getSpCoinExchange } = require("./deployHHConnection");
 
 describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maximum possible amount of _tokenOut"
 , function () {
     console.log("SwapExactInputSingleHHTest:");
 
     let spCoinExchange;
-    let SIGNER;
-    let debugMode = true;
 
     // Before Initialization
     before(async () => {
-      const connection = new DeployHHConnection();
-      let spCoinExchangeContract = await connection.deploySpCoinExchange();
-      SIGNER = await connection.getSigner(0);
-
-      spCoinExchange = new SpCoinExchange(SIGNER, spCoinExchangeContract);
-      if (debugMode)
-         spCoinExchange = new SpCoinExchangeDebug(spCoinExchange);
-
-      setConsoleDebugLoggingOn();
-    })
+      let debugMode = true;
+      spCoinExchange = await getSpCoinExchange(debugMode);
+      setConsoleDebugLoggingOff();
+     })
 
     // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> DAI", async function () {
@@ -55,7 +46,6 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       );
     }).timeout(100000);
 
-    /*
     // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> SPCOIN", async function () {
 
@@ -120,5 +110,4 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
         TOKEN_OUT_CONTRACT
       );
     }).timeout(100000);
-    */
 });

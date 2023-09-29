@@ -1,28 +1,19 @@
 require("dotenv").config();
-const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
-const { DeployHHConnection } = require("./deployHHConnection");
-const { SwapExactOutputSingle } = require("../prod/swapExactOutputSingleDebug");
+const { getSpCoinExchange } = require("./deployHHConnection");
 
 describe("SwapExactOutputSingle: Approve the router to spend the specified `amountInMaximum` of WETH.\n"+
 "    In production, you should choose the maximum amount to spend based on oracles or other data sources to achieve a better swap."
 , function () {
   console.log("SwapExactOutputSingle:");
 
-  let spCoinExchange
-  let SIGNER;
+  let spCoinExchange;
 
   // Before Initialization for each test
   before(async () => {
-    const connection = new DeployHHConnection();
-    let spCoinExchangeContract = await connection.deploySpCoinExchange();
-    SIGNER = await connection.getSigner(0);
-    const swapExactOutputSingle = new SwapExactOutputSingle();
-    spCoinExchange = new SpCoinExchangeDebug();
-      // spCoinExchange = new SpCoinExchange();
-
-    await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactOutputSingle);
+    let debugMode = true;
+    spCoinExchange = await getSpCoinExchange(debugMode);
     setConsoleDebugLoggingOn();
-})
+   })
 
   // Test - swapExactOutputSingle
   it("swapExactOutputSingle  WETH -> DAI", async function () {

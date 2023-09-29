@@ -1,25 +1,16 @@
 require("dotenv").config();
-const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
-const { DeployHHConnection } = require("./deployHHConnection");
-const { SwapExactOutputMultiHop } = require("../prod/swapExactOutputMultiHopDebug");
+const { getSpCoinExchange } = require("./deployHHConnection");
 
 describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed amount of tokenIn for a maximum possible amount of tokenOut"
 , function () {
   console.log("swapExactOutputMultiHopHHTest:");
 
   let spCoinExchange;
-  let SIGNER;
 
   // Before Initialization
   before(async () => {
-    const connection = new DeployHHConnection();
-    let spCoinExchangeContract = await connection.deploySpCoinExchange();
-    SIGNER = await connection.getSigner(0);
-    const swapExactOutputMultiHop = new SwapExactOutputMultiHop();
-    spCoinExchange = new SpCoinExchangeDebug();
-      // spCoinExchange = new SpCoinExchange();
-
-    await spCoinExchange.init(spCoinExchangeContract, SIGNER, swapExactOutputMultiHop);
+    let debugMode = true;
+    spCoinExchange = await getSpCoinExchange(debugMode);
     setConsoleDebugLoggingOn();
    })
 
