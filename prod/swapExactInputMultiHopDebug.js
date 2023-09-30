@@ -47,7 +47,7 @@ class SwapExactInputMultiHop {
     consoleLog("swapExactInputMultiHop ~", tokenInName+"( "+_amountIn+" )", "=>",tokenOutName)
 
     consoleLog(indent + "BEFORE TOKEN_IN                ~", tokenInName + "(" + tokenInSymbol + ") balance:", beforeTokenInBalanceOf);
-    consoleLog(indent + "BEFORE TOKEN_ERMEDIARY      ~", tokenIntermediaryName + "(" + tokenIntermediarySymbol + ") balance:", beforeTokenIntermediaryBalanceOf);
+    consoleLog(indent + "BEFORE TOKEN_INTERMEDIARY      ~", tokenIntermediaryName + "(" + tokenIntermediarySymbol + ") balance:", beforeTokenIntermediaryBalanceOf);
     consoleLog(indent + "BEFORE TOKEN_OUT               ~", tokenOutName + "(" + tokenOutSymbol + ") balance:", beforeTokenOutBalanceOf);
       
     // Swap Exact Input MultiHop
@@ -66,11 +66,11 @@ class SwapExactInputMultiHop {
     let afterTokenOutBalanceOf          = await _tokenOutContract.balanceOf(signerAccount.address);
 
     consoleLog(indent + "AFTER TOKEN_IN                 ~", tokenInName, "balance:", afterTokenInBalanceOf);
-    consoleLog(indent + "AFTER TOKEN_BASE       ~", afterTokenIntermediaryBalanceOf, "balance:", afterTokenIntermediaryBalanceOf);
+    consoleLog(indent + "AFTER TOKEN_INTERMEDIARY       ~", afterTokenIntermediaryBalanceOf, "balance:", afterTokenIntermediaryBalanceOf);
     consoleLog(indent + "AFTER TOKEN_OUT                ~", tokenOutName, " balance:", afterTokenOutBalanceOf);
 
     consoleLog(indent + "DIFFERENCE TOKEN_IN            ~", tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
-    consoleLog(indent + "DIFFERENCE TOKEN_BASE  ~", tokenInName, BigInt(afterTokenIntermediaryBalanceOf) - BigInt(beforeTokenOutBalanceOf));
+    consoleLog(indent + "DIFFERENCE TOKEN_INTERMEDIARY  ~", tokenInName, BigInt(afterTokenIntermediaryBalanceOf) - BigInt(beforeTokenOutBalanceOf));
     consoleLog(indent + "DIFFERENCE TOKEN_OUT           ~", tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
   }
 }

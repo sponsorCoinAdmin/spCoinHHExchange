@@ -10,6 +10,10 @@ class SpCoinExchange {
     await wethContract.connect(this.signerAccount).deposit({ value: _ethAmount });
   }
 
+  async withdrawWethToEth(wethContract, _wethAmount) {
+    await wethContract.connect(this.signerAccount).withdraw({ value: _wethAmount });
+  }
+
   // Approve a specified account to spend a specified token of a specific amount token. As follows:
   // Approve msg.sender (account[0]) to allow spCoinExchangeContract to spend _amount in _token(s).
   async approve(_tokenContract, _amount) {
