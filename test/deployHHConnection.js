@@ -1,6 +1,6 @@
-const { spCoinLogger } = require("../prod/lib/logger/spCoinLogger.js");
+const { spCoinLogger } = require("../lib/logger/spCoinLogger");
 
-const { SpCoinExchangeDebug, SpCoinExchange } = require("../prod/spCoinExchangeDebug");
+const { SpCoinExchangeDebug, SpCoinExchange } = require("../lib/debug/spCoinExchangeDebug");
 
 async function getSpCoinExchange(debugMode) {
   const connection = new DeployHHConnection();
