@@ -7,13 +7,12 @@ class SwapExactOutputMultiHop {
     this.spCoinExchange = _spCoinExchange;
     this.spCoinExchangeContract = _spCoinExchange.spCoinExchangeContract;
     this.signerAccount = _spCoinExchange.signerAccount;
-    this.indent = "    ";
-  }
+      }
 
   // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount) {
-    consoleLog("depositEthToWeth( "+_ethAmount+" )")
-    this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
+  async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmountInWei) {
+    consoleLog("depositEthToWeth( "+_ethAmountInWei+" )")
+    this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmountInWei);
   }
 
   async swapExactOutputMultiHop (
@@ -29,8 +28,7 @@ class SwapExactOutputMultiHop {
   ) {
 
     let signerAccount = this.signerAccount;
-    let indent = this.indent;
-
+   
     let tokenInName = await _tokenInContract.name()
     let tokenInSymbol = await _tokenInContract.symbol()
     let beforeTokenInBalanceOf = await _tokenInContract.balanceOf(signerAccount.address)

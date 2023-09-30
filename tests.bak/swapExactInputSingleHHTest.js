@@ -16,7 +16,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
     // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> DAI", async function () {
-      const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+      const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
       const AMOUNT_IN = 10n ** 18n;
@@ -28,7 +28,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
       logHeader("swapExactInputSingleHHTest: WETH -> DAI")
 
-      let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+      let TOKEN_IN_CONTRACT = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
 
       // Deposit WETH by wrapping existing eth
@@ -49,7 +49,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
     // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: WETH -> SPCOIN", async function () {
 
-      const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+      const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
 
       const AMOUNT_IN = 10n ** 18n;
@@ -62,7 +62,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       logHeader("swapExactInputSingleHHTest: WETH -> SPCOIN")
 
       // Deposit TOKEN_IN_ADDRESS
-      let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+      let TOKEN_IN_CONTRACT = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
       await spCoinExchange.depositEthToWeth( TOKEN_IN_CONTRACT, AMOUNT_IN);
       await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN);
@@ -82,7 +82,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
 
     // Test - swapExactInputSingleTest
     it("swapExactInputSingleHHTest: SPCOIN -> WETH", async function () {
-      const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+      const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
       const AMOUNT_IN = 10n ** 18n;
@@ -95,7 +95,7 @@ describe("SwapExactInputSingleHHTest: Swaps exact amount of _tokenIn for a maxim
       logHeader("swapExactInputSingleHHTest: SPCOIN -> WETH")
 
       // Deposit TOKEN_IN_ADDRESS
-      let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+      let TOKEN_IN_CONTRACT = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
       let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
       await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN);
 

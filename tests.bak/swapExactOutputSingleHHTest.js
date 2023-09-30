@@ -18,7 +18,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   // Test - swapExactOutputSingle
   it("swapExactOutputSingle  WETH -> DAI", async function () {
 
-    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
     const AMOUNT_OUT_MIN = 100n * 10n ** 18n;
@@ -29,7 +29,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     const SQRT_ROOT_PRICE_LIMIT_X96 = 0;
 
     logHeader("swapExactOutputSingle: WETH -> DAI")
-    let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+    let TOKEN_IN_CONTRACT = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
     let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
 
     // Deposit WETH
@@ -52,7 +52,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
   // Test - swapExactOutputSingle
   it("swapExactOutputSingle WETH -> SPCOIN", async function () {
 
-    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
     const AMOUNT_IN_MAX = 10n ** 18n;
@@ -63,7 +63,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
     const AMOUNT_OUT_MIN = 100n * 10n ** 18n;
     
-    let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+    let TOKEN_IN_CONTRACT = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
     let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     
     // Deposit WETH by wrapping existing eth
@@ -85,7 +85,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
 
   it("swapExactOutputSingle SPCOIN -> WETH", async function () {
 
-    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
       
     const AMOUNT_IN_MAX = 10n * 10n ** 18n;
@@ -97,7 +97,7 @@ describe("SwapExactOutputSingle: Approve the router to spend the specified `amou
     // const AMOUNT_OUT_MIN = 100n * 10n ** 18n;
     const AMOUNT_OUT_MIN = 1n * 10n ** 12n;
     
-    let TOKEN_IN_CONTRACT = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+    let TOKEN_IN_CONTRACT = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
     let TOKEN_OUT_CONTRACT = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     
     // Deposit WETH

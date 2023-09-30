@@ -18,27 +18,27 @@ describe("SwapExactOutputMultiHopHHTest: swapOutputMultiplePools swaps a fixed a
   it("swapExactOutputMultiHopHHTest: WETH --> USDC --> DAI", async () => {
     console.log("swapExactOutputMultiHopTest => WETH --> USDC --> DAI");
 
-    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const TOKEN_BASE_ABI = require('../contracts/interfaces/ERC20_ABI.json')
     const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
 
-    const TOKEN_IN_ADDRESS           = process.env.GOERLI_WETH;
+    const TOKEN_IN_ADDRESS   = process.env.GOERLI_WETH;
     const TOKEN_BASE_ADDRESS = process.env.GOERLI_USDC;
-    const TOKEN_OUT_ADDRESS          = process.env.GOERLI_DAI;
-    const POOL_FEE = 3000;
+    const TOKEN_OUT_ADDRESS  = process.env.GOERLI_DAI;
+    const POOL_FEE           = 3000;
 
     const AMOUNT_IN_MAX = 10n ** 18n
-    const AMOUNT_OUT = 100n * 10n ** 18n;
+    const AMOUNT_OUT    = 100n * 10n ** 18n;
 
-    let TOKEN_IN_CONTRACT           = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+    let TOKEN_IN_CONTRACT   = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
     let TOKEN_BASE_CONTRACT = await ethers.getContractAt(TOKEN_BASE_ABI, TOKEN_BASE_ADDRESS);
-    let TOKEN_OUT_CONTRACT          = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
+    let TOKEN_OUT_CONTRACT  = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     
     logHeader("swapExactOutputMultiHopTestHHTest: WETH -> USDC -> DAI")
 
     // Deposit WETH by wrapping existing eth
-    await spCoinExchange.depositEthToWeth( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
-    await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX);
+    await spCoinExchange.depositEthToWeth( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX );
+    await spCoinExchange.approve( TOKEN_IN_CONTRACT, AMOUNT_IN_MAX );
 
     // consoleLog(" test/SwapExactOutputMultiHop Parameters ");
     // consoleLog("TOKEN_IN_ADDRESS           :", TOKEN_IN_ADDRESS);

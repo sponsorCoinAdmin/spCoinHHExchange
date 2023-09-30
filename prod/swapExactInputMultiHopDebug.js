@@ -7,13 +7,12 @@ class SwapExactInputMultiHop {
     this.spCoinExchange = _spCoinExchange;
     this.spCoinExchangeContract = _spCoinExchange.spCoinExchangeContract;
     this.signerAccount = _spCoinExchange.signerAccount;
-    this.indent = "    ";
-  }
+      }
 
   // Deposit a specified account of ETH to WETH
-  async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount) {
-    consoleLog("depositEthToWeth( "+_ethAmount+" )")
-    this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmount);
+  async depositEthToWeth(_signerAccount, _tokenInContract, _ethAmountInWei) {
+    consoleLog("depositEthToWeth( "+_ethAmountInWei+" )")
+    this.spCoinExchange.depositEthToWeth(_signerAccount, _tokenInContract, _ethAmountInWei);
   }
 
   async swapExactInputMultiHop (
@@ -29,8 +28,7 @@ class SwapExactInputMultiHop {
   ) {
 
     let signerAccount = this.signerAccount;
-    let indent = this.indent;
-
+   
     let tokenInName = await _tokenInContract.name()
     let tokenInSymbol = await _tokenInContract.symbol()
     let beforeTokenInBalanceOf = await _tokenInContract.balanceOf(signerAccount.address)
@@ -46,9 +44,9 @@ class SwapExactInputMultiHop {
     consoleLogLineChar(100, "-");
     consoleLog("swapExactInputMultiHop ~", tokenInName+"( "+_amountIn+" )", "=>",tokenOutName)
 
-    consoleLog(indent + "BEFORE TOKEN_IN                ~", tokenInName + "(" + tokenInSymbol + ") balance:", beforeTokenInBalanceOf);
-    consoleLog(indent + "BEFORE TOKEN_INTERMEDIARY      ~", tokenIntermediaryName + "(" + tokenIntermediarySymbol + ") balance:", beforeTokenIntermediaryBalanceOf);
-    consoleLog(indent + "BEFORE TOKEN_OUT               ~", tokenOutName + "(" + tokenOutSymbol + ") balance:", beforeTokenOutBalanceOf);
+    consoleLog(indent + "BEFORE TOKEN_IN           ~", tokenInName + "(" + tokenInSymbol + ") balance:", beforeTokenInBalanceOf);
+    consoleLog(indent + "BEFORE TOKEN_INTERMEDIARY ~", tokenIntermediaryName + "(" + tokenIntermediarySymbol + ") balance:", beforeTokenIntermediaryBalanceOf);
+    consoleLog(indent + "BEFORE TOKEN_OUT          ~", tokenOutName + "(" + tokenOutSymbol + ") balance:", beforeTokenOutBalanceOf);
       
     // Swap Exact Input MultiHop
     
@@ -65,13 +63,13 @@ class SwapExactInputMultiHop {
     let afterTokenIntermediaryBalanceOf = await _tokenIntermediaryContract.balanceOf(signerAccount.address);
     let afterTokenOutBalanceOf          = await _tokenOutContract.balanceOf(signerAccount.address);
 
-    consoleLog(indent + "AFTER TOKEN_IN                 ~", tokenInName, "balance:", afterTokenInBalanceOf);
-    consoleLog(indent + "AFTER TOKEN_INTERMEDIARY       ~", afterTokenIntermediaryBalanceOf, "balance:", afterTokenIntermediaryBalanceOf);
-    consoleLog(indent + "AFTER TOKEN_OUT                ~", tokenOutName, " balance:", afterTokenOutBalanceOf);
+    consoleLog(indent + "AFTER TOKEN_IN                ~", tokenInName, "balance:", afterTokenInBalanceOf);
+    consoleLog(indent + "AFTER TOKEN_INTERMEDIARY      ~", afterTokenIntermediaryBalanceOf, "balance:", afterTokenIntermediaryBalanceOf);
+    consoleLog(indent + "AFTER TOKEN_OUT               ~", tokenOutName, " balance:", afterTokenOutBalanceOf);
 
-    consoleLog(indent + "DIFFERENCE TOKEN_IN            ~", tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
-    consoleLog(indent + "DIFFERENCE TOKEN_INTERMEDIARY  ~", tokenInName, BigInt(afterTokenIntermediaryBalanceOf) - BigInt(beforeTokenOutBalanceOf));
-    consoleLog(indent + "DIFFERENCE TOKEN_OUT           ~", tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
+    consoleLog(indent + "DIFFERENCE TOKEN_IN           ~", tokenInName, BigInt(afterTokenInBalanceOf) - BigInt(beforeTokenInBalanceOf));
+    consoleLog(indent + "DIFFERENCE TOKEN_INTERMEDIARY ~", tokenInName, BigInt(afterTokenIntermediaryBalanceOf) - BigInt(beforeTokenOutBalanceOf));
+    consoleLog(indent + "DIFFERENCE TOKEN_OUT          ~", tokenOutName, BigInt(afterTokenOutBalanceOf)  - BigInt(beforeTokenOutBalanceOf));
   }
 }
 
