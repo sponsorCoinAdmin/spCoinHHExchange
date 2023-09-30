@@ -18,7 +18,7 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
   it("swapExactInputMultiHopHHTest: WETH --> USDC --> DAI", async () => {
     console.log("swapExactInputSingleHHTest => WETH --> USDC --> DAI");
 
-    const TOKEN_IN_ABI = require('../contracts/interfaces/WETH_ABI.json')
+    const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
     const TOKEN_BASE_ABI = require('../contracts/interfaces/ERC20_ABI.json')
     const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
 
@@ -30,7 +30,7 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
     const TOKEN_OUT_ADDRESS          = process.env.GOERLI_DAI;
     const POOL_FEE = 3000;
 
-    let TOKEN_IN_CONTRACT           = await ethers.getContractAt(TOKEN_IN_ABI, TOKEN_IN_ADDRESS);
+    let TOKEN_IN_CONTRACT           = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
     let TOKEN_BASE_CONTRACT = await ethers.getContractAt(TOKEN_BASE_ABI, TOKEN_BASE_ADDRESS);
     let TOKEN_OUT_CONTRACT          = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     

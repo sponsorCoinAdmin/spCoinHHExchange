@@ -29,6 +29,7 @@ class DeployHHConnection {
 
   async getSigners() {
     this.accounts = await ethers.getSigners();
+    // console.log("this.accounts =", this.accounts)
     return this.accounts;
   }
 

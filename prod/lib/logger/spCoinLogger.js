@@ -1,4 +1,6 @@
 consoleLogging = false;
+indent = "  ";
+
 
 consoleLog = (...parms) => {
   if (consoleLogging)
