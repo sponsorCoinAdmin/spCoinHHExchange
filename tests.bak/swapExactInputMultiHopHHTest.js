@@ -25,14 +25,14 @@ describe("SwapExactInputMultiHopHHTest: swapInputMultiplePools swaps a fixed amo
     const AMOUNT_IN = 10n ** 18n
     const AMOUNT_OUT_MINIMUM = 0;
 
-    const TOKEN_IN_ADDRESS           = process.env.GOERLI_WETH;
+    const TOKEN_IN_ADDRESS   = process.env.GOERLI_WETH;
     const TOKEN_BASE_ADDRESS = process.env.GOERLI_USDC;
-    const TOKEN_OUT_ADDRESS          = process.env.GOERLI_DAI;
+    const TOKEN_OUT_ADDRESS  = process.env.GOERLI_DAI;
     const POOL_FEE = 3000;
 
-    let TOKEN_IN_CONTRACT           = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
+    let TOKEN_IN_CONTRACT   = await ethers.getContractAt(WETH_ABI, TOKEN_IN_ADDRESS);
     let TOKEN_BASE_CONTRACT = await ethers.getContractAt(TOKEN_BASE_ABI, TOKEN_BASE_ADDRESS);
-    let TOKEN_OUT_CONTRACT          = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
+    let TOKEN_OUT_CONTRACT  = await ethers.getContractAt(TOKEN_OUT_ABI, TOKEN_OUT_ADDRESS);
     
     logHeader("swapExactInputSingleTest: WETH -> DAI")
 

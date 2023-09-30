@@ -15,8 +15,8 @@ describe("wrapAndUnwrapEthHHTest: Wrap 10 ETH and then unwrap 5 ETH"
      })
 
     // Test - depositEthToWeth
-    it("depositEthToWethHHTest: WETH -> DAI", async function () {
-      logHeader("wrapEthHHTest: ETH -> WETH");
+    it("depositEthToWethHHTest: ETH -> WETH", async function () {
+      logHeader("depositEthToWethHHTest: ETH -> WETH");
 
       const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const AMOUNT_IN = 10n ** 18n;
@@ -30,8 +30,8 @@ describe("wrapAndUnwrapEthHHTest: Wrap 10 ETH and then unwrap 5 ETH"
     }).timeout(100000);
 
         // Test - unwrapEthFromWethHHTest
-    it("withdrawEthFromWethHHTest: WETH -> DAI", async function () {
-      logHeader("withdrawEthFromWeth: ETH -> WETH");
+    it("withdrawEthFromWethHHTest: WETH -> ETH", async function () {
+      logHeader("withdrawEthFromWethHHTest: WETH -> ETH");
 
       const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const AMOUNT_IN = 10n ** 18n;
