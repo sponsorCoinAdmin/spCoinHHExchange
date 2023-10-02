@@ -3,10 +3,13 @@
         "abicoder",
         "EIMH",
         "EOMH",
+        "hexlify",
         "IERC",
         "IWETH",
+        "JSBI",
         "Melanson",
         "parms",
-        "SEPOLIA"
+        "SEPOLIA",
+        "singlehop"
     ]
 }
