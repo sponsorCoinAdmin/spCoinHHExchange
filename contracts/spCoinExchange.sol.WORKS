@@ -5,7 +5,7 @@ pragma abicoder v2;
 import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 
-contract SwapExamples {
+contract SpCoinExchange {
 
     address internal constant swapRouterDefaultAddress = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
  
@@ -99,10 +99,10 @@ contract SwapExamples {
     }
 
     /// @notice swapInputMultiplePools swaps a fixed amount of WETH for a maximum possible amount of _tokenIn
-    /// swap _tokenIn --> _tokenIntermediary --> _tokenOut
+    /// swap _tokenIn --> _tokenBase --> _tokenOut
    function swapExactInputMultiHop(
                                 address _tokenIn,
-                                address _tokenIntermediary,
+                                address _tokenBase,
                                 address _tokenOut,
                                 uint24  _poolFee,
                                 uint256 _amountIn,
@@ -115,10 +115,10 @@ contract SwapExamples {
 
         // Multiple pool swaps are encoded through bytes called a `path`. A path is a sequence of token addresses and poolFees that define the pools used in the swaps.
         // The format for pool encoding is (tokenIn, fee, tokenOut/tokenIn, fee, tokenOut) where tokenIn/tokenOut parameter is the shared token across the pools.
-        // Since we are swapping _tokenIn to _tokenIntermediary and then _tokenIntermediary to _tokenIn the path encoding is (_tokenIn, 0.3%, _tokenIntermediary, 0.3%, _tokenIn).
+        // Since we are swapping _tokenIn to _tokenBase and then _tokenBase to _tokenIn the path encoding is (_tokenIn, 0.3%, _tokenBase, 0.3%, _tokenIn).
         ISwapRouter.ExactInputParams memory params =
             ISwapRouter.ExactInputParams({
-                path: abi.encodePacked(_tokenIn, uint24(_poolFee), _tokenIntermediary, uint24(100), _tokenOut),
+                path: abi.encodePacked(_tokenIn, uint24(_poolFee), _tokenBase, uint24(_poolFee), _tokenOut),
                 recipient: msg.sender,
                 deadline: block.timestamp,
                 amountIn: _amountIn,
@@ -129,23 +129,23 @@ contract SwapExamples {
         amountOut = swapRouter.exactInput(params);
     }
 
-    /// @notice swapExactOutputMultiHop swaps a minimum possible amount of WETH for a fixed amount of _tokenIntermediary
-    /// swap _tokenIn --> _tokenIntermediary --> _tokenOut
+    /// @notice swapExactOutputMultiHop swaps a minimum possible amount of WETH for a fixed amount of _tokenBase
+    /// swap _tokenIn --> _tokenBase --> _tokenOut
     function swapExactOutputMultiHop(
         address _tokenIn,
-        address _tokenIntermediary,
+        address _tokenBase,
         address _tokenOut,
         uint24  _poolFee,
-        uint256 amountOut,
-        uint256 amountInMaximum) external returns (uint256 amountIn)
+        uint256 _amountOut,
+        uint256 _amountInMaximum) external returns (uint256 amountIn)
     {
         TransferHelper.safeTransferFrom(
             _tokenIn,
             msg.sender,
             address(this),
-            amountInMaximum
+            _amountInMaximum
         );
-        TransferHelper.safeApprove(_tokenIn, address(swapRouter), amountInMaximum);
+        TransferHelper.safeApprove(_tokenIn, address(swapRouter), _amountInMaximum);
 
         // The parameter path is encoded as (tokenOut, fee, tokenIn/tokenOut, fee, tokenIn)
         ISwapRouter.ExactOutputParams memory params = ISwapRouter
@@ -153,25 +153,25 @@ contract SwapExamples {
                 path: abi.encodePacked(
                     _tokenOut,
                     uint24(100),
-                    _tokenIntermediary,
+                    _tokenBase,
                     uint24(_poolFee),
                     _tokenIn
                 ),
                 recipient: msg.sender,
                 deadline: block.timestamp,
-                amountOut: amountOut,
-                amountInMaximum: amountInMaximum
+                amountOut: _amountOut,
+                amountInMaximum: _amountInMaximum
             });
 
         amountIn = swapRouter.exactOutput(params);
         
-        if (amountIn < amountInMaximum) {
+        if (amountIn < _amountInMaximum) {
             TransferHelper.safeApprove(_tokenIn, address(swapRouter), 0);
             TransferHelper.safeTransferFrom(
                 _tokenIn,
                 address(this),
                 msg.sender,
-                amountInMaximum - amountIn
+                _amountInMaximum - amountIn
             );
         }
     }    

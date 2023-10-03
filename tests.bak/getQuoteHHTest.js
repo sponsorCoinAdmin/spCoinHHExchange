@@ -32,8 +32,7 @@ describe("GetQuoteTest: Calls Uniswap Quoter Contract to get pool price quote"
 
         console.log("const quoter = {");
         console.log("   QUOTER_ADDRESS:", QUOTER_ADDRESS);
-        console.log("   QuoterAbi:     ", QuoterAbi, null, 2);
-        // console.log("   QuoterAbi:     ", JSON.stringify(QuoterAbi, null, 2));
+        // console.log("   QuoterAbi:     ", QuoterAbi);
         console.log("   provider:      ", JSON.stringify(provider, null, 2));
         console.log(")");
 
@@ -71,8 +70,7 @@ describe("GetQuoteTest: Calls Uniswap Quoter Contract to get pool price quote"
 
         console.log("const quoter = {");
         console.log("   QUOTER_ADDRESS:", QUOTER_ADDRESS);
-        console.log("   QuoterV2Abi:   ", QuoterV2Abi,null,2);
-        // console.log("   QuoterV2Abi:   ", JSON.stringify(QuoterV2Abi, null, 2));
+        // console.log("   QuoterV2Abi:   ", QuoterV2Abi,null,2);
         console.log("   provider:      ", JSON.stringify(provider, null, 2));
         console.log(")");
 

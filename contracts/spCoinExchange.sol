@@ -4,17 +4,27 @@ pragma abicoder v2;
 
 import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
+import '@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol';
 
 contract SpCoinExchange {
 
     address internal constant swapRouterDefaultAddress = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
+    address internal constant quoterDefaultAddress = 0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6;
  
     ISwapRouter internal swapRouter = 
-                setSwapRouterAddress(swapRouterDefaultAddress); 
+                setSwapRouterAddress(swapRouterDefaultAddress);
+
+    IQuoter internal quoter = 
+                setQuoterAddress(quoterDefaultAddress);
 
     function setSwapRouterAddress(address swapRouterAddress) public pure returns (ISwapRouter newRouter) {
         newRouter = ISwapRouter(swapRouterAddress);
         return newRouter;
+    }
+
+    function setQuoterAddress(address quoterAddress) public pure returns (IQuoter newQuoter) {
+        newQuoter = IQuoter(quoterAddress);
+        return newQuoter;
     }
 
     /// @notice Swaps a fixed amount of _tokenIn for a maximum possible amount of _tokenOut
@@ -174,5 +184,23 @@ contract SpCoinExchange {
                 _amountInMaximum - amountIn
             );
         }
-    }    
+    }
+
+    /// @notice getQuoterPrice returns the best quote price for the pool tokinIn/tokenOut
+   function getQuoterPrice(
+                address tokenIn,
+                address tokenOut,
+                uint24 fee,
+                uint256 amountIn,
+                uint160 sqrtPriceLimitX96) external returns (uint256 amountOut) {
+
+        // Executes the price quote request.
+        amountOut = quoter.quoteExactInputSingle(
+            tokenIn,
+            tokenOut,
+            fee,
+            amountIn,
+            sqrtPriceLimitX96);
+    }
+
 }
