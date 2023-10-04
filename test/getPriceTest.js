@@ -19,10 +19,7 @@ describe("GetPriceTest: Swaps exact amount of _tokenIn for a maximum possible am
       const AMOUNT_IN                 = 10n ** 18n;
       const WETH_ABI = require('../contracts/interfaces/WETH_ABI.json')
       const TOKEN_OUT_ABI = require('../contracts/interfaces/ERC20_ABI.json')
-  
       const percentSlippage = new Percent(slippageAmount, 100)
-
-
     }).timeout(100000);
 
   const getPrice = async (inputAmount, slippageAmount, deadline, walletAddress) => {

@@ -2,6 +2,8 @@
 pragma solidity = 0.7.6;
 pragma abicoder v2;
 
+import "hardhat/console.sol";
+
 import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 import '@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol';
@@ -186,7 +188,7 @@ contract SpCoinExchange {
         }
     }
 
-    /// @notice getQuoterPrice returns the best quote price for the pool tokinIn/tokenOut
+    /// @notice getQuoterPrice returns the best quote price for the pool tokenIn/tokenOut
    function getQuoterPrice(
                 address tokenIn,
                 address tokenOut,
@@ -201,6 +203,38 @@ contract SpCoinExchange {
             fee,
             amountIn,
             sqrtPriceLimitX96);
+        console.log("SpcoinExchange amountOut:",amountOut);
+        
+        amountOut = 9999;
+        console.log("SpcoinExchange amountOut:",amountOut);
+        return amountOut;
+    }
+
+    function testUInt(
+                address tokenIn,
+                address tokenOut,
+                uint24 fee,
+                uint256 amountIn,
+                uint160 sqrtPriceLimitX96) external returns (uint amountOut) {
+
+        console.log("testUInt.tokenIn", tokenIn);
+        console.log("testUInt.tokenOut", tokenOut);
+        console.log("testUInt.fee", fee);
+        console.log("testUInt.amountIn", amountIn);
+        console.log("testUInt.sqrtPriceLimitX96", sqrtPriceLimitX96);
+
+        quoter.quoteExactInputSingle(
+            tokenIn,
+            tokenOut,
+            fee,
+            amountIn,
+            sqrtPriceLimitX96
+        );
+
+        // Executes the price quote request.
+        amountOut = 9999;
+        console.log("testUInt amountOut:", amountOut);
+        return amountOut;
     }
 
 }
