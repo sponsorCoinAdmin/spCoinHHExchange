@@ -15,16 +15,16 @@ class AlphaRouterServiceDebug {
       return result;
   }
     
-    getStrPriceQuote = async(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals) => {
-        console.log( " EXECUTING getStrPriceQuote(", _recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals, ")" );
-        let result = await this.ars.getStrPriceQuote(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals)
+    getStrPriceQuote = async( _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals) => {
+        console.log( " EXECUTING getStrPriceQuote(", _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals, ")" );
+        let result = await this.ars.getStrPriceQuote("", _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals)
         console.log( "getStrPriceQuote result:", result);
         return result;
    }
     
-    getPriceQuote = async(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent) => {
-      console.log( " EXECUTING getPriceQuote(", _recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent, ")" );
-      let result = await this.ars.getPriceQuote(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent)
+    getPriceQuote = async( _tokenIn, _tokenOut, _inputAmount, _slippagePercent) => {
+      console.log( " EXECUTING getPriceQuote(", _tokenIn, _tokenOut, _inputAmount, _slippagePercent, ")" );
+      let result = await this.ars.getPriceQuote( _tokenIn, _tokenOut, _inputAmount, _slippagePercent)
       console.log( "getPriceQuote result:", result);
       return result;
    }

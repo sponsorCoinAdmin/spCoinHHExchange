@@ -10,6 +10,8 @@ const INFURA_TEST_URL = process.env.GOERLI_INFURA_TEST_URL
 const provider = new ethers.providers.JsonRpcProvider(INFURA_TEST_URL) // Ropsten
 const chainId = parseInt(process.env.GORELI_CHAIN_ID)
 const router = new AlphaRouter({ chainId: chainId, provider: provider})
+const BURN_ADDRESS = "0x0000000000000000000000000000000000000000";
+
 
 class AlphaRouterService {
     constructor() {
@@ -29,14 +31,14 @@ class AlphaRouterService {
       return route;
     }
     
-    getStrPriceQuote = async(_recipientAddr, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent, _decimals) => {
-      let quote = await this.getPriceQuote(_recipientAddr, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
+    getStrPriceQuote = async( _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent, _decimals) => {
+      let quote = await this.getPriceQuote(_uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
       let strQuote = quote.toFixed(_decimals);
       return(strQuote)
     }
     
-    getPriceQuote = async(_recipientAddr, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent) => {
-      const route = await this.getRoute(_recipientAddr, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
+    getPriceQuote = async( _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent) => {
+      const route = await this.getRoute(BURN_ADDRESS, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
       return route.quote
     }
     

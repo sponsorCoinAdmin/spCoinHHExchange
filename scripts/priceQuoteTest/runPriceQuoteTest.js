@@ -31,7 +31,7 @@ getPriceQuoteTest = async(_fromToken, _toToken, _tokenAmount, _slippagePercent) 
     let recipient = WALLET_ADDRESS
     let decimals = await uniContractIn.decimals();
 
-    let priceQuote = await ARS.getStrPriceQuote(recipient, uniTokenIn, uniTokenOut, inputAmount, _slippagePercent, decimals)
+    let priceQuote = await ARS.getStrPriceQuote(uniTokenIn, uniTokenOut, inputAmount, _slippagePercent, decimals)
     console.log("uniTokenIn:", await uniContractIn.name(), "(", uniTokenIn.address, ")");
     console.log("priceQuote:", await uniContractOut.name(), "(", priceQuote, ")");
 

@@ -16,14 +16,14 @@ getRoute = async(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePer
   return route;
 }
 
-getStrPriceQuote = async(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals) => {
-  let quote = await getPriceQuote(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent);
+getStrPriceQuote = async(_tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals) => {
+  let quote = await getPriceQuote( _tokenIn, _tokenOut, _inputAmount, _slippagePercent);
   let strQuote = quote.toFixed(_decimals);
   return(strQuote)
 }
 
-getPriceQuote = async(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent) => {
-  const route = await getRoute(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent);
+getPriceQuote = async( _tokenIn, _tokenOut, _inputAmount, _slippagePercent) => {
+  const route = await getRoute( _tokenIn, _tokenOut, _inputAmount, _slippagePercent);
   return route.quote
 }
 
