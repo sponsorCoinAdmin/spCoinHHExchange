@@ -1,64 +1,56 @@
 require("dotenv").config();
-
 let DEBUG_MODE = false;
- 
-const { Token, CurrencyAmount, TradeType, Percent } = require('@uniswap/sdk-core')
+
 const { ethers } = require('ethers')
-const JSBI  = require('jsbi') // jsbi@3.2.5
 const { AlphaRouterServiceDebug } = require('./AlphaRouterServiceDebug')
 const { AlphaRouterService } = require('./AlphaRouterService');
-const { lstat } = require("fs");
+const { UniTokenServices } = require('./uniTokenServices')
 
-require('dotenv').config()
 const WALLET_ADDRESS = process.env.WALLET_ADDRESS
 const INFURA_TEST_URL = process.env.GOERLI_INFURA_TEST_URL
 const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID)
 const WALLET_SECRET = process.env.WALLET_SECRET
 const ERC20ABI = require('./abi.json')
 
-
 const provider = new ethers.providers.JsonRpcProvider(INFURA_TEST_URL) // Ropsten
 
-const chainId = parseInt(CHAIN_ID)
-
-const name0 = 'Wrapped Ether'
-const symbol0 = 'WETH'
-const decimals0 = 18
 const WETH_ADDRESS = process.env.GOERLI_WETH
-
-const name1 = 'Uniswap Token'
-const symbol1 = 'UNI'
-const decimals1 = 18
+const SPCOIN_ADDRESS = process.env.GOERLI_SPCOIN
 const UNI_ADDRESS = process.env.GOERLI_UNI
 
-const WETH = new Token(chainId, WETH_ADDRESS, decimals0, symbol0, name0)
-const UNI = new Token(chainId, UNI_ADDRESS, decimals1, symbol1, name1)
+let ARS = DEBUG_MODE ? new AlphaRouterServiceDebug() : new AlphaRouterService();
+let UTS = new UniTokenServices(ethers, CHAIN_ID, provider)
 
-let wei = ethers.utils.parseUnits('0.01', 18)
-let inputAmount = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
+getPriceQuoteTest = async(_fromToken, _toToken, _tokenAmount, _slippagePercent) => {
+    let uniContractIn  = UTS.getERC20Contract(_fromToken);
+    let uniContractOut = UTS.getERC20Contract(_toToken);
+    let uniTokenIn     = await UTS.getUniTokenByContract(uniContractIn, _fromToken)
+    let uniTokenOut    = await UTS.getUniTokenByContract(uniContractOut, _toToken)
+    let inputAmount    = UTS.tokenToCurrencyInWei(_tokenAmount, uniTokenIn)
 
-let ars = DEBUG_MODE ? new AlphaRouterServiceDebug() : new AlphaRouterService();
-
-main = async() => {
-    let tokenIn = WETH;
-    let tokenOut = UNI;
     let recipient = WALLET_ADDRESS
-    let slippagePercent = 25;
-    let decimals = 16;
+    let decimals = await uniContractIn.decimals();
 
-    let priceQuote = await ars.getStrPriceQuote(recipient, tokenIn, tokenOut, inputAmount, slippagePercent, decimals)
-    console.log("priceQuote:", priceQuote);
+    let priceQuote = await ARS.getStrPriceQuote(recipient, uniTokenIn, uniTokenOut, inputAmount, _slippagePercent, decimals)
+    console.log("uniTokenIn:", await uniContractIn.name(), "(", uniTokenIn.address, ")");
+    console.log("priceQuote:", await uniContractOut.name(), "(", priceQuote, ")");
 
-    console.log("WETH_ADDRESS:", WETH_ADDRESS);
-    console.log("ERC20ABI:", ERC20ABI);
-    console.log("provider:", provider);
+    // console.log("_toToken:", _toToken);
+    // console.log("ERC20ABI:", ERC20ABI);
+    // console.log("provider:", provider);
+    console.log("FOR WALLET:", WALLET_ADDRESS);
 
-    const WETH_CONTRACT = new ethers.Contract(WETH_ADDRESS, ERC20ABI, provider)
+    const WETH_CONTRACT = new ethers.Contract(_toToken, ERC20ABI, provider)
     console.log("WETH_CONTRACT.balanceOf", (await WETH_CONTRACT.balanceOf(WALLET_ADDRESS)).toString());
 
-    const UNI_CONTRACT = new ethers.Contract(UNI_ADDRESS, ERC20ABI, provider)
-    console.log("UNI_CONTRACT.balanceOf", (await UNI_CONTRACT.balanceOf(WALLET_ADDRESS)).toString());
+    const SPCOIN_CONTRACT = new ethers.Contract(_fromToken, ERC20ABI, provider)
+    console.log("SPCOIN_CONTRACT.balanceOf", (await SPCOIN_CONTRACT.balanceOf(WALLET_ADDRESS)).toString());
+}
 
+main = async() => {
+    let slippagePercent = 25;
+    let tokenAmountInWei = 1000000;
+    getPriceQuoteTest(SPCOIN_ADDRESS, WETH_ADDRESS, tokenAmountInWei, slippagePercent);
 }
 
 main()

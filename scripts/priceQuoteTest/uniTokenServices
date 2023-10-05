@@ -1,0 +1,54 @@
+require("dotenv").config();
+
+const { Token : UniToken, CurrencyAmount } = require('@uniswap/sdk-core')
+const ERC20ABI = require('./abi.json')
+const JSBI  = require('jsbi') // jsbi@3.2.5
+
+
+
+require('dotenv').config()
+const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID)
+
+const chainId = parseInt(CHAIN_ID)
+const { Token } = require('@uniswap/sdk-core')
+
+class UniTokenServices {
+    constructor(ethers, chainId, provider) {
+        this.ethers   = ethers;
+        this.chainId  = chainId;
+        this.provider = provider;
+    }
+
+    getUniTokenByAddress = async (_tokenAddress) => {
+        console.log("======================= getUniTokenByAddress(",_tokenAddress,") ======================");
+        let contract = this.getERC20Contract(_tokenAddress);
+        return this.getUniTokenByContract(contract, _tokenAddress);
+    }
+
+    getUniTokenByContract = async (contract, _tokenAddress) => {
+        console.log("getUniTokenByContract(contract, _tokenAddress)");
+        let name = await contract.name();
+        let symbol = await contract.symbol();
+        let decimals = await contract.decimals();
+
+        console.log("name:          ", name)
+        console.log("symbol:        ", symbol)
+        console.log("decimals:      ", decimals)
+
+        const uniToken = new Token(this.chainId, _tokenAddress, decimals, symbol, name)
+        return uniToken;
+    }
+
+    getERC20Contract = (_tokenAddress) => {
+        return new this.ethers.Contract(_tokenAddress, ERC20ABI, this.provider);
+    }
+
+    tokenToCurrencyInWei = (tokenAmount, uniToken) => {
+        let wei = this.ethers.utils.parseUnits(tokenAmount.toString(), 18)
+        return CurrencyAmount.fromRawAmount(uniToken, JSBI.BigInt(wei))
+    }
+}
+
+module.exports = {
+    UniTokenServices
+}
