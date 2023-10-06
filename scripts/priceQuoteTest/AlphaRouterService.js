@@ -3,15 +3,17 @@ require("dotenv").config();
 const { AlphaRouter } = require('@uniswap/smart-order-router')
 const { TradeType, Percent } = require('@uniswap/sdk-core')
 const { ethers, BigNumber } = require('ethers')
+const { UniTokenServices } = require('./uniTokenServices')
+
 
 const UNISWAP_SWAPROUTER_02 = process.env.UNISWAP_SWAPROUTER_02
 const INFURA_TEST_URL = process.env.GOERLI_INFURA_TEST_URL
 
 const provider = new ethers.providers.JsonRpcProvider(INFURA_TEST_URL) // Ropsten
-const chainId = parseInt(process.env.GORELI_CHAIN_ID)
-const router = new AlphaRouter({ chainId: chainId, provider: provider})
+const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID)
+const router = new AlphaRouter({ chainId: CHAIN_ID, provider: provider})
 const BURN_ADDRESS = "0x0000000000000000000000000000000000000000";
-
+let UTS = new UniTokenServices(ethers, CHAIN_ID, provider)
 
 class AlphaRouterService {
     constructor() {
@@ -30,13 +32,29 @@ class AlphaRouterService {
       )
       return route;
     }
+
+    getStrPriceQuoteTest = async(_uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent, _decimals) => {
+      let uniContractFrom = UTS.getERC20Contract(_uniTokenIn)
+      let uniContractTo   = UTS.getERC20Contract(_uniTokenOut)
+      let decimals = (_decimals === undefined) ? await uniContractFrom.decimals() : _decimals;
+      let uniTokenIn  = await UTS.getUniTokenByContract(uniContractFrom, _uniTokenIn)
+      let uniTokenOut = await UTS.getUniTokenByContract(uniContractTo, _uniTokenOut)
+      let inputAmount = UTS.tokenToCurrencyInWei(_inputAmount, uniTokenIn)
+    
+      let quote = await this.getPriceQuote(uniTokenIn, uniTokenOut, inputAmount, _slippagePercent);
+      let strPriceQuote = quote.toFixed(_decimals);
+    
+      // let strPriceQuote = await this.getStrPriceQuote2(uniTokenIn, uniTokenOut, inputAmount, _slippagePercent, decimals)
+
+      return strPriceQuote;
+    }
     
     getStrPriceQuote = async( _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent, _decimals) => {
       let quote = await this.getPriceQuote(_uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
-      let strQuote = quote.toFixed(_decimals);
-      return(strQuote)
+      let strPriceQuote = quote.toFixed(_decimals);
+      return(strPriceQuote)
     }
-    
+
     getPriceQuote = async( _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent) => {
       const route = await this.getRoute(BURN_ADDRESS, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
       return route.quote
