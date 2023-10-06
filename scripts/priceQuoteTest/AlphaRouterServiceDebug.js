@@ -8,19 +8,37 @@ class AlphaRouterServiceDebug {
       console.log( "DEBUG MODE ON: AlphaRouterServiceDebug");
   }
 
-    getRoute = async(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent) => {
+    getRoute = async(_tokenIn, _tokenOut, _inputAmount, _slippagePercent) => {
       console.log( " EXECUTING getRoute(", _recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent, ")" );
-      let result = await this.ars.getRoute(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent);
+      let result = await this.ars.getRoute(_tokenIn, _tokenOut, _inputAmount, _slippagePercent);
       console.log( "getRoute result:", result);
       return result;
   }
     
-    getStrPriceQuote = async( _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals) => {
-        console.log( " EXECUTING getStrPriceQuote(", _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals, ")" );
-        let result = await this.ars.getStrPriceQuote("", _tokenIn, _tokenOut, _inputAmount, _slippagePercent, _decimals)
-        console.log( "getStrPriceQuote result:", result);
-        return result;
+    getStrPriceQuote = async( _fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals) => {
+      console.log( " EXECUTING getStrPriceQuote(", _fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals, ")" );
+      let result = await this.ars.getStrPriceQuote(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals)
+      console.log( "getStrPriceQuote result:", result);
+      return result;
    }
+
+    getStrPriceQuote2 = async(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals) => {
+      let strPriceQuote = await ARS.getStrPriceQuote(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals)
+      await UTS.dumpTokenDetailsByAddress(_fromTokenAddr);
+      await UTS.dumpTokenDetailsByAddress(_toTokenAddr);
+
+      let uniContractFrom = ( typeof _fromTokenAddr === "string" ) ? UTS.getERC20Contract(_fromTokenAddr) : _fromTokenAddr
+      let uniContractTo   = ( typeof _toTokenAddr === "string" ) ? UTS.getERC20Contract(_toTokenAddr) : _toTokenAddr
+      let uniTokenIn      = await UTS.getUniTokenByContract(uniContractFrom, _fromTokenAddr)
+      let uniTokenOut     = await UTS.getUniTokenByContract(uniContractTo, _toTokenAddr)
+
+      console.log("uniTokenIn:", await uniContractFrom.name(), "(", uniTokenIn.address, ")");
+      console.log("strPriceQuote:", await uniContractTo.name(), "(", strPriceQuote, ")");
+      console.log("uniContractFrom.balanceOf", (await uniContractFrom.balanceOf(WALLET_ADDRESS)).toString());
+      console.log("uniContractTo.balanceOf", (await uniContractTo.balanceOf(WALLET_ADDRESS)).toString());
+      return strPriceQuote;
+   }
+
     
     getPriceQuote = async( _tokenIn, _tokenOut, _inputAmount, _slippagePercent) => {
       console.log( " EXECUTING getPriceQuote(", _tokenIn, _tokenOut, _inputAmount, _slippagePercent, ")" );

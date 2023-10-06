@@ -39,7 +39,7 @@ class AlphaRouterService {
       let strPriceQuote = quote.toFixed(decimals);
       return strPriceQuote;
     }
-    
+
     getPriceQuote = async( _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent) => {
       let uniContractFrom = UTS.getERC20Contract(_tokenInAddr)
       let uniContractTo   = UTS.getERC20Contract(_tokenOutAddr)
@@ -49,7 +49,7 @@ class AlphaRouterService {
       const route = await this.getRoute(BURN_ADDRESS, uniTokenIn, uniTokenOut, inputAmount, _slippagePercent);
       return route.quote
     }
-    
+
     getTransaction = ( _route, _walletAddress, _gasLimit ) => {
       const transaction = {
         data: _route.methodParameters.calldata,

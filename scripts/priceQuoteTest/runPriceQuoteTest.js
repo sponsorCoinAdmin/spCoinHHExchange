@@ -1,5 +1,5 @@
 require("dotenv").config();
-let DEBUG_MODE = false;
+let DEBUG_MODE = true;
 
 const { ethers } = require('ethers')
 const { AlphaRouterServiceDebug } = require('./AlphaRouterServiceDebug')
@@ -29,7 +29,7 @@ getStrPriceQuote = async(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePe
     let uniContractTo   = ( typeof _toTokenAddr === "string" ) ? UTS.getERC20Contract(_toTokenAddr) : _toTokenAddr
     let uniTokenIn      = await UTS.getUniTokenByContract(uniContractFrom, _fromTokenAddr)
     let uniTokenOut     = await UTS.getUniTokenByContract(uniContractTo, _toTokenAddr)
-    // let inputAmount     = UTS.tokenToCurrencyInWei(_tokenAmount, uniTokenIn)
+
     console.log("uniTokenIn:", await uniContractFrom.name(), "(", uniTokenIn.address, ")");
     console.log("strPriceQuote:", await uniContractTo.name(), "(", strPriceQuote, ")");
     console.log("uniContractFrom.balanceOf", (await uniContractFrom.balanceOf(WALLET_ADDRESS)).toString());
@@ -40,7 +40,7 @@ getStrPriceQuote = async(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePe
 main = async() => {
     let slippagePercent = 25;
     let tokenAmountInWei = 1000000;
-    strPriceQuote = getStrPriceQuote(SPCOIN_ADDRESS, WETH_ADDRESS, tokenAmountInWei, slippagePercent,12);
+    strPriceQuote = ARS.getStrPriceQuote(SPCOIN_ADDRESS, WETH_ADDRESS, tokenAmountInWei, slippagePercent,12);
 }
 
 main()
