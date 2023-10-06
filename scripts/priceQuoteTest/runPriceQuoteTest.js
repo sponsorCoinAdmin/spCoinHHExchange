@@ -20,8 +20,8 @@ const UNI_ADDRESS = process.env.GOERLI_UNI
 let ARS = DEBUG_MODE ? new AlphaRouterServiceDebug() : new AlphaRouterService();
 let UTS = new UniTokenServices(ethers, CHAIN_ID, provider)
 
-getStrPriceQuoteTest = async(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals) => {
-    let strPriceQuote = await ARS.getStrPriceQuoteTest(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals)
+getStrPriceQuote = async(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals) => {
+    let strPriceQuote = await ARS.getStrPriceQuote(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippagePercent, decimals)
     await UTS.dumpTokenDetailsByAddress(_fromTokenAddr);
     await UTS.dumpTokenDetailsByAddress(_toTokenAddr);
 
@@ -40,7 +40,7 @@ getStrPriceQuoteTest = async(_fromTokenAddr, _toTokenAddr, _tokenAmount, _slippa
 main = async() => {
     let slippagePercent = 25;
     let tokenAmountInWei = 1000000;
-    strPriceQuote = getStrPriceQuoteTest(SPCOIN_ADDRESS, WETH_ADDRESS, tokenAmountInWei, slippagePercent,12);
+    strPriceQuote = getStrPriceQuote(SPCOIN_ADDRESS, WETH_ADDRESS, tokenAmountInWei, slippagePercent,12);
 }
 
 main()
