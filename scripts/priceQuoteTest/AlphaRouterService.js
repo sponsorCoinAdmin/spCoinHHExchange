@@ -41,7 +41,7 @@ class AlphaRouterService {
       let uniTokenOut = await UTS.getUniTokenByContract(uniContractTo, _tokenOutAddr)
       let inputAmount = UTS.tokenToCurrencyInWei(_inputAmount, uniTokenIn)
     
-      let quote = await this.getPriceQuote(uniTokenIn, uniTokenOut, inputAmount, _slippagePercent);
+      let quote = await this.getPriceQuote(_tokenInAddr, _tokenOutAddr, inputAmount, _slippagePercent);
       let strPriceQuote = quote.toFixed(_decimals);
     
       // let strPriceQuote = await this.getStrPriceQuote2(uniTokenIn, uniTokenOut, inputAmount, _slippagePercent, decimals)
@@ -50,11 +50,17 @@ class AlphaRouterService {
     }
     
     getPriceQuote = async( _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent) => {
+      let uniContractFrom = UTS.getERC20Contract(_tokenInAddr)
+      let uniContractTo   = UTS.getERC20Contract(_tokenOutAddr)
+      let decimals = (_decimals === undefined) ? await uniContractFrom.decimals() : _decimals;
+      let uniTokenIn  = await UTS.getUniTokenByContract(uniContractFrom, _tokenInAddr)
+      let uniTokenOut = await UTS.getUniTokenByContract(uniContractTo, _tokenOutAddr)
+      let inputAmount = UTS.tokenToCurrencyInWei(_inputAmount, uniTokenIn)
 
 
 
-      
-      const route = await this.getRoute(BURN_ADDRESS, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
+
+      const route = await this.getRoute(BURN_ADDRESS, uniTokenIn, uniTokenOut, _inputAmount, _slippagePercent);
       return route.quote
     }
     
