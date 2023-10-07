@@ -52,7 +52,7 @@ class AlphaRouterService {
     let uniTokenIn  = await UTS.wrapAddrToUniToken(_tokenAddrIn)
     let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)
     
-    let inputAmount = UTS.tokenToCurrencyInWei(_inputAmount, uniTokenIn)
+    let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputAmount, _tokenAddrIn)
     let route = await this.getRoute(_recipientAddress, uniTokenOut, inputAmount, _slippagePercent);
     return route
   }

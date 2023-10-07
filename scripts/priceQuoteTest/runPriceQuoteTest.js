@@ -73,7 +73,7 @@ exeTransactionTest = async( ) => {
     let walletPvtKey    = WALLET_SECRET;
     let uniTokenIn      = await UTS.getUniTokenByContract(uniContractFrom, tokenAddrIn)
     let uniTokenOut     = await UTS.getUniTokenByContract(uniContractTo, tokenAddrOut)
-    let inputAmount     = UTS.tokenToCurrencyInWei(_tokenAmountInWei, uniTokenIn)
+    let inputAmount     = await UTS.addrAmountToCurrencyInWei(_tokenAmountInWei, _tokenAddrIn)
     let slippagePercent = _slippagePercent
     let gasLimit        = 100000000
 

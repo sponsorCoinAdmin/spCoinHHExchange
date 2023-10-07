@@ -65,10 +65,25 @@ class UniTokenServices {
         return new this.ethers.Contract(_tokenAddress, ERC20ABI, this.provider);
     }
 
-    tokenToCurrencyInWei = (tokenAmount, uniToken) => {
+    // tokenToCurrencyInWei = async(tokenAmount, _tokenAddrIn) => {
+    //     let uniToken  = await this.wrapAddrToUniToken(_tokenAddrIn)
+
+    //     let wei = this.ethers.utils.parseUnits(tokenAmount.toString(), 18)
+    //     return CurrencyAmount.fromRawAmount(uniToken, JSBI.BigInt(wei))
+    // }
+  
+    addrAmountToCurrencyInWei = async (tokenAmount, _tokenAddrIn) => {
+        let uniToken  = await this.wrapAddrToUniToken(_tokenAddrIn)
+
         let wei = this.ethers.utils.parseUnits(tokenAmount.toString(), 18)
         return CurrencyAmount.fromRawAmount(uniToken, JSBI.BigInt(wei))
     }
+
+    // tokenToCurrencyInWei = (tokenAmount, uniToken) => {
+    //     let wei = this.ethers.utils.parseUnits(tokenAmount.toString(), 18)
+    //     return CurrencyAmount.fromRawAmount(uniToken, JSBI.BigInt(wei))
+    // }
+
 }
 
 module.exports = {
