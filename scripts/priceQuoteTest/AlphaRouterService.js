@@ -48,10 +48,7 @@ class AlphaRouterService {
   }
 
   getUnwrappedTokenRoute = async( _recipientAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
-
-    let uniTokenIn  = await UTS.wrapAddrToUniToken(_tokenAddrIn)
-    let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)
-    
+    let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)    
     let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputAmount, _tokenAddrIn)
     let route = await this.getRoute(_recipientAddress, uniTokenOut, inputAmount, _slippagePercent);
     return route
@@ -69,14 +66,13 @@ class AlphaRouterService {
     return transaction;
   }
   
-  exeRouteTransaction = async( _walletAddress, _walletPvtKey, _uniTokenInAddr, _route, _gasLimit) => {
-    const route = await this.getRoute(_recipientAddr, _route);
-    const transaction = this.getTransaction(route, _walletAddress, _gasLimit )
+  exeRouteTransaction = async( _recipientAddress, _walletPvtKey, _tokenAddrIn, _route, _gasLimit) => {
+    const transaction = this.getTransaction(_route, _recipientAddress, _gasLimit )
     const wallet = new ethers.Wallet(_walletPvtKey)
     const connectedWallet = wallet.connect(provider)
     const approvalAmount = ethers.utils.parseUnits('1', 18).toString()
     const ERC20ABI = require('./abi.json')
-    const contract0 = new ethers.Contract(_uniTokenInAddr, ERC20ABI, provider)
+    const contract0 = new ethers.Contract(_tokenAddrIn, ERC20ABI, provider)
     await contract0.connect(connectedWallet).approve(
       UNISWAP_SWAPROUTER_02,
       approvalAmount
@@ -88,14 +84,14 @@ class AlphaRouterService {
   exeTransaction = async(
     _walletAddress,
     _walletPvtKey,
-    _uniTokenIn,
-    _uniTokenOut,
+    _tokenAddrIn,
+    _tokenAddrOut,
     _inputAmount,
     _slippagePercent,
     _gasLimit) => {
-      const route = await this.getRoute(_walletAddress, _uniTokenOut, _inputAmount, _slippagePercent);
-      const transaction = await this.exeRouteTransaction( _walletAddress, _uniTokenInAddr, _route, _gasLimit)
-      return transaction;
+      const route = await getUnwrappedTokenRoute( _walletAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent)
+      const tx = await this.exeRouteTransaction( _walletAddress, _uniTokenInAddr, route, _gasLimit)
+      return tx;
   }
 
     /* BEFORE MODS */
