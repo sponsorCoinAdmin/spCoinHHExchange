@@ -19,9 +19,19 @@ class AlphaRouterService {
     constructor() {
     }
 
-  getRoute = async(_recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent) => {
+    getUnwrappedTokenRoute = async( _recipientAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
+      let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)    
+      let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputAmount, _tokenAddrIn)
+      let route = await this.getRoute2(_recipientAddress, _tokenAddrIn, _tokenAddrOut, uniTokenOut, inputAmount, _slippagePercent);
+      return route
+    }
+  
+    getRoute2 = async(_recipientAddr, _tokenAddrIn, _tokenAddrOut, _uniTokenOut, _inputAmount, _slippagePercent) => {
     // console.log( "==========================================================================================================" );
     // console.log( " EXECUTING getRoute(", _recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent, ")" );
+
+    let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)    
+
     let route = await router.route(
       _inputAmount,
       _uniTokenOut,
@@ -45,13 +55,6 @@ class AlphaRouterService {
   getPriceQuote = async( _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
     const route = await this.getUnwrappedTokenRoute(BURN_ADDRESS, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
     return route.quote
-  }
-
-  getUnwrappedTokenRoute = async( _recipientAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
-    let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)    
-    let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputAmount, _tokenAddrIn)
-    let route = await this.getRoute(_recipientAddress, uniTokenOut, inputAmount, _slippagePercent);
-    return route
   }
 
   getTransaction = ( _route, _walletAddress, _gasLimit ) => {
