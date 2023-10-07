@@ -34,7 +34,7 @@ class AlphaRouterService {
 
     let route = await router.route(
       _inputAmount,
-      _uniTokenOut,
+      uniTokenOut,
       TradeType.EXACT_INPUT,
       {
         recipient: _recipientAddr,
