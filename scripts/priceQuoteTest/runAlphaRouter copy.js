@@ -6,6 +6,7 @@ const JSBI  = require('jsbi') // jsbi@3.2.5
 // const UNISWAP_SWAPROUTER_02 = process.env.UNISWAP_SWAPROUTER_02
 const UNISWAP_SWAPROUTER_02 = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45'
 
+
 require('dotenv').config()
 const WALLET_ADDRESS = process.env.WALLET_ADDRESS
 const WALLET_SECRET = process.env.WALLET_SECRET
@@ -34,7 +35,7 @@ const inputAmount = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
 const slippagePercent = 25;
 
 async function main() {
-/*
+
   const route = await router.route(
     inputAmount,
     UNI,
@@ -45,8 +46,8 @@ async function main() {
       deadline: Math.floor(Date.now()/1000 + 1800)
     }
   )
-*/
-  const route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
+
+  // const route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
 
 
   console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
