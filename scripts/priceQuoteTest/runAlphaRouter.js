@@ -34,20 +34,8 @@ const inputAmount = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
 const slippagePercent = 25;
 
 async function main() {
-/*
-  const route = await router.route(
-    inputAmount,
-    UNI,
-    TradeType.EXACT_INPUT,
-    {
-      recipient: WALLET_ADDRESS,
-      slippageTolerance: new Percent(slippagePercent, 100),
-      deadline: Math.floor(Date.now()/1000 + 1800)
-    }
-  )
-*/
-  const route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
 
+  const route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
 
   console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
 

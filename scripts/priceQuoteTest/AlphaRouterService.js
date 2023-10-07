@@ -19,9 +19,9 @@ class AlphaRouterService {
     constructor() {
     }
 
-  getRoute = async(_recipientAddr, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent) => {
+  getRoute = async(_recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent) => {
     // console.log( "==========================================================================================================" );
-    // console.log( " EXECUTING getRoute(", _recipientAddr, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent, ")" );
+    // console.log( " EXECUTING getRoute(", _recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent, ")" );
     let route = await router.route(
       _inputAmount,
       _uniTokenOut,
@@ -53,7 +53,7 @@ class AlphaRouterService {
     let uniTokenIn  = await UTS.getUniTokenByContract(uniContractFrom, _tokenInAddr)
     let uniTokenOut = await UTS.getUniTokenByContract(uniContractTo, _tokenOutAddr)
     let inputAmount = UTS.tokenToCurrencyInWei(_inputAmount, uniTokenIn)
-    let route = await this.getRoute(_recipientAddress, uniTokenIn, uniTokenOut, inputAmount, _slippagePercent);
+    let route = await this.getRoute(_recipientAddress, uniTokenOut, inputAmount, _slippagePercent);
     return route
   }
 
@@ -93,7 +93,7 @@ class AlphaRouterService {
     _inputAmount,
     _slippagePercent,
     _gasLimit) => {
-      const route = await this.getRoute(_walletAddress, _walletPvtKey, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
+      const route = await this.getRoute(_walletAddress, _uniTokenOut, _inputAmount, _slippagePercent);
       const transaction = await this.exeRouteTransaction( _walletAddress, _uniTokenInAddr, _route, _gasLimit)
       return transaction;
   }
@@ -107,7 +107,7 @@ class AlphaRouterService {
     _inputAmount,
     _slippagePercent,
     _gasLimit) => {
-      const route = await this.getRoute(_walletAddress, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
+      const route = await this.getRoute(_walletAddress, _uniTokenOut, _inputAmount, _slippagePercent);
       const transaction = this.getTransaction(route, _walletAddress,  _gasLimit )
       const wallet = new ethers.Wallet(_walletPvtKey)
       const connectedWallet = wallet.connect(provider)
