@@ -76,7 +76,7 @@ exeTransactionORIG = async(
   _inputAmount,
   _slippagePercent,
   _gasLimit) => {
-    const route = await this.getRoute(_walletAddress, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
+    const route = await this.getRoute(_walletAddress, _uniTokenOut, _inputAmount, _slippagePercent);
     const transaction = this.getTransaction(route, _walletAddress,  _gasLimit )
     const wallet = new ethers.Wallet(_walletPvtKey)
     const connectedWallet = wallet.connect(provider)

@@ -13,16 +13,16 @@ class AlphaRouterServiceDebug {
       console.log( "DEBUG MODE ON: AlphaRouterServiceDebug");
   }
 
-  getRoute = async(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent) => {
-    console.log( " EXECUTING getRoute(", _recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent, ")" );
-    let result = await this.ars.getRoute(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent);
+  getRoute = async(_recipientAddr, _tokenOut, _inputAmount, _slippagePercent) => {
+    console.log( " EXECUTING getRoute(", _recipientAddr, _tokenOut, _inputAmount, _slippagePercent, ")" );
+    let result = await this.ars.getRoute(_recipientAddr, _tokenOut, _inputAmount, _slippagePercent);
     console.log( "getRoute result:", result);
     return result;
   }
 
-  getUnwrappedTokenRoute = async( _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent) => {
-    console.log( " EXECUTING getRoute(", _recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent, ")" );
-    let result = await this.ars.getUnwrappedTokenRoute(_recipientAddr, _tokenIn, _tokenOut, _inputAmount, _slippagePercent);
+  getUnwrappedTokenRoute = async(_recipientAddr, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent) => {
+    console.log( " EXECUTING getRoute(", _recipientAddr,  _tokenOut, _inputAmount, _slippagePercent, ")" );
+    let result = await this.ars.getUnwrappedTokenRoute(_recipientAddr, _tokenOut, _inputAmount, _slippagePercent);
     console.log( "getRoute result:", result);
     return result;
   }
