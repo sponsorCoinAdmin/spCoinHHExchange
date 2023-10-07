@@ -20,7 +20,7 @@ class AlphaRouterServiceDebug {
     return result;
   }
 
-  getUnwrappedTokenRoute = async(_recipientAddr, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent) => {
+  getUnwrappedTokenRoute = async(_recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
     console.log( " EXECUTING getRoute(", _recipientAddr,  _tokenOut, _inputAmount, _slippagePercent, ")" );
     let result = await this.ars.getUnwrappedTokenRoute(_recipientAddr, _tokenOut, _inputAmount, _slippagePercent);
     console.log( "getRoute result:", result);
@@ -57,9 +57,9 @@ class AlphaRouterServiceDebug {
     return result;
   }
   
-  exeRouteTransaction = async( _walletAddress, _walletPvtKey, _tokenInAddr, _route, _gasLimit) => {
-    console.log( " EXECUTING exeRouteTransaction(", re_walletAddress, _walletPvtKey, _tokenInAddr, _route, _gasLimitsult, ")" );
-    let result = await this.ars.exeRouteTransaction( _walletAddress, _walletPvtKey, _tokenInAddr, _route, _gasLimit)
+  exeRouteTransaction = async( _walletAddress, _walletPvtKey, _tokenAddrIn, _route, _gasLimit) => {
+    console.log( " EXECUTING exeRouteTransaction(", re_walletAddress, _walletPvtKey, _tokenAddrIn, _route, _gasLimitsult, ")" );
+    let result = await this.ars.exeRouteTransaction( _walletAddress, _walletPvtKey, _tokenAddrIn, _route, _gasLimit)
     console.log( "exeRouteTransaction result:", result);
     return result;
   }

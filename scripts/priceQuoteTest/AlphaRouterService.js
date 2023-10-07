@@ -35,23 +35,23 @@ class AlphaRouterService {
     return route;
   }
 
-  getStrPriceQuote = async(_tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent, _decimals) => {
+  getStrPriceQuote = async(_tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, _decimals) => {
     let decimals = (_decimals === undefined) ? await uniContractFrom.decimals() : _decimals;
-    let quote = await this.getPriceQuote(_tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
+    let quote = await this.getPriceQuote(_tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
     let strPriceQuote = quote.toFixed(decimals);
     return strPriceQuote;
   }
 
-  getPriceQuote = async( _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent) => {
-    const route = await this.getUnwrappedTokenRoute(BURN_ADDRESS, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
+  getPriceQuote = async( _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
+    const route = await this.getUnwrappedTokenRoute(BURN_ADDRESS, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
     return route.quote
   }
 
-  getUnwrappedTokenRoute = async( _recipientAddress, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent) => {
-    let uniContractFrom = UTS.getERC20Contract(_tokenInAddr)
-    let uniContractTo   = UTS.getERC20Contract(_tokenOutAddr)
-    let uniTokenIn  = await UTS.getUniTokenByContract(uniContractFrom, _tokenInAddr)
-    let uniTokenOut = await UTS.getUniTokenByContract(uniContractTo, _tokenOutAddr)
+  getUnwrappedTokenRoute = async( _recipientAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
+
+    let uniTokenIn  = await UTS.wrapAddrToUniToken(_tokenAddrIn)
+    let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)
+    
     let inputAmount = UTS.tokenToCurrencyInWei(_inputAmount, uniTokenIn)
     let route = await this.getRoute(_recipientAddress, uniTokenOut, inputAmount, _slippagePercent);
     return route

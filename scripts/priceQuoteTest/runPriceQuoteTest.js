@@ -25,8 +25,11 @@ getStrPriceQuote = async(_tokenAddrIn, _tokenAddrOut, _tokenAmount, _slippagePer
 
     let uniContractFrom = UTS.getERC20Contract(_tokenAddrIn)
     let uniContractTo   =  UTS.getERC20Contract(_tokenAddrOut)
-    let uniTokenIn      = await UTS.getUniTokenByContract(uniContractFrom, _tokenAddrIn)
-    let uniTokenOut     = await UTS.getUniTokenByContract(uniContractTo, _tokenAddrOut)
+    // let uniTokenIn      = await UTS.getUniTokenByContract(uniContractFrom, _tokenAddrIn)
+    // let uniTokenOut     = await UTS.getUniTokenByContract(uniContractTo, _tokenAddrOut)
+
+    let uniTokenIn  = await UTS.wrapAddrToUniToken(_tokenAddrIn)
+    // let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)
 
     console.log("uniTokenIn:", await uniContractFrom.name(), "(", uniTokenIn.address, ")");
     console.log("strPriceQuote:", await uniContractTo.name(), "(", strPriceQuote, ")");

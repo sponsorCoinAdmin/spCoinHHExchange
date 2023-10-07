@@ -17,8 +17,15 @@ class UniTokenServices {
         this.provider = provider;
     }
 
+    wrapAddrToUniToken = async (_tokenAddress) => {
+        // console.log( " EXECUTING wrapUniToken(", _tokenAddress, ")" );
+        let ecr20Contract      = this.getERC20Contract(_tokenAddress)
+        let wrappedUniTokenOut = await this.getUniTokenByContract(ecr20Contract, _tokenAddress)
+        return wrappedUniTokenOut
+    }
+
     getUniTokenByAddress = async (_tokenAddress) => {
-        console.log("======================= getUniTokenByAddress(",_tokenAddress,") ======================");
+        // console.log("======================= getUniTokenByAddress(",_tokenAddress,") ======================");
         let contract = this.getERC20Contract(_tokenAddress);
         return await this.getUniTokenByContract(contract, _tokenAddress);
     }

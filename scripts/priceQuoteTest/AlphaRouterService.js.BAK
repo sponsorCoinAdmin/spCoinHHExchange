@@ -39,14 +39,14 @@ getTransaction = ( _route, _walletAddress, _gasLimit ) => {
   return transaction;
 }
 
-exeRouteTransaction = async( _walletAddress, _walletPvtKey, _tokenInAddr, _route, _gasLimit) => {
+exeRouteTransaction = async( _walletAddress, _walletPvtKey, _tokenAddrIn, _route, _gasLimit) => {
   const route = await getRoute(_recipientAddr, _route);
   const transaction = getTransaction(route, _walletAddress, _gasLimit )
   const wallet = new ethers.Wallet(_walletPvtKey)
   const connectedWallet = wallet.connect(provider)
   const approvalAmount = ethers.utils.parseUnits('1', 18).toString()
   const ERC20ABI = require('./abi.json')
-  const contract0 = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
+  const contract0 = new ethers.Contract(_tokenAddrIn, ERC20ABI, provider)
   await contract0.connect(connectedWallet).approve(
     UNISWAP_SWAPROUTER_02,
     approvalAmount
@@ -64,7 +64,7 @@ exeTransaction = async(
   _slippagePercent,
   _gasLimit) => {
     const route = await getRoute(_walletAddress, _walletPvtKey, _tokenIn, _tokenOut, _inputAmount, _slippagePercent);
-    const transaction = await exeRouteTransaction( _walletAddress, _tokenInAddr, _route, _gasLimit)
+    const transaction = await exeRouteTransaction( _walletAddress, _tokenAddrIn, _route, _gasLimit)
    return transaction;
 }
 
