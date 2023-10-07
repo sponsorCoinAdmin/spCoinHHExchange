@@ -7,13 +7,10 @@ const JSBI  = require('jsbi') // jsbi@3.2.5
 require('dotenv').config()
 const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID)
 
-const chainId = parseInt(CHAIN_ID)
-const { Token } = require('@uniswap/sdk-core')
-
 class UniTokenServices {
     constructor(ethers, chainId, provider) {
         this.ethers   = ethers;
-        this.chainId  = chainId;
+        this.chainId  = CHAIN_ID;
         this.provider = provider;
     }
 
@@ -35,7 +32,7 @@ class UniTokenServices {
         let symbol = await contract.symbol();
         let name = await contract.name();
 
-        const uniToken = new Token(this.chainId, _tokenAddress, decimals, symbol, name)
+        const uniToken = new UniToken(this.chainId, _tokenAddress, decimals, symbol, name)
         return uniToken;
     }
 
@@ -50,7 +47,7 @@ class UniTokenServices {
         let symbol             = await _contract.symbol();
         let name               = await _contract.name();
         // let balanceOf          = await _contract.balanceOf();
-        let totalSupply        = await _contract.totalSupply();
+        // let totalSupply        = await _contract.totalSupply();
 
         console.log("name       :              ", name)
         console.log("symbol     :              ", symbol)
@@ -60,29 +57,19 @@ class UniTokenServices {
         // console.log("totalSupply:              ", totalSupply)
     }
 
-
     getERC20Contract = (_tokenAddress) => {
         return new this.ethers.Contract(_tokenAddress, ERC20ABI, this.provider);
     }
 
-    // tokenToCurrencyInWei = async(tokenAmount, _tokenAddrIn) => {
-    //     let uniToken  = await this.wrapAddrToUniToken(_tokenAddrIn)
-
-    //     let wei = this.ethers.utils.parseUnits(tokenAmount.toString(), 18)
-    //     return CurrencyAmount.fromRawAmount(uniToken, JSBI.BigInt(wei))
-    // }
-  
     addrAmountToCurrencyInWei = async (tokenAmount, _tokenAddrIn) => {
         let uniToken  = await this.wrapAddrToUniToken(_tokenAddrIn)
+        return this.tokenAmountToCurrencyInWei(tokenAmount, uniToken)
+    }
 
+    tokenAmountToCurrencyInWei = (tokenAmount, uniToken) => {
         let wei = this.ethers.utils.parseUnits(tokenAmount.toString(), 18)
         return CurrencyAmount.fromRawAmount(uniToken, JSBI.BigInt(wei))
     }
-
-    // tokenToCurrencyInWei = (tokenAmount, uniToken) => {
-    //     let wei = this.ethers.utils.parseUnits(tokenAmount.toString(), 18)
-    //     return CurrencyAmount.fromRawAmount(uniToken, JSBI.BigInt(wei))
-    // }
 
 }
 
