@@ -6,7 +6,6 @@ const { TradeType, Percent } = require('@uniswap/sdk-core')
 const { ethers, BigNumber } = require('ethers')
 const { UniTokenServices } = require('./uniTokenServices')
 
-
 const UNISWAP_SWAPROUTER_02 = process.env.UNISWAP_SWAPROUTER_02
 const INFURA_TEST_URL = process.env.GOERLI_INFURA_TEST_URL
 
@@ -93,6 +92,7 @@ class AlphaRouterService {
 
     /* BEFORE MODS */
     exeTransactionORIG = async(
+      _tradeType,
       _walletAddress,
       _walletPvtKey,
       _tokenInAddr,
