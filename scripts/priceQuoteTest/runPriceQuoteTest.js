@@ -86,14 +86,14 @@ exeTransactionTest = async( ) => {
 }
 
 main = async( ) => {
-    // console.log("*** EXECUTING getStrPriceQuoteTest1() ******************************");
-    // await getStrPriceQuoteTest1();
-    // console.log("*** EXECUTING getRouteTest() ***************************************");
-    // await getRouteTest();
-    // console.log("*** EXECUTING getRoutePriceQuoteTest() *****************************");
-    // await getRoutePriceQuoteTest();
-    console.log("*** EXECUTING exeTransactionTest() ********************************");
-    await exeTransactionTest();
+    console.log("*** EXECUTING getStrPriceQuoteTest1() ******************************");
+    await getStrPriceQuoteTest1();
+    console.log("*** EXECUTING getRouteTest() ***************************************");
+    await getRouteTest();
+    console.log("*** EXECUTING getRoutePriceQuoteTest() *****************************");
+    await getRoutePriceQuoteTest();
+    // console.log("*** EXECUTING exeTransactionTest() ********************************");
+    // await exeTransactionTest();
 }
 
 main()
