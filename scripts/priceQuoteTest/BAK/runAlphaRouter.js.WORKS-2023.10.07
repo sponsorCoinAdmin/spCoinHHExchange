@@ -6,7 +6,6 @@ const JSBI  = require('jsbi') // jsbi@3.2.5
 // const UNISWAP_SWAPROUTER_02 = process.env.UNISWAP_SWAPROUTER_02
 const UNISWAP_SWAPROUTER_02 = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45'
 
-
 require('dotenv').config()
 const WALLET_ADDRESS = process.env.WALLET_ADDRESS
 const WALLET_SECRET = process.env.WALLET_SECRET
@@ -34,39 +33,6 @@ const wei = ethers.utils.parseUnits('0.01', 18)
 const inputAmount = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
 const slippagePercent = 25;
 
-async function main() {
-
-  const route = await router.route(
-    inputAmount,
-    UNI,
-    TradeType.EXACT_INPUT,
-    {
-      recipient: WALLET_ADDRESS,
-      slippageTolerance: new Percent(slippagePercent, 100),
-      deadline: Math.floor(Date.now()/1000 + 1800)
-    }
-  )
-
-  // const route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
-
-
-  console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
-
-  const transaction = getTransaction(route, WALLET_ADDRESS, 1000000)
-  const wallet = new ethers.Wallet(WALLET_SECRET)
-  const connectedWallet = wallet.connect(web3Provider)
-  const approvalAmount = ethers.utils.parseUnits('1', 18).toString()
-  const ERC20ABI = require('./abi.json')
-  const contract0 = new ethers.Contract(address0, ERC20ABI, web3Provider)
-  await contract0.connect(connectedWallet).approve(
-    UNISWAP_SWAPROUTER_02,
-    approvalAmount
-  )
-
-  const tradeTransaction = await connectedWallet.sendTransaction(transaction)
-  tradeTransaction.wait();
-}
-
 getRoute = async(_recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent) => {
    let route = await router.route(
     _inputAmount,
@@ -81,7 +47,6 @@ getRoute = async(_recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent) =
   return route;
 }
 
-
 exeTransactionORIG = async(
   _walletAddress,
   _walletPvtKey,
@@ -90,7 +55,7 @@ exeTransactionORIG = async(
   _inputAmount,
   _slippagePercent,
   _gasLimit) => {
-    const route = await this.getRoute(_walletAddress, _uniTokenIn, _uniTokenOut, _inputAmount, _slippagePercent);
+    const route = await this.getRoute(_walletAddress, _uniTokenOut, _inputAmount, _slippagePercent);
     const transaction = this.getTransaction(route, _walletAddress,  _gasLimit )
     const wallet = new ethers.Wallet(_walletPvtKey)
     const connectedWallet = wallet.connect(provider)
@@ -114,6 +79,27 @@ getTransaction = ( _route, _walletAddress, _gasLimit ) => {
     gasLimit: ethers.utils.hexlify(_gasLimit)
   }
   return transaction;
+}
+
+async function main() {
+
+  const route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
+
+  console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
+
+  const transaction = getTransaction(route, WALLET_ADDRESS, 1000000)
+  const wallet = new ethers.Wallet(WALLET_SECRET)
+  const connectedWallet = wallet.connect(web3Provider)
+  const approvalAmount = ethers.utils.parseUnits('1', 18).toString()
+  const ERC20ABI = require('./abi.json')
+  const contract0 = new ethers.Contract(address0, ERC20ABI, web3Provider)
+  await contract0.connect(connectedWallet).approve(
+    UNISWAP_SWAPROUTER_02,
+    approvalAmount
+  )
+
+  const tradeTransaction = await connectedWallet.sendTransaction(transaction)
+  tradeTransaction.wait();
 }
 
 main()

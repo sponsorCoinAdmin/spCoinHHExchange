@@ -47,7 +47,7 @@ getStrPriceQuoteTest1 = async( ) => {
 getRouteTest = async( ) => {
     let slippagePercent = 25;
     let tokenAmountInWei = 100000000000;
-    let route = await ARS.getUnwrappedTokenRoute(WALLET_ADDRESS, SPCOIN_ADDRESS, WETH_ADDRESS, tokenAmountInWei, slippagePercent)
+    let route = await ARS.getRoute(WALLET_ADDRESS, SPCOIN_ADDRESS, WETH_ADDRESS, tokenAmountInWei, slippagePercent)
     return route
 }
 
@@ -66,17 +66,13 @@ exeTransactionTest = async( ) => {
 
     /////////// END PARAMS HARDCODING
 
-    let uniContractFrom = UTS.getERC20Contract(tokenAddrIn)
-    let uniContractTo   =  UTS.getERC20Contract(tokenAddrOut)
-
     let walletAddress   = WALLET_ADDRESS;
     let walletPvtKey    = WALLET_SECRET;
-    let uniTokenIn      = await UTS.getUniTokenByContract(uniContractFrom, tokenAddrIn)
-    let uniTokenOut     = await UTS.getUniTokenByContract(uniContractTo, tokenAddrOut)
-    let inputAmount     = await UTS.addrAmountToCurrencyInWei(_tokenAmountInWei, _tokenAddrIn)
+    let uniTokenIn      = tokenAddrIn
+    let uniTokenOut     = tokenAddrOut
+    let inputAmount     = _tokenAmountInWei
     let slippagePercent = _slippagePercent
     let gasLimit        = 100000000
-
 
     const tradeTransaction = await ARS.exeTransactionORIG(
         walletAddress,
@@ -90,14 +86,14 @@ exeTransactionTest = async( ) => {
 }
 
 main = async( ) => {
-    console.log("*** EXECUTING getStrPriceQuoteTest1() ******************************");
-    await getStrPriceQuoteTest1();
-    console.log("*** EXECUTING getRouteTest() ***************************************");
-    await getRouteTest();
-    console.log("*** EXECUTING getRoutePriceQuoteTest() *****************************");
-    await getRoutePriceQuoteTest();
-    // console.log("*** EXECUTING exeTransactionTest() ********************************");
-    // await exeTransactionTest();
+    // console.log("*** EXECUTING getStrPriceQuoteTest1() ******************************");
+    // await getStrPriceQuoteTest1();
+    // console.log("*** EXECUTING getRouteTest() ***************************************");
+    // await getRouteTest();
+    // console.log("*** EXECUTING getRoutePriceQuoteTest() *****************************");
+    // await getRoutePriceQuoteTest();
+    console.log("*** EXECUTING exeTransactionTest() ********************************");
+    await exeTransactionTest();
 }
 
 main()

@@ -19,14 +19,9 @@ class AlphaRouterService {
     constructor() {
     }
 
-    getUnwrappedTokenRoute = async( _recipientAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
-      let route = await this.getRoute2(_recipientAddress, _tokenAddrIn, _tokenAddrOut,  _inputAmount, _slippagePercent);
-      return route
-    }
-  
-    getRoute2 = async(_recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
+    getRoute = async(_recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
     // console.log( "==========================================================================================================" );
-    // console.log( " EXECUTING getRoute(", _recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent, ")" );
+    // console.log( " EXECUTING getRoute(", _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, ")" );
 
     let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)    
     let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputAmount, _tokenAddrIn)
@@ -44,6 +39,38 @@ class AlphaRouterService {
     return route;
   }
 
+  getOLDRoute = async(_recipientAddr, _tokenAddrIn, _tokenAddrOut, _uniTokenOut, _inputAmount, _inputWEI, _slippagePercent) => {
+    let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)
+    let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputWEI, _tokenAddrIn)
+   
+    let route = await router.route(
+      _inputAmount,
+      uniTokenOut,
+      TradeType.EXACT_INPUT,
+      {
+        recipient: _recipientAddr,
+        slippageTolerance: new Percent(_slippagePercent, 100),
+        deadline: Math.floor(Date.now()/1000 + 1800)
+      }
+   )
+   return route;
+ }
+
+ getOLDRouteWORKS = async(_recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent) => {
+  let route = await router.route(
+   _inputAmount,
+   _uniTokenOut,
+   TradeType.EXACT_INPUT,
+   {
+     recipient: _recipientAddr,
+     slippageTolerance: new Percent(_slippagePercent, 100),
+     deadline: Math.floor(Date.now()/1000 + 1800)
+   }
+ )
+ return route;
+}
+
+
   getStrPriceQuote = async(_tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, _decimals) => {
     let decimals = (_decimals === undefined) ? await uniContractFrom.decimals() : _decimals;
     let quote = await this.getPriceQuote(_tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
@@ -52,7 +79,7 @@ class AlphaRouterService {
   }
 
   getPriceQuote = async( _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
-    const route = await this.getUnwrappedTokenRoute(BURN_ADDRESS, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
+    const route = await this.getRoute(BURN_ADDRESS, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
     return route.quote
   }
 
@@ -91,8 +118,8 @@ class AlphaRouterService {
     _inputAmount,
     _slippagePercent,
     _gasLimit) => {
-      const route = await getUnwrappedTokenRoute( _walletAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent)
-      const tx = await this.exeRouteTransaction( _walletAddress, _uniTokenInAddr, route, _gasLimit)
+      const route = await getRoute( _walletAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent)
+      const tx = await this.exeRouteTransaction( _walletAddress, _tokenAddrIn, route, _gasLimit)
       return tx;
   }
 
@@ -100,18 +127,18 @@ class AlphaRouterService {
   exeTransactionORIG = async(
     _walletAddress,
     _walletPvtKey,
-    _uniTokenIn,
-    _uniTokenOut,
+    _tokenAddrIn,
+    _tokenAddrOut,
     _inputAmount,
     _slippagePercent,
     _gasLimit) => {
-      const route = await this.getRoute(_walletAddress, _uniTokenOut, _inputAmount, _slippagePercent);
+      const route = await this.getRoute(_walletAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
       const transaction = this.getTransaction(route, _walletAddress,  _gasLimit )
       const wallet = new ethers.Wallet(_walletPvtKey)
       const connectedWallet = wallet.connect(provider)
       const approvalAmount = ethers.utils.parseUnits('1', 18).toString()
       const ERC20ABI = require('./abi.json')
-      const contract0 = new ethers.Contract(_uniTokenIn.address, ERC20ABI, provider)
+      const contract0 = new ethers.Contract(_tokenAddrIn, ERC20ABI, provider)
       await contract0.connect(connectedWallet).approve(
         UNISWAP_SWAPROUTER_02,
         approvalAmount

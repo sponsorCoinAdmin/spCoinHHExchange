@@ -1,19 +1,36 @@
+require("dotenv").config();
+let DEBUG_MODE = false;
+
+const { ethers, BigNumber } = require('ethers')
+const { AlphaRouterServiceDebug } = require('./AlphaRouterServiceDebug')
+const { AlphaRouterService } = require('./AlphaRouterService');
+const { UniTokenServices } = require('./uniTokenServices')
+
+const INFURA_TEST_URL = process.env.GOERLI_INFURA_TEST_URL
+const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID)
+const WALLET_ADDRESS = process.env.WALLET_ADDRESS
+const WALLET_SECRET = process.env.WALLET_SECRET
+
+const provider = new ethers.providers.JsonRpcProvider(INFURA_TEST_URL) // Ropsten
+
+const WETH_ADDRESS = process.env.GOERLI_WETH
+const SPCOIN_ADDRESS = process.env.GOERLI_SPCOIN
+const UNI_ADDRESS = process.env.GOERLI_UNI
+
+let ARS = DEBUG_MODE ? new AlphaRouterServiceDebug(ethers, CHAIN_ID, provider) : new AlphaRouterService();
+let UTS = new UniTokenServices(ethers, CHAIN_ID, provider)
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
 const { AlphaRouter } = require('@uniswap/smart-order-router')
 const { Token, CurrencyAmount, TradeType, Percent } = require('@uniswap/sdk-core')
-const { ethers, BigNumber } = require('ethers')
 const JSBI  = require('jsbi') // jsbi@3.2.5
 
 // const UNISWAP_SWAPROUTER_02 = process.env.UNISWAP_SWAPROUTER_02
 const UNISWAP_SWAPROUTER_02 = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45'
 
-require('dotenv').config()
-const WALLET_ADDRESS = process.env.WALLET_ADDRESS
-const WALLET_SECRET = process.env.WALLET_SECRET
-const INFURA_TEST_URL = process.env.GOERLI_INFURA_TEST_URL
-
 const web3Provider = new ethers.providers.JsonRpcProvider(INFURA_TEST_URL) // Ropsten
 
-const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID)
 const router = new AlphaRouter({ chainId: CHAIN_ID, provider: web3Provider})
 
 const name0 = 'Wrapped Ether'
@@ -35,7 +52,14 @@ const slippagePercent = 25;
 
 async function main() {
 
-  const route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
+  // let route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
+  let route = await ARS.getOLDRoute(WALLET_ADDRESS, WETH_ADDRESS, UNI_ADDRESS, UNI, inputAmount, wei, slippagePercent);
+  // route = ARS.getRoute(
+  //   WALLET_ADDRESS,
+  //   WETH_ADDRESS,
+  //   UNI_ADDRESS,
+  //   wei,
+  //   slippagePercent);
 
   console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
 
