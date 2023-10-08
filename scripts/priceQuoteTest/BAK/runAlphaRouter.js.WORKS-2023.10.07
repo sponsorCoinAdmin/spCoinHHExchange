@@ -55,7 +55,7 @@ exeTransactionORIG = async(
   _inputAmount,
   _slippagePercent,
   _gasLimit) => {
-    const route = await this.getRoute(_walletAddress, _uniTokenOut, _inputAmount, _slippagePercent);
+    const route = await this.getRoute( tradeType, _walletAddress, _uniTokenOut, _inputAmount, _slippagePercent);
     const transaction = this.getTransaction(route, _walletAddress,  _gasLimit )
     const wallet = new ethers.Wallet(_walletPvtKey)
     const connectedWallet = wallet.connect(provider)
@@ -83,7 +83,7 @@ getTransaction = ( _route, _walletAddress, _gasLimit ) => {
 
 async function main() {
 
-  const route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
+  const route = await this.getRoute( tradeType, WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
 
   console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
 

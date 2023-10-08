@@ -14,15 +14,17 @@ class AlphaRouterServiceDebug {
   }
 
   getRoute = async(_recipientAddr, _tokenOut, _inputAmount, _slippagePercent) => {
-    console.log( " EXECUTING getRoute(", _recipientAddr, _tokenOut, _inputAmount, _slippagePercent, ")" );
-    let result = await this.ars.getRoute(_recipientAddr, _tokenOut, _inputAmount, _slippagePercent);
+    let tradeType = TradeType.EXACT_INPUT;
+    console.log( " EXECUTING getRoute( tradeType, ", _recipientAddr, _tokenOut, _inputAmount, _slippagePercent, ")" );
+    let result = await this.ars.getRoute( tradeType, _recipientAddr, _tokenOut, _inputAmount, _slippagePercent);
     console.log( "getRoute result:", result);
     return result;
   }
 
   getRoute = async(_recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
-    console.log( " EXECUTING getRoute(", _recipientAddr,  _tokenOut, _inputAmount, _slippagePercent, ")" );
-    let result = await this.ars.getRoute(_recipientAddr, _tokenOut, _inputAmount, _slippagePercent);
+    let tradeType = TradeType.EXACT_INPUT;
+    console.log( " EXECUTING getRoute( tradeType, ", _recipientAddr,  _tokenOut, _inputAmount, _slippagePercent, ")" );
+    let result = await this.ars.getRoute( tradeType, _recipientAddr, _tokenOut, _inputAmount, _slippagePercent);
     console.log( "getRoute result:", result);
     return result;
   }

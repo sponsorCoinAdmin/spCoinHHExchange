@@ -19,9 +19,9 @@ class AlphaRouterService {
     constructor() {
     }
 
-    getRoute = async(_recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
+    getRoute = async(_tradeType, _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
     // console.log( "==========================================================================================================" );
-    // console.log( " EXECUTING getRoute(", _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, ")" );
+    // console.log( " EXECUTING getRoute( tradeType, ", _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, ")" );
 
     let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)    
     let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputAmount, _tokenAddrIn)
@@ -29,7 +29,7 @@ class AlphaRouterService {
     let route = await router.route(
       inputAmount,
       uniTokenOut,
-      TradeType.EXACT_INPUT,
+      _tradeType,
       {
         recipient: _recipientAddr,
         slippageTolerance: new Percent(_slippagePercent, 100),
@@ -47,7 +47,8 @@ class AlphaRouterService {
   }
 
   getPriceQuote = async( _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
-    const route = await this.getRoute(BURN_ADDRESS, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
+    let tradeType = TradeType.EXACT_INPUT;
+    const route = await this.getRoute( tradeType, BURN_ADDRESS, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
     return route.quote
   }
 
@@ -76,52 +77,35 @@ class AlphaRouterService {
     const tradeTransaction = await connectedWallet.sendTransaction(transaction)
     return tradeTransaction
   }
-  
-  exeTransaction = async(
+      /* BEFORE MODS */
+  exeExactInputTransaction = async(
     _walletAddress,
     _walletPvtKey,
-    _tokenAddrIn,
-    _tokenAddrOut,
+    _tokenInAddr,
+    _tokenOutAddr,
+    _approvalAmount,
     _inputAmount,
     _slippagePercent,
     _gasLimit) => {
-      const route = await getRoute( _walletAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent)
-      const tx = await this.exeRouteTransaction( _walletAddress, _tokenAddrIn, route, _gasLimit)
-      return tx;
+      let tradeType = TradeType.EXACT_INPUT;
+      let route = await this.getRoute( tradeType, _walletAddress, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
+  
+      console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
+  
+      const transaction = this.getTransaction(route, _walletAddress, _gasLimit)
+      const wallet = new ethers.Wallet(_walletPvtKey)
+      const connectedWallet = wallet.connect(provider)
+      const contract0 = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
+      await contract0.connect(connectedWallet).approve(
+        UNISWAP_SWAPROUTER_02,
+        _approvalAmount
+      )
+  
+      const tradeTransaction = await connectedWallet.sendTransaction(transaction)
+      console.log("Pending Transaction")
+      tradeTransaction.wait();
+      console.log("Transaction Complete")
   }
-
-    /* BEFORE MODS */
-    exeTransactionORIG = async(
-      _tradeType,
-      _walletAddress,
-      _walletPvtKey,
-      _tokenInAddr,
-      _tokenOutAddr,
-      _approvalAmount,
-      _inputAmount,
-      _slippagePercent,
-      _gasLimit) => {
-     // let route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
-        let route = await this.getRoute(_walletAddress, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
-    
-        console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
-    
-        const transaction = getTransaction(route, _walletAddress, _gasLimit)
-        const wallet = new ethers.Wallet(_walletPvtKey)
-        const connectedWallet = wallet.connect(provider)
-        const contract0 = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
-        await contract0.connect(connectedWallet).approve(
-          UNISWAP_SWAPROUTER_02,
-          _approvalAmount
-        )
-    
-        const tradeTransaction = await connectedWallet.sendTransaction(transaction)
-        console.log("Pending Transaction")
-        tradeTransaction.wait();
-        console.log("Transaction Complete")
-    
-    }
-
 }
 
 module.exports = {
