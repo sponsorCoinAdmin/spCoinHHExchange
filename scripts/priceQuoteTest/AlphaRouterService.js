@@ -39,38 +39,6 @@ class AlphaRouterService {
     return route;
   }
 
-  getOLDRoute = async(_recipientAddr, _tokenAddrIn, _tokenAddrOut, _uniTokenOut, _inputAmount, _inputWEI, _slippagePercent) => {
-    let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)
-    let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputWEI, _tokenAddrIn)
-   
-    let route = await router.route(
-      _inputAmount,
-      uniTokenOut,
-      TradeType.EXACT_INPUT,
-      {
-        recipient: _recipientAddr,
-        slippageTolerance: new Percent(_slippagePercent, 100),
-        deadline: Math.floor(Date.now()/1000 + 1800)
-      }
-   )
-   return route;
- }
-
- getOLDRouteWORKS = async(_recipientAddr, _uniTokenOut, _inputAmount, _slippagePercent) => {
-  let route = await router.route(
-   _inputAmount,
-   _uniTokenOut,
-   TradeType.EXACT_INPUT,
-   {
-     recipient: _recipientAddr,
-     slippageTolerance: new Percent(_slippagePercent, 100),
-     deadline: Math.floor(Date.now()/1000 + 1800)
-   }
- )
- return route;
-}
-
-
   getStrPriceQuote = async(_tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, _decimals) => {
     let decimals = (_decimals === undefined) ? await uniContractFrom.decimals() : _decimals;
     let quote = await this.getPriceQuote(_tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);

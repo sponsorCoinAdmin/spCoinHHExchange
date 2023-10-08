@@ -46,20 +46,15 @@ const address1 = process.env.GOERLI_UNI
 const WETH = new Token(CHAIN_ID, address0, decimals0, symbol0, name0)
 const UNI = new Token(CHAIN_ID, address1, decimals1, symbol1, name1)
 
-const wei = ethers.utils.parseUnits('0.01', 18)
-const inputAmount = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
+// const wei = ethers.utils.parseUnits('0.01', 18)
+// const inputAmount = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
 const slippagePercent = 25;
+const inputAmount = '0.01'
 
 async function main() {
 
   // let route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
-  let route = await ARS.getOLDRoute(WALLET_ADDRESS, WETH_ADDRESS, UNI_ADDRESS, UNI, inputAmount, wei, slippagePercent);
-  // route = ARS.getRoute(
-  //   WALLET_ADDRESS,
-  //   WETH_ADDRESS,
-  //   UNI_ADDRESS,
-  //   wei,
-  //   slippagePercent);
+  let route = await ARS.getRoute(WALLET_ADDRESS, WETH_ADDRESS, UNI_ADDRESS, inputAmount, slippagePercent);
 
   console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
 
