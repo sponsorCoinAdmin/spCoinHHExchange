@@ -1,4 +1,5 @@
 require("dotenv").config();
+const ERC20ABI = require('./abi.json')
 
 const { AlphaRouter } = require('@uniswap/smart-order-router')
 const { TradeType, Percent } = require('@uniswap/sdk-core')
@@ -68,9 +69,8 @@ class AlphaRouterService {
     const wallet = new ethers.Wallet(_walletPvtKey)
     const connectedWallet = wallet.connect(provider)
     const approvalAmount = ethers.utils.parseUnits('1', 18).toString()
-    const ERC20ABI = require('./abi.json')
-    const contract0 = new ethers.Contract(_tokenAddrIn, ERC20ABI, provider)
-    await contract0.connect(connectedWallet).approve(
+    const contractIn = new ethers.Contract(_tokenAddrIn, ERC20ABI, provider)
+    await contractIn.connect(connectedWallet).approve(
       UNISWAP_SWAPROUTER_02,
       approvalAmount
     )
@@ -105,7 +105,6 @@ class AlphaRouterService {
       const wallet = new ethers.Wallet(_walletPvtKey)
       const connectedWallet = wallet.connect(provider)
       const approvalAmount = ethers.utils.parseUnits('1', 18).toString()
-      const ERC20ABI = require('./abi.json')
       const contract0 = new ethers.Contract(_tokenAddrIn, ERC20ABI, provider)
       await contract0.connect(connectedWallet).approve(
         UNISWAP_SWAPROUTER_02,
