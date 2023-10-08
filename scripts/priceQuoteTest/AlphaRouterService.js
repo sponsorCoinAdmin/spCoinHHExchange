@@ -92,26 +92,35 @@ class AlphaRouterService {
   }
 
     /* BEFORE MODS */
-  exeTransactionORIG = async(
-    _walletAddress,
-    _walletPvtKey,
-    _tokenAddrIn,
-    _tokenAddrOut,
-    _inputAmount,
-    _slippagePercent,
-    _gasLimit) => {
-      const route = await this.getRoute(_walletAddress, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
-      const transaction = this.getTransaction(route, _walletAddress,  _gasLimit )
-      const wallet = new ethers.Wallet(_walletPvtKey)
-      const connectedWallet = wallet.connect(provider)
-      const approvalAmount = ethers.utils.parseUnits('1', 18).toString()
-      const contract0 = new ethers.Contract(_tokenAddrIn, ERC20ABI, provider)
-      await contract0.connect(connectedWallet).approve(
-        UNISWAP_SWAPROUTER_02,
-        approvalAmount
-      )
-      const tradeTransaction = await connectedWallet.sendTransaction(transaction)
-  }
+    exeTransactionORIG = async(
+      _walletAddress,
+      _walletPvtKey,
+      _tokenInAddr,
+      _tokenOutAddr,
+      _approvalAmount,
+      _inputAmount,
+      _slippagePercent,
+      _gasLimit) => {
+     // let route = await this.getRoute(WALLET_ADDRESS, UNI, inputAmount, slippagePercent);
+        let route = await this.getRoute(_walletAddress, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
+    
+        console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
+    
+        const transaction = getTransaction(route, _walletAddress, _gasLimit)
+        const wallet = new ethers.Wallet(_walletPvtKey)
+        const connectedWallet = wallet.connect(provider)
+        const contract0 = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
+        await contract0.connect(connectedWallet).approve(
+          UNISWAP_SWAPROUTER_02,
+          _approvalAmount
+        )
+    
+        const tradeTransaction = await connectedWallet.sendTransaction(transaction)
+        console.log("Pending Transaction")
+        tradeTransaction.wait();
+        console.log("Transaction Complete")
+    
+    }
 
 }
 
