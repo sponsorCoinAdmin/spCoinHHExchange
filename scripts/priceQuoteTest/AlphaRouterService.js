@@ -21,7 +21,8 @@ class AlphaRouterService {
 
     getRoute = async(_tradeType, _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
     // console.log( "==========================================================================================================" );
-    // console.log( " EXECUTING getRoute( tradeType, ", _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, ")" );
+    // console.log( " EXECUTING getRoute(", _tradeType,  _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, ")" );
+    console.log( " EXECUTING getRoute(", _tradeType, _inputAmount, _slippagePercent, ")" );
 
     let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)    
     let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputAmount, _tokenAddrIn)
@@ -36,12 +37,13 @@ class AlphaRouterService {
         deadline: Math.floor(Date.now()/1000 + 1800)
       }
     )
+    console.log("BBBBBBBBBBBBBB route.quote:", route.quote.toFixed(10))
+    console.log("=======================================================================")
     return route;
   }
 
   // getStrPriceQuote = async( _tradeType, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, _decimals) => {
   getStrPriceQuote = async( _tradeType, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, _decimals) => {
-    let tradeType = TradeType.EXACT_INPUT;
     let decimals = (_decimals === undefined) ? await uniContractFrom.decimals() : _decimals;
     let quote = await this.getPriceQuote( _tradeType, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
     let strPriceQuote = quote.toFixed(decimals);
@@ -90,14 +92,49 @@ class AlphaRouterService {
     _gasLimit) => {
       let tradeType = TradeType.EXACT_INPUT;
       let route = await this.getRoute( tradeType, _walletAddress, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
+      console.log("AAABBBBBBBBBBBBBB route.quote:", route.quote.toFixed(10))
+
+      let quote = route.quote;
+
+      let tokenInContract  = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
+      let tokenOutContract = UTS.getERC20Contract(_tokenOutAddr)
+      let tokenInName          = await tokenInContract.name();
+      let tokenOutName         = await tokenOutContract.name();
   
-      console.log(`Quote Exact In: ${route.quote.toFixed(10)}`)
+      console.log("Swapping:", _inputAmount, tokenInName, "For",  quote.toFixed(10), tokenOutName)
   
       const transaction = this.getTransaction(route, _walletAddress, _gasLimit)
       const wallet = new ethers.Wallet(_walletPvtKey)
       const connectedWallet = wallet.connect(provider)
-      const contract0 = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
-      await contract0.connect(connectedWallet).approve(
+      await tokenInContract.connect(connectedWallet).approve(
+        UNISWAP_SWAPROUTER_02,
+        _approvalAmount
+      )
+  
+      console.log("Pending Transaction:")
+      const tradeTransaction = await connectedWallet.sendTransaction(transaction)
+      console.log("Transaction Complete")
+  }
+
+  exeExactOutputTransaction = async(
+    _walletAddress,
+    _walletPvtKey,
+    _tokenInAddr,
+    _tokenOutAddr,
+    _approvalAmount,
+    _inputAmount,
+    _slippagePercent,
+    _gasLimit) => {
+      let tradeType = TradeType.EXACT_OUTPUT;
+      let route = await this.getRoute( tradeType, _walletAddress, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
+  
+      console.log(`Quote Exact Out: ${route.quote.toFixed(10)}`)
+  
+      const transaction = this.getTransaction(route, _walletAddress, _gasLimit)
+      const wallet = new ethers.Wallet(_walletPvtKey)
+      const connectedWallet = wallet.connect(provider)
+      const tokenInContract = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
+      await tokenInContract.connect(connectedWallet).approve(
         UNISWAP_SWAPROUTER_02,
         _approvalAmount
       )
@@ -105,7 +142,7 @@ class AlphaRouterService {
       const tradeTransaction = await connectedWallet.sendTransaction(transaction)
       console.log("Pending Transaction")
       tradeTransaction.wait();
-      console.log("Transaction Complete")
+      console.log("Swapped ${route.quote.toFixed(10)}")
   }
 }
 

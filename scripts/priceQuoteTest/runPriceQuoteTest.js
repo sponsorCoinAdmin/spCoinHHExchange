@@ -21,34 +21,16 @@ const UNI_ADDRESS = process.env.GOERLI_UNI
 let ARS = DEBUG_MODE ? new AlphaRouterServiceDebug(ethers, CHAIN_ID, provider) : new AlphaRouterService();
 let UTS = new UniTokenServices(ethers, CHAIN_ID, provider)
 
-getStrPriceQuote = async( _tradeType, _tokenInAddr, _tokenAddrOut, _tokenAmount, _slippagePercent, decimals) => {
-    let strPriceQuote = await ARS.getStrPriceQuote( _tradeType, _tokenInAddr, _tokenAddrOut, _tokenAmount, _slippagePercent, decimals)
-
-    // console.log("getStrPriceQuote.TradeType = ", _tradeType)
-    let uniContractFrom = UTS.getERC20Contract(_tokenInAddr)
-    let uniContractTo   =  UTS.getERC20Contract(_tokenAddrOut)
-    // let uniTokenIn      = await UTS.getUniTokenByContract(uniContractFrom, _tokenInAddr)
-    // let uniTokenOut     = await UTS.getUniTokenByContract(uniContractTo, _tokenAddrOut)
-
-    let uniTokenIn  = await UTS.wrapAddrToUniToken(_tokenInAddr)
-    // let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)
-
-    console.log("uniTokenIn:", await uniContractFrom.name(), "(", uniTokenIn.address, ")");
-    console.log("strPriceQuote:", await uniContractTo.name(), "(", strPriceQuote, ")");
-    // console.log("uniContractFrom.balanceOf", (await uniContractFrom.balanceOf(WALLET_ADDRESS)).toString());
-    // console.log("uniContractTo.balanceOf", (await uniContractTo.balanceOf(WALLET_ADDRESS)).toString());
-    return strPriceQuote;
-}
-
 getExactInputStrQuoteTest = async( ) => {
     console.log("*** EXECUTING getExactInputStrQuoteTest() ******************************");
     let tradeType = TradeType.EXACT_INPUT 
     let tokenInAddr = SPCOIN_ADDRESS;
     let tokenOutAddr = UNI_ADDRESS;
     let slippagePercent = 25;
-    let tokenAmountInWei = 100;
+    let tokenAmountIn = '0.01';
     let printDecimals = 12
-    strPriceQuote = await getStrPriceQuote(tradeType, tokenInAddr, tokenOutAddr, tokenAmountInWei, slippagePercent, printDecimals);
+    strPriceQuote = await ARS.getStrPriceQuote( tradeType, tokenInAddr, tokenOutAddr, tokenAmountIn, slippagePercent, printDecimals)
+    console.log("*** getExactInputStrQuoteTest with Fees:", strPriceQuote);
 }
 
 getExactOutputStrQuoteTest = async( ) => {
@@ -57,9 +39,10 @@ getExactOutputStrQuoteTest = async( ) => {
     let tokenInAddr = SPCOIN_ADDRESS;
     let tokenOutAddr = UNI_ADDRESS;
     let slippagePercent = 25;
-    let tokenAmountInWei = 100;
+    let tokenAmountIn = '0.01';
     let printDecimals = 12
-    strPriceQuote = await getStrPriceQuote(tradeType, tokenInAddr, tokenOutAddr, tokenAmountInWei, slippagePercent, printDecimals);
+    strPriceQuote = await ARS.getStrPriceQuote( tradeType, tokenInAddr, tokenOutAddr, tokenAmountIn, slippagePercent, printDecimals)
+    console.log("*** strPriceQuote:", strPriceQuote);
 }
 
 getExactInputRouteQuoteTest = async( ) => {
@@ -68,18 +51,19 @@ getExactInputRouteQuoteTest = async( ) => {
     let tokenOutAddr = UNI_ADDRESS;
     let tokenAmountInWei = 100;
     let slippagePercent = 25;
-    let route = await ARS.getRoute( tradeType, WALLET_ADDRESS, tokenInAddr, tokenOutAddr, tokenAmountInWei, slippagePercent)
+    let printDecimals = 12
+    let route = await ARS.getStrPriceQuote( tradeType, tokenInAddr, tokenOutAddr, tokenAmountInWei, slippagePercent, printDecimals)
     let quote = route.quote
-    console.log("getExactInputRouteQuoteTest SPCOIN to WETH:", quote.toFixed(10))
+    // console.log("getExactInputRouteQuoteTest SPCOIN to WETH:", quote.toFixed(10))
 }
 
 getExactOutputRouteQuoteTest = async( ) => {
     let tradeType = TradeType.EXACT_OUTPUT;
     let tokenInAddr = SPCOIN_ADDRESS;
     let tokenOutAddr = UNI_ADDRESS;
-    let tokenAmountInWei = 100;
+    let tokenAmountIn = '0.01';
     let slippagePercent = 25;
-    let route = await ARS.getRoute( tradeType, WALLET_ADDRESS, tokenInAddr, tokenOutAddr, tokenAmountInWei, slippagePercent)
+    let route = await ARS.getRoute( tradeType, WALLET_ADDRESS, tokenInAddr, tokenOutAddr, tokenAmountIn, slippagePercent)
     let quote = route.quote
     console.log("getExactOutputRouteQuoteTest SPCOIN to WETH:", quote.toFixed(10))
 }
@@ -89,11 +73,19 @@ exeExactInputTransactionTest = async( ) => {
 
     let tokenInAddr      = WETH_ADDRESS
     let tokenOutAddr     = UNI_ADDRESS
-    let approvalAmount = ethers.utils.parseUnits('1', 18).toString()
+    let approvalAmount   = ethers.utils.parseUnits('1', 18).toString()
     let inputTokenAmount = '0.01'
-    let slippagePercent = 25;
-    let gasLimit        = 1000000
-    
+    let slippagePercent  = 25;
+    let gasLimit         = 1000000
+
+    /*
+    let tokenInContract  = UTS.getERC20Contract(tokenInAddr)
+    let tokenOutContract = UTS.getERC20Contract(tokenOutAddr)
+    tokenInName          = await tokenInContract.name();
+    tokenOutName         = await tokenOutContract.name();
+
+    console.log("Swapping" )"
+    */   
     tradeTransaction = await ARS.exeExactInputTransaction(
       WALLET_ADDRESS,
       WALLET_SECRET,
@@ -112,10 +104,10 @@ exeExactOutputTransactionTest = async( ) => {
 
     let tokenInAddr      = WETH_ADDRESS
     let tokenOutAddr     = SPCOIN_ADDRESS
-    let approvalAmount = ethers.utils.parseUnits('1', 18).toString()
+    let approvalAmount   = ethers.utils.parseUnits('1', 18).toString()
     let inputTokenAmount = '0.01'
-    let slippagePercent = 25;
-    let gasLimit        = 1000000
+    let slippagePercent  = 25;
+    let gasLimit         = 1000000
     
     tradeTransaction = await ARS.exeExactOutputTransaction(
       WALLET_ADDRESS,
@@ -131,13 +123,14 @@ exeExactOutputTransactionTest = async( ) => {
 }
 
 main = async( ) => {
-    await getExactInputStrQuoteTest();
-    await getExactOutputStrQuoteTest();
+    // await getExactInputStrQuoteTest();
+    // await getExactOutputStrQuoteTest();
     // console.log("*** EXECUTING getExactInputRouteQuoteTest() *****************************");
     // await getExactInputRouteQuoteTest();
     // console.log("*** EXECUTING getExactOutputRouteQuoteTest() *****************************");
-    // await getExactOutputRouteQuoteTest();
+    // await getExactInputRouteQuoteTest();
     await exeExactInputTransactionTest();
+    console.log("FINISHED EXITING")
 }
 
 main()
