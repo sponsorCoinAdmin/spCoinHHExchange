@@ -85,8 +85,7 @@ getExactOutputRouteQuoteTest = async( ) => {
 }
 
 exeExactInputTransactionTest = async( ) => {
-    // const wei = ethers.utils.parseUnits(inputTokenAmount, 18)
-    // const inputTokenAmountInWei = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
+    console.log("*** EXECUTING exeExactInputTransactionTest() ********************************");
 
     let tokenInAddr      = WETH_ADDRESS
     let tokenOutAddr     = UNI_ADDRESS
@@ -109,8 +108,7 @@ exeExactInputTransactionTest = async( ) => {
 }
 
 exeExactOutputTransactionTest = async( ) => {
-    // const wei = ethers.utils.parseUnits(inputTokenAmount, 18)
-    // const inputTokenAmountInWei = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
+    console.log("*** EXECUTING exeExactOutputTransactionTest() *******************************");
 
     let tokenInAddr      = WETH_ADDRESS
     let tokenOutAddr     = SPCOIN_ADDRESS
@@ -133,15 +131,12 @@ exeExactOutputTransactionTest = async( ) => {
 }
 
 main = async( ) => {
-    // console.log("*** EXECUTING getExactInputStrQuoteTest() ******************************");
-    // await getExactInputStrQuoteTest();
-    // console.log("*** EXECUTING getExactOutputStrQuoteTest() ******************************");
-    // await getExactOutputStrQuoteTest();
+    await getExactInputStrQuoteTest();
+    await getExactOutputStrQuoteTest();
     // console.log("*** EXECUTING getExactInputRouteQuoteTest() *****************************");
     // await getExactInputRouteQuoteTest();
     // console.log("*** EXECUTING getExactOutputRouteQuoteTest() *****************************");
     // await getExactOutputRouteQuoteTest();
-    console.log("*** EXECUTING exeTransactionTest() ********************************");
     await exeExactInputTransactionTest();
 }
 
