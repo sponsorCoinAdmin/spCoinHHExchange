@@ -89,7 +89,7 @@ exeExactInputTransactionTest = async( ) => {
     // const inputTokenAmountInWei = CurrencyAmount.fromRawAmount(WETH, JSBI.BigInt(wei))
 
     let tokenInAddr      = WETH_ADDRESS
-    let tokenOutAddr     = SPCOIN_ADDRESS
+    let tokenOutAddr     = UNI_ADDRESS
     let approvalAmount = ethers.utils.parseUnits('1', 18).toString()
     let inputTokenAmount = '0.01'
     let slippagePercent = 25;
