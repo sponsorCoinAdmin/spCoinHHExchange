@@ -39,16 +39,17 @@ class AlphaRouterService {
     return route;
   }
 
-  getStrPriceQuote = async(_tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, _decimals) => {
+  // getStrPriceQuote = async( _tradeType, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, _decimals) => {
+  getStrPriceQuote = async( _tradeType, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, _decimals) => {
+    let tradeType = TradeType.EXACT_INPUT;
     let decimals = (_decimals === undefined) ? await uniContractFrom.decimals() : _decimals;
-    let quote = await this.getPriceQuote(_tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
+    let quote = await this.getPriceQuote( _tradeType, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
     let strPriceQuote = quote.toFixed(decimals);
     return strPriceQuote;
   }
 
-  getPriceQuote = async( _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
-    let tradeType = TradeType.EXACT_INPUT;
-    const route = await this.getRoute( tradeType, BURN_ADDRESS, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
+  getPriceQuote = async( _tradeType, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
+    const route = await this.getRoute( _tradeType, BURN_ADDRESS, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent);
     return route.quote
   }
 
