@@ -7,7 +7,7 @@ const { AlphaRouterService } = require('./AlphaRouterService');
 const { UniTokenServices } = require('./uniTokenServices')
 
 const INFURA_TEST_URL = process.env.GOERLI_INFURA_TEST_URL
-const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID)
+const CHAIN_ID = parseInt(process.env.GOERLI_CHAIN_ID)
 const WALLET_ADDRESS = process.env.WALLET_ADDRESS
 const WALLET_SECRET = process.env.WALLET_SECRET
 
@@ -20,7 +20,6 @@ const UNI_ADDRESS    = process.env.GOERLI_UNI
 let ARS = DEBUG_MODE ? new AlphaRouterServiceDebug(ethers, CHAIN_ID, provider) : new AlphaRouterService();
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-
 
 async function main( ) {
 

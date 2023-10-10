@@ -37,8 +37,8 @@ class AlphaRouterService {
         deadline: Math.floor(Date.now()/1000 + 1800)
       }
     )
-    console.log("BBBBBBBBBBBBBB route.quote:", route.quote.toFixed(10))
-    console.log("=======================================================================")
+    // console.log("BBBBBBBBBBBBBB route.quote:", route.quote.toFixed(10))
+    // console.log("=======================================================================")
     return route;
   }
 
@@ -92,14 +92,19 @@ class AlphaRouterService {
     _gasLimit) => {
       let tradeType = TradeType.EXACT_INPUT;
       let route = await this.getRoute( tradeType, _walletAddress, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
-      console.log("AAABBBBBBBBBBBBBB route.quote:", route.quote.toFixed(10))
-
       let quote = route.quote;
 
       let tokenInContract  = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
       let tokenOutContract = UTS.getERC20Contract(_tokenOutAddr)
       let tokenInName          = await tokenInContract.name();
       let tokenOutName         = await tokenOutContract.name();
+
+      let tokenInBeforeBalance = await tokenInContract.balanceOf(_walletAddress);
+      let tokenOutBeforeBalance = await tokenOutContract.balanceOf(_walletAddress);
+      // console.log(tokenInName, "tokenInBeforeBalance", tokenInBeforeBalance.toString())
+      // console.log(tokenOutName, "tokenOutBeforeBalance", tokenOutBeforeBalance.toString())
+
+      tokenOutContract.balanceOf(_walletAddress);
   
       console.log("Swapping:", _inputAmount, tokenInName, "For",  quote.toFixed(10), tokenOutName)
   
@@ -110,10 +115,28 @@ class AlphaRouterService {
         UNISWAP_SWAPROUTER_02,
         _approvalAmount
       )
-  
+
       console.log("Pending Transaction:")
       const tradeTransaction = await connectedWallet.sendTransaction(transaction)
+      await tradeTransaction.wait();
+
       console.log("Transaction Complete")
+      let tokenInAfterBalance = await tokenInContract.balanceOf(_walletAddress);
+      let tokenOutAfterBalance = await tokenOutContract.balanceOf(_walletAddress);
+      let diffInDecimals  = await tokenInContract.decimals();
+      let diffOutDecimals = await tokenOutContract.decimals();
+      // console.log(tokenInName, "tokenInAfterBalance", tokenInAfterBalance.toString())
+      // console.log(tokenOutName, "tokenOutAfterBalance", tokenOutAfterBalance.toString())
+      let diffInBalance = (tokenInAfterBalance - tokenInBeforeBalance)/(10**diffInDecimals)
+      let diffOutBalance = (tokenOutAfterBalance - tokenOutBeforeBalance)/(10**diffOutDecimals)
+      let ratio = -diffOutBalance/diffInBalance
+
+      let diffInStrBalance = diffInBalance.toFixed(5)
+      let diffOutStrBalance = diffOutBalance.toFixed(10)
+
+      console.log("Swapped:", diffInStrBalance, tokenInName, "For",  diffOutStrBalance, tokenOutName)
+      console.log("Ratio: 1", tokenInName, "=",  ratio, tokenOutName)
+
   }
 
   exeExactOutputTransaction = async(
@@ -127,24 +150,55 @@ class AlphaRouterService {
     _gasLimit) => {
       let tradeType = TradeType.EXACT_OUTPUT;
       let route = await this.getRoute( tradeType, _walletAddress, _tokenInAddr, _tokenOutAddr, _inputAmount, _slippagePercent);
+      let quote = route.quote;
+
+      let tokenInContract  = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
+      let tokenOutContract = UTS.getERC20Contract(_tokenOutAddr)
+      let tokenInName          = await tokenInContract.name();
+      let tokenOutName         = await tokenOutContract.name();
+
+      let tokenInBeforeBalance = await tokenInContract.balanceOf(_walletAddress);
+      let tokenOutBeforeBalance = await tokenOutContract.balanceOf(_walletAddress);
+      // console.log(tokenInName, "tokenInBeforeBalance", tokenInBeforeBalance.toString())
+      // console.log(tokenOutName, "tokenOutBeforeBalance", tokenOutBeforeBalance.toString())
+
+      tokenOutContract.balanceOf(_walletAddress);
   
-      console.log(`Quote Exact Out: ${route.quote.toFixed(10)}`)
+      console.log("Swapping:", _inputAmount, tokenInName, "For",  quote.toFixed(10), tokenOutName)
   
       const transaction = this.getTransaction(route, _walletAddress, _gasLimit)
       const wallet = new ethers.Wallet(_walletPvtKey)
       const connectedWallet = wallet.connect(provider)
-      const tokenInContract = new ethers.Contract(_tokenInAddr, ERC20ABI, provider)
       await tokenInContract.connect(connectedWallet).approve(
         UNISWAP_SWAPROUTER_02,
         _approvalAmount
       )
-  
+
+      console.log("Pending Transaction:")
       const tradeTransaction = await connectedWallet.sendTransaction(transaction)
-      console.log("Pending Transaction")
-      tradeTransaction.wait();
-      console.log("Swapped ${route.quote.toFixed(10)}")
+      await tradeTransaction.wait();
+
+      console.log("Transaction Complete")
+      let tokenInAfterBalance = await tokenInContract.balanceOf(_walletAddress);
+      let tokenOutAfterBalance = await tokenOutContract.balanceOf(_walletAddress);
+      let diffInDecimals  = await tokenInContract.decimals();
+      let diffOutDecimals = await tokenOutContract.decimals();
+      // console.log(tokenInName, "tokenInAfterBalance", tokenInAfterBalance.toString())
+      // console.log(tokenOutName, "tokenOutAfterBalance", tokenOutAfterBalance.toString())
+      let diffInBalance = (tokenInAfterBalance - tokenInBeforeBalance)/(10**diffInDecimals)
+      let diffOutBalance = (tokenOutAfterBalance - tokenOutBeforeBalance)/(10**diffOutDecimals)
+      let ratio = -diffOutBalance/diffInBalance
+
+      let diffInStrBalance = diffInBalance.toFixed(5)
+      let diffOutStrBalance = diffOutBalance.toFixed(10)
+
+      console.log("Swapped:", diffInStrBalance, tokenInName, "For",  diffOutStrBalance, tokenOutName)
+      console.log("Ratio: 1", tokenInName, "=",  ratio, tokenOutName)
+
   }
-}
+
+ }
+
 
 module.exports = {
   AlphaRouterService

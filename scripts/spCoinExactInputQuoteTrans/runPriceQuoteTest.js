@@ -42,7 +42,7 @@ getExactOutputStrQuoteTest = async( ) => {
     let tokenAmountIn = '0.01';
     let printDecimals = 12
     strPriceQuote = await ARS.getStrPriceQuote( tradeType, tokenInAddr, tokenOutAddr, tokenAmountIn, slippagePercent, printDecimals)
-    console.log("*** strPriceQuote:", strPriceQuote);
+    console.log("*** getExactOutputStrQuoteTest with Fees:", strPriceQuote);
 }
 
 getExactInputRouteQuoteTest = async( ) => {
