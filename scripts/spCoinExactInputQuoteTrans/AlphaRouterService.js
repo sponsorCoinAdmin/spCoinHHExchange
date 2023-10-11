@@ -194,7 +194,6 @@ class AlphaRouterService {
 
       console.log("Swapped:", diffInStrBalance, tokenInName, "For",  diffOutStrBalance, tokenOutName)
       console.log("Ratio: 1", tokenInName, "=",  ratio, tokenOutName)
-
   }
 
  }
