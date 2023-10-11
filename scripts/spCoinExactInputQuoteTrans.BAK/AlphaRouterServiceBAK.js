@@ -28,7 +28,7 @@ const WETH = new Token(chainId, tokenAddress, decimals0, tokenSymbol, tokenName)
 const SPCOIN = new Token(chainId, spCoinAddress, decimals1, spCoinSymbol, spCoinName)
 
 export const getWethContract = () => new ethers.Contract(tokenAddress, ERC20ABI, web3Provider)
-export const getSpCoinContract = () => new ethers.Contract(spCoinAddress, SPCOINABI, web3Provider)
+export const getSpCoinContract = () => new ethers.Contract(spCoinAddress, SPCOIN_ABI, web3Provider)
 
 export const getPrice = async (inputAmount, slippageAmount, deadline, walletAddress) => {
   const percentSlippage = new Percent(slippageAmount, 100)

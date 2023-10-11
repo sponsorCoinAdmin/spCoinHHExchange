@@ -6,7 +6,7 @@ const { ethers } = require('ethers')
 const WALLET_ADDRESS = process.env.WALLET_ADDRESS;
 const WALLET_SECRET = process.env.WALLET_SECRET;
 const SPCOIN_ADDRESS = process.env.GOERLI_SPCOIN;
-const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID);
+const CHAIN_ID = parseInt(process.env.GOERLI_CHAIN_ID);
 console.log("CHAIN_ID =", CHAIN_ID);
 
 const wei = ethers.utils.parseUnits('0.01', 18)

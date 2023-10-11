@@ -7,7 +7,7 @@ const JSBI = require('jsbi')
 const UNISWAP_SWAPROUTER_02 = process.env.UNISWAP_SWAPROUTER_02
 
 // Goerli Test Net
-const CHAIN_ID = parseInt(process.env.GORELI_CHAIN_ID);
+const CHAIN_ID = parseInt(process.env.GOERLI_CHAIN_ID);
 
 const INFURA_URL=process.env.GOERLI_INFURA_TEST_URL;
 provider = new ethers.providers.JsonRpcProvider(INFURA_URL);

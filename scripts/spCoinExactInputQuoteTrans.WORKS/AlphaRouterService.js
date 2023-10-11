@@ -22,7 +22,7 @@ class AlphaRouterService {
     getRoute = async(_tradeType, _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent) => {
     // console.log( "==========================================================================================================" );
     // console.log( " EXECUTING getRoute(", _tradeType,  _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, ")" );
-    console.log( " EXECUTING getRoute(", _tradeType, _recipientAddr, _tokenAddrIn, _tokenAddrOut, _inputAmount, _slippagePercent, ")" );
+    console.log( " EXECUTING getRoute(", _tradeType, _inputAmount, _slippagePercent, ")" );
 
     let uniTokenOut = await UTS.wrapAddrToUniToken(_tokenAddrOut)    
     let inputAmount = await UTS.addrAmountToCurrencyInWei(_inputAmount, _tokenAddrIn)

@@ -123,14 +123,14 @@ exeExactOutputTransactionTest = async( ) => {
 }
 
 main = async( ) => {
-    await getExactInputStrQuoteTest();
+    // await getExactInputStrQuoteTest();
     // await getExactOutputStrQuoteTest();
     // console.log("*** EXECUTING getExactInputRouteQuoteTest() *****************************");
     // await getExactInputRouteQuoteTest();
     // console.log("*** EXECUTING getExactOutputRouteQuoteTest() *****************************");
     // await getExactInputRouteQuoteTest();
-    // await exeExactInputTransactionTest();
-    // console.log("FINISHED EXITING")
+    await exeExactInputTransactionTest();
+    console.log("FINISHED EXITING")
 }
 
 main()
