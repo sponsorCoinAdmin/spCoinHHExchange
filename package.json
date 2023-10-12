@@ -26,6 +26,7 @@
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@uniswap/sdk": "^3.0.3",
     "@uniswap/sdk-core": "^4.0.7",
+    "@uniswap/smart-order-router": "^2.5.30",
     "@uniswap/v3-periphery": "^1.4.4",
     "hardhat-contract-sizer": "^2.10.0",
     "ts-node": "^10.9.1",

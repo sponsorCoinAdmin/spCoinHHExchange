@@ -4,13 +4,14 @@ const { abi: QuoterV2Abi } = require('@uniswap/v3-periphery/artifacts/contracts/
 //----- Uniswap Addresses -----
 const WETH_ADDRESS = process.env.GOERLI_WETH
 const USDC_ADDRESS = process.env.GOERLI_USDC
+const SPCOIN_ADDRESS = process.env.GOERLI_SPCOIN
 const QUOTER_ADDRESS = process.env.UNISWAP_QUOTER
 const QUOTERV2_ADDRESS = process.env.UNISWAP_QUOTERV2
 const provider = hre.ethers.provider
 const tokenIn  = WETH_ADDRESS;
 const tokenOut = USDC_ADDRESS;
 const fee = '3000';
-const amountIn = hre.ethers.utils.parseEther('1');
+const amountIn = hre.ethers.utils.parseEther('.001');
 const sqrtPriceLimitX96 = '0';
 
 const { getSpCoinExchange } = require("./deployHHConnection");

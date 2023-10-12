@@ -2,9 +2,10 @@ require("dotenv").config();
 let DEBUG_MODE = false;
 
 const { ethers } = require('ethers')
-const { AlphaRouterServiceDebug } = require('./AlphaRouterServiceDebug')
-const { AlphaRouterService } = require('./AlphaRouterService');
-const { UniTokenServices } = require('./uniTokenServices')
+const { AlphaRouterServiceDebug } = require('./lib/debug/AlphaRouterServiceDebug')
+
+const { AlphaRouterService, UniTokenServices } = require('./lib/prod/AlphaRouterService');
+// const { UniTokenServices } = require('./uniTokenServices')
 const { TradeType } = require('@uniswap/sdk-core')
 
 const INFURA_TEST_URL = process.env.GOERLI_INFURA_TEST_URL
@@ -124,13 +125,13 @@ exeExactOutputTransactionTest = async( ) => {
 
 main = async( ) => {
     await getExactInputStrQuoteTest();
-    // await getExactOutputStrQuoteTest();
-    // console.log("*** EXECUTING getExactInputRouteQuoteTest() *****************************");
-    // await getExactInputRouteQuoteTest();
-    // console.log("*** EXECUTING getExactOutputRouteQuoteTest() *****************************");
-    // await getExactInputRouteQuoteTest();
-    // await exeExactInputTransactionTest();
-    // console.log("FINISHED EXITING")
+    await getExactOutputStrQuoteTest();
+    console.log("*** EXECUTING getExactInputRouteQuoteTest() *****************************");
+    await getExactInputRouteQuoteTest();
+    console.log("*** EXECUTING getExactOutputRouteQuoteTest() *****************************");
+    await getExactInputRouteQuoteTest();
+    await exeExactInputTransactionTest();
+    console.log("FINISHED EXITING")
 }
 
 main()
