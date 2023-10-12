@@ -1,3 +1,6 @@
 [submodule "setupEnv"]
 	path = setupEnv
 	url = git@github.com:sponsorCoinAdmin/spCoinSetupEnv.git
+[submodule "scripts/spCoinExactInputQuoteTrans"]
+	path = scripts/spCoinExactInputQuoteTrans
+	url = git@github.com:sponsorCoinAdmin/spCoinExactInputQuoteTrans.git
